@@ -1,4 +1,4 @@
-import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import { KeyboardAvoidingView, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 
 import theme from '../../../utils/theme';
 
@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
 
 const Content = () => {
 	return (
-		<View style={styles.container}>
+		<KeyboardAvoidingView behavior='padding' style={styles.container}>
 			<View style={styles.details}>
 				<Text style={styles.icon}>b</Text>
 				<TextInput
@@ -73,7 +73,7 @@ const Content = () => {
 			<Pressable style={styles.login_button}>
 				<Text style={styles.login_text}>Log In</Text>
 			</Pressable>
-		</View>
+		</KeyboardAvoidingView>
 	);
 };
 
