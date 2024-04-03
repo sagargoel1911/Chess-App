@@ -1,4 +1,5 @@
-import { Button, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+
 import theme from '../../../utils/theme';
 
 const styles = StyleSheet.create({

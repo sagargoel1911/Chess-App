@@ -1,5 +1,5 @@
-import React from 'react';
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
+
 import ImageLinks from '../../../assets/images/ImageLinks';
 import theme from '../../../utils/theme';
 

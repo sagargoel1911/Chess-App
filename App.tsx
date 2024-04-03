@@ -1,9 +1,17 @@
-import { SafeAreaView, StatusBar, StyleSheet, Text, View } from 'react-native';
-import Login from './src/screens/Login/Login';
-import theme from './src/utils/theme';
+import { SafeAreaView, StatusBar, StyleSheet } from 'react-native';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import { useCallback } from 'react';
+
+import Login from './src/screens/Login/Login';
+import theme from './src/utils/theme';
+
+const styles = StyleSheet.create({
+	container: {
+		flex: 1,
+		backgroundColor: theme.colors.black,
+	},
+});
 
 SplashScreen.preventAutoHideAsync();
 
@@ -29,10 +37,3 @@ export default function App() {
 		</SafeAreaView>
 	);
 }
-
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		backgroundColor: theme.colors.black,
-	},
-});
