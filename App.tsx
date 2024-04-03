@@ -3,8 +3,8 @@ import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import { useCallback } from 'react';
 
-import Login from './src/screens/Login/Login';
 import theme from './src/utils/theme';
+import SignUp from './src/screens/SignUp/SignUp';
 
 const styles = StyleSheet.create({
 	container: {
@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
 
 SplashScreen.preventAutoHideAsync();
 
-export default function App() {
+const App = () => {
 	const [fontsLoaded, fontError] = useFonts({
 		'Montserrat-ExtraBold': require('./src/assets/fonts/Montserrat-ExtraBold.otf'),
 		'Chess V3': require('./src/assets/fonts/Chess Glyph Regular.otf'),
@@ -33,7 +33,9 @@ export default function App() {
 	return (
 		<SafeAreaView style={styles.container} onLayout={onLayoutRootView}>
 			<StatusBar />
-			<Login />
+			<SignUp />
 		</SafeAreaView>
 	);
-}
+};
+
+export default App;
