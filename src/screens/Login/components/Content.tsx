@@ -1,6 +1,7 @@
-import { KeyboardAvoidingView, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Image, KeyboardAvoidingView, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 
 import theme from '../../../utils/theme';
+import ImageLinks from '../../../assets/images/ImageLinks';
 
 const styles = StyleSheet.create({
 	container: {
@@ -12,42 +13,47 @@ const styles = StyleSheet.create({
 	details: {
 		flexDirection: 'row',
 		backgroundColor: theme.colors.text_box_color,
-		borderRadius: 6,
-		paddingVertical: 8,
-		paddingHorizontal: 16,
+		borderRadius: 8,
+		paddingHorizontal: 20,
 		gap: 18,
-		alignItems: 'center',
+		height: 50,
 	},
 	icon: {
 		fontFamily: theme.fonts.chess,
 		fontSize: 30,
+		alignItems: 'center',
+		justifyContent: 'center',
 		color: theme.colors.brand_color_text_light,
+		marginTop: 4,
 	},
 	input: {
 		flex: 1,
-		fontSize: 18,
+		fontSize: 16,
 		fontWeight: '500',
 		color: theme.colors.white,
-		height: 25,
-		marginTop: 4,
 	},
 	login_button: {
 		backgroundColor: theme.colors.button_green,
 		alignItems: 'center',
-		paddingVertical: 12,
+		justifyContent: 'center',
+		height: 60,
 		borderRadius: 8,
-		borderBottomWidth: 4,
-		borderColor: theme.colors.button_green_dark,
+		alignSelf: 'stretch',
 	},
 	login_text: {
 		color: theme.colors.white,
-		fontSize: 24,
+		fontSize: 20,
 		fontFamily: theme.fonts.montserrat_extra_bold,
 	},
 	reset_text: {
 		textAlign: 'center',
 		color: theme.colors.brand_color_text_light,
 		fontSize: 16,
+	},
+	login_button_outer: {
+		paddingBottom: 4,
+		backgroundColor: theme.colors.button_green_dark,
+		borderRadius: 8,
 	},
 });
 
@@ -65,14 +71,16 @@ const Content = () => {
 			<View style={styles.details}>
 				<Text style={styles.icon}>d</Text>
 				<TextInput style={styles.input} placeholder='Password' placeholderTextColor={theme.colors.brand_color_text_light} />
-				<Text style={styles.icon}>W</Text>
+				<Image source={ImageLinks.eye} style={{ width: 24, height: 18, alignSelf: 'center' }} />
 			</View>
 			<View>
 				<Text style={styles.reset_text}>Forgot / Reset Password?</Text>
 			</View>
-			<Pressable style={styles.login_button}>
-				<Text style={styles.login_text}>Log In</Text>
-			</Pressable>
+			<View style={styles.login_button_outer}>
+				<Pressable style={styles.login_button}>
+					<Text style={styles.login_text}>Log In</Text>
+				</Pressable>
+			</View>
 		</KeyboardAvoidingView>
 	);
 };

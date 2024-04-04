@@ -3,6 +3,9 @@ import { StyleSheet, View } from 'react-native';
 import theme from '../../utils/theme';
 import Header from './components/Header';
 import Username from './components/Username';
+import Password from './components/Password';
+import Email from './components/Email';
+import Main from './components/Main';
 
 const styles = StyleSheet.create({
 	container: {
@@ -15,10 +18,10 @@ const SignUp = () => {
 	return (
 		<View style={styles.container}>
 			<Header />
-			{/* <Main /> */}
+			<Main />
 			{/* <Email /> */}
 			{/* <Password /> */}
-			<Username />
+			{/* <Username /> */}
 		</View>
 	);
 };

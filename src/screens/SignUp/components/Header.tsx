@@ -6,6 +6,7 @@ import ImageLinks from '../../../assets/images/ImageLinks';
 const styles = StyleSheet.create({
 	container: {
 		flexDirection: 'row',
+		justifyContent: 'space-between',
 		backgroundColor: theme.colors.brand_color_dark,
 		alignItems: 'center',
 		height: 55,
@@ -14,7 +15,7 @@ const styles = StyleSheet.create({
 	login_text: {
 		color: theme.colors.white,
 		fontWeight: '600',
-		fontSize: 16,
+		fontSize: 14,
 	},
 	back: {
 		width: 18,
@@ -28,6 +29,7 @@ const Header = () => {
 			<Pressable>
 				<Image source={ImageLinks.back} style={styles.back} />
 			</Pressable>
+			{true && <Text style={styles.login_text}>LOG IN</Text>}
 		</View>
 	);
 };

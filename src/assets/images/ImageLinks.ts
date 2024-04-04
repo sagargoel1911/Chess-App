@@ -3,6 +3,7 @@ import back_dark from './back_dark.png';
 import logo_dark from './logo_dark.svg';
 import logo_white from './logo_white.svg';
 import logo_pawn_with_board from './logo_pawn_with_board.png';
+import eye from './eye.png';
 
 const ImageLinks = {
 	back,
@@ -10,6 +11,7 @@ const ImageLinks = {
 	logo_dark,
 	logo_white,
 	logo_pawn_with_board,
+	eye,
 };
 
 export default ImageLinks;

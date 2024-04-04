@@ -14,26 +14,32 @@ const styles = StyleSheet.create({
 	signup_button: {
 		backgroundColor: theme.colors.button_green,
 		alignItems: 'center',
-		paddingVertical: 12,
+		justifyContent: 'center',
+		height: 60,
 		borderRadius: 8,
-		borderBottomWidth: 4,
-		borderColor: theme.colors.button_green_dark,
 		alignSelf: 'stretch',
 	},
 	signup_text: {
 		color: theme.colors.white,
-		fontSize: 24,
+		fontSize: 20,
 		fontFamily: theme.fonts.montserrat_extra_bold,
 	},
 	top_text: {
 		color: theme.colors.white,
-		fontFamily: theme.fonts.montserrat_extra_bold,
-		fontSize: 30,
+		fontFamily: theme.fonts.montserrat_black,
+		fontSize: 24,
 		textAlign: 'center',
+		marginHorizontal: 32,
 	},
 	pawn_image: {
 		width: '90%',
 		height: 200,
+	},
+	signup_button_outer: {
+		paddingBottom: 4,
+		backgroundColor: theme.colors.button_green_dark,
+		borderRadius: 8,
+		alignSelf: 'stretch',
 	},
 });
 
@@ -42,9 +48,11 @@ const Main = () => {
 		<View style={styles.container}>
 			<Text style={styles.top_text}>Create your Chess.com account</Text>
 			<Image source={ImageLinks.logo_pawn_with_board} style={styles.pawn_image} />
-			<Pressable style={styles.signup_button}>
-				<Text style={styles.signup_text}>Sign Up with Email</Text>
-			</Pressable>
+			<View style={styles.signup_button_outer}>
+				<Pressable style={styles.signup_button}>
+					<Text style={styles.signup_text}>Sign Up with Email</Text>
+				</Pressable>
+			</View>
 		</View>
 	);
 };

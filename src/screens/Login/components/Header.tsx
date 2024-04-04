@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
 	signup_text: {
 		color: theme.colors.white,
 		fontWeight: '600',
-		fontSize: 16,
+		fontSize: 14,
 	},
 });
 
