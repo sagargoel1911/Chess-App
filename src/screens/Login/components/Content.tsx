@@ -55,6 +55,11 @@ const styles = StyleSheet.create({
 		backgroundColor: theme.colors.button_green_dark,
 		borderRadius: 8,
 	},
+	eye: {
+		width: 24,
+		height: 18,
+		alignSelf: 'center',
+	},
 });
 
 const Content = () => {
@@ -71,7 +76,7 @@ const Content = () => {
 			<View style={styles.details}>
 				<Text style={styles.icon}>d</Text>
 				<TextInput style={styles.input} placeholder='Password' placeholderTextColor={theme.colors.brand_color_text_light} />
-				<Image source={ImageLinks.eye} style={{ width: 24, height: 18, alignSelf: 'center' }} />
+				<Image source={ImageLinks.eye} style={styles.eye} />
 			</View>
 			<View>
 				<Text style={styles.reset_text}>Forgot / Reset Password?</Text>

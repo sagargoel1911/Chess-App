@@ -59,6 +59,11 @@ const styles = StyleSheet.create({
 		backgroundColor: theme.colors.button_green_dark,
 		borderRadius: 8,
 	},
+	eye: {
+		width: 24,
+		height: 18,
+		alignSelf: 'center',
+	},
 });
 
 const Password = () => {
@@ -73,7 +78,7 @@ const Password = () => {
 						placeholder='Password'
 						placeholderTextColor={theme.colors.brand_color_text_light}
 					/>
-					<Image source={ImageLinks.eye} style={{ width: 24, height: 18, alignSelf: 'center' }} />
+					<Image source={ImageLinks.eye} style={styles.eye} />
 				</View>
 			</View>
 			<View style={styles.continue_button_outer}>
