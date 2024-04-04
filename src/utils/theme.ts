@@ -1,7 +1,7 @@
 const colors = {
 	white: '#ffffff',
 	black: '#000000',
-	brand_color_dark: '#322D2B',
+	brand_color_dark: '#302D2B',
 	brand_color_extra_dark: '#252422',
 	brand_color_text_light: '#BDBDBD',
 	text_box_color: '#454241',
