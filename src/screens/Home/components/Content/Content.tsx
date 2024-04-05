@@ -28,7 +28,7 @@ const Content = () => {
 			<ContentCard
 				title='Play Computer'
 				description='Jimmy - Friendly'
-				ImageComponent={<Image source={ImageLinks.jimmy} style={{ height: 38, width: 38, borderRadius: 2 }} />}
+				ImageComponent={<Image source={ImageLinks.jimmy} style={{ height: 38, width: 38, borderRadius: 4 }} />}
 			/>
 			<ContentCard
 				title='Take Lessons'
