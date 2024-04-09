@@ -1,7 +1,6 @@
-import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import theme from '../../../utils/theme';
-import ImageLinks from '../../../assets/images/ImageLinks';
 
 const styles = StyleSheet.create({
 	container: {
@@ -18,8 +17,9 @@ const styles = StyleSheet.create({
 		fontSize: 14,
 	},
 	back: {
-		width: 18,
-		height: 18,
+		fontFamily: theme.fonts.chess,
+		fontSize: 24,
+		color: theme.colors.brand_color_text_light,
 	},
 });
 
@@ -27,7 +27,7 @@ const Header = () => {
 	return (
 		<View style={styles.container}>
 			<Pressable>
-				<Image source={ImageLinks.back} style={styles.back} />
+				<Text style={styles.back}>[</Text>
 			</Pressable>
 			{true && <Text style={styles.login_text}>LOG IN</Text>}
 		</View>

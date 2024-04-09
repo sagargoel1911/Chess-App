@@ -1,6 +1,5 @@
-import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 
-import ImageLinks from '../../../assets/images/ImageLinks';
 import theme from '../../../utils/theme';
 
 const styles = StyleSheet.create({
@@ -12,16 +11,7 @@ const styles = StyleSheet.create({
 		height: 55,
 		paddingHorizontal: 15,
 	},
-	logo: {
-		position: 'absolute',
-		top: 0,
-		left: 0,
-		right: 0,
-		bottom: 0,
-		justifyContent: 'center',
-		alignItems: 'center',
-	},
-	signup_text: {
+	login_text: {
 		color: theme.colors.white,
 		fontWeight: '600',
 		fontSize: 14,
@@ -31,6 +21,20 @@ const styles = StyleSheet.create({
 		fontSize: 24,
 		color: theme.colors.brand_color_text_light,
 	},
+	title_container: {
+		position: 'absolute',
+		top: 0,
+		left: 0,
+		right: 0,
+		bottom: 0,
+		justifyContent: 'center',
+		alignItems: 'center',
+	},
+	title_text: {
+		color: theme.colors.white,
+		fontFamily: theme.fonts.montserrat_black,
+		fontSize: 20,
+	},
 });
 
 const Header = () => {
@@ -39,10 +43,9 @@ const Header = () => {
 			<Pressable>
 				<Text style={styles.back}>[</Text>
 			</Pressable>
-			<View style={styles.logo}>
-				<ImageLinks.logo_white width={100} height={30} />
+			<View style={styles.title_container}>
+				<Text style={styles.title_text}>Pass and Play</Text>
 			</View>
-			<Text style={styles.signup_text}>SIGN UP</Text>
 		</View>
 	);
 };

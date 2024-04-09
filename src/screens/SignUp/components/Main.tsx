@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
 		backgroundColor: theme.colors.button_green,
 		alignItems: 'center',
 		justifyContent: 'center',
-		height: 60,
+		height: 56,
 		borderRadius: 8,
 		alignSelf: 'stretch',
 	},

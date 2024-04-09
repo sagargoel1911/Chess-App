@@ -29,14 +29,14 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 20,
 		gap: 18,
 		height: 50,
+		alignItems: 'center',
 	},
 	icon: {
 		fontFamily: theme.fonts.chess,
-		fontSize: 30,
+		fontSize: 24,
 		alignItems: 'center',
 		justifyContent: 'center',
 		color: theme.colors.brand_color_text_light,
-		marginTop: 4,
 	},
 	input: {
 		flex: 1,
@@ -67,7 +67,12 @@ const Email = () => {
 				<Text style={styles.top_text}>What is your email?</Text>
 				<View style={styles.details}>
 					<Text style={styles.icon}>u</Text>
-					<TextInput style={styles.input} placeholder='Email' placeholderTextColor={theme.colors.brand_color_text_light} />
+					<TextInput
+						style={styles.input}
+						placeholder='Email'
+						placeholderTextColor={theme.colors.brand_color_text_light}
+						selectionColor={theme.colors.white}
+					/>
 				</View>
 			</View>
 			<View style={styles.continue_button_outer}>
