@@ -2,6 +2,7 @@ import { FlatList, ScrollView, StyleSheet, Switch, Text, View } from 'react-nati
 
 import theme from '../../../../utils/theme';
 import Options from './components/Options';
+import TIME_CONTROLS from './constants';
 
 const styles = StyleSheet.create({
 	container: {
@@ -21,7 +22,7 @@ const styles = StyleSheet.create({
 		position: 'absolute',
 		color: theme.colors.brand_color_text_light,
 		fontSize: 24,
-		top: 50,
+		top: 44,
 		zIndex: 1,
 		alignSelf: 'center',
 	},
@@ -70,7 +71,7 @@ const Content = () => {
 					CurrentOption={<Text style={styles.current_option}>None</Text>}
 					BelowComponent={
 						<FlatList
-							data={['30 min', '15 | 10', '10 min', '5 | 5', '3 | 2', '2 | 1', '5 min', '3 min', '1 min', 'None']}
+							data={TIME_CONTROLS}
 							numColumns={3}
 							renderItem={({ item, index }) => {
 								return (
