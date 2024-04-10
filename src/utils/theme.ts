@@ -12,6 +12,11 @@ const colors = {
 	icon_orange: '#FDA700',
 	icon_blue: '#008AD2',
 	icon_purple: '#A85AFF',
+	active_track: '#434C2D',
+	active_track_thumb: '#B9B9B9',
+	inactive_track: '#686665',
+	tile_unselected: '#3C3A39',
+	tile_selected: '#51504E',
 };
 
 const fonts = {

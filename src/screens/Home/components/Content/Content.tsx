@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
 
 const Content = () => {
 	return (
-		<ScrollView style={styles.container} contentContainerStyle={{ gap: 13 }}>
+		<ScrollView style={styles.container} contentContainerStyle={{ gap: 13, paddingBottom: 30 }}>
 			<ContentCard
 				title='Pass and Play'
 				description='Play someone at your level!'

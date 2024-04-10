@@ -30,14 +30,14 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 20,
 		gap: 18,
 		height: 50,
+		alignItems: 'center',
 	},
 	icon: {
 		fontFamily: theme.fonts.chess,
-		fontSize: 30,
+		fontSize: 24,
 		alignItems: 'center',
 		justifyContent: 'center',
 		color: theme.colors.brand_color_text_light,
-		marginTop: 4,
 	},
 	input: {
 		flex: 1,
@@ -77,6 +77,7 @@ const Password = () => {
 						style={styles.input}
 						placeholder='Password'
 						placeholderTextColor={theme.colors.brand_color_text_light}
+						selectionColor={theme.colors.white}
 					/>
 					<Image source={ImageLinks.eye} style={styles.eye} />
 				</View>
