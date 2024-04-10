@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
 		position: 'absolute',
 		color: theme.colors.brand_color_text_light,
 		fontSize: 24,
-		top: 44,
+		top: 43.8,
 		zIndex: 1,
 		alignSelf: 'center',
 	},
