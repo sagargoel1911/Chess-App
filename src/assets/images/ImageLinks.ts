@@ -8,7 +8,7 @@ import learn_icon from './learn_icon.svg';
 import jimmy from './jimmy.png';
 import puzzle_icon from './puzzle_icon.svg';
 import flags from './flags.png';
-import profile_pic from './profile_pic.svg';
+import profile_pic from './profile_pic.png';
 
 const ImageLinks = {
 	logo_dark,

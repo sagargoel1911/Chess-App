@@ -2,7 +2,7 @@ import { ScrollView, StyleSheet, View } from 'react-native';
 import theme from '../../utils/theme';
 import Header from './components/Header';
 import UserInfo from './components/UserInfo';
-import PreviousGames from './components/PreviousGames';
+import PreviousGames from './components/PreviousGames/PreviousGames';
 
 const styles = StyleSheet.create({
 	container: {
