@@ -6,6 +6,7 @@ import { NavigationContainer } from '@react-navigation/native';
 
 import theme from './src/utils/theme';
 import TabBar from './src/navigation/Tab';
+import Profile from './src/screens/Profile/Profile';
 
 const styles = StyleSheet.create({
 	container: {
@@ -21,6 +22,7 @@ const App = () => {
 		'Montserrat-ExtraBold': require('./src/assets/fonts/Montserrat-ExtraBold.otf'),
 		'Chess V3': require('./src/assets/fonts/Chess Glyph V3.otf'),
 		'Montserrat-Black': require('./src/assets/fonts/Montserrat-Black.otf'),
+		'Roboto-Regular': require('./src/assets/fonts/Roboto Black.otf'),
 	});
 
 	const onLayoutRootView = useCallback(async () => {
@@ -36,7 +38,7 @@ const App = () => {
 		<NavigationContainer>
 			<SafeAreaView style={styles.container} onLayout={onLayoutRootView}>
 				<StatusBar />
-				<TabBar />
+				<Profile />
 			</SafeAreaView>
 		</NavigationContainer>
 	);

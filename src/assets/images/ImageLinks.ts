@@ -7,6 +7,8 @@ import play_icon from './play_icon.svg';
 import learn_icon from './learn_icon.svg';
 import jimmy from './jimmy.png';
 import puzzle_icon from './puzzle_icon.svg';
+import flags from './flags.png';
+import profile_pic from './profile_pic.png';
 
 const ImageLinks = {
 	logo_dark,
@@ -18,6 +20,8 @@ const ImageLinks = {
 	learn_icon,
 	jimmy,
 	puzzle_icon,
+	flags,
+	profile_pic,
 };
 
 export default ImageLinks;

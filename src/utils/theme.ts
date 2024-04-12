@@ -17,12 +17,17 @@ const colors = {
 	inactive_track: '#686665',
 	tile_unselected: '#3C3A39',
 	tile_selected: '#51504E',
+	icon_draw: '#666463',
+	icon_loss: '#CA3737',
+	icon_win: '#75984F',
+	brand_color_text_extra_light: '#7D7C7A',
 };
 
 const fonts = {
 	montserrat_extra_bold: 'Montserrat-ExtraBold',
 	chess: 'Chess V3',
 	montserrat_black: 'Montserrat-Black',
+	roboto: 'Roboto-Regular',
 };
 
 const theme = { colors, fonts };
