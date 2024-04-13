@@ -1,11 +1,9 @@
 import { StyleSheet, View } from 'react-native';
+import { useState } from 'react';
 
 import theme from '../../utils/theme';
+import SignUpStack from './navigation/SignUpStack';
 import Header from './components/Header';
-import Username from './components/Username';
-import Password from './components/Password';
-import Email from './components/Email';
-import Main from './components/Main';
 
 const styles = StyleSheet.create({
 	container: {
@@ -15,13 +13,15 @@ const styles = StyleSheet.create({
 });
 
 const SignUp = () => {
+	const [nav, set_nav] = useState<any>();
+
+	const update_nav = (new_nav: any): void => {
+		set_nav(new_nav);
+	};
 	return (
 		<View style={styles.container}>
-			<Header />
-			<Main />
-			{/* <Email /> */}
-			{/* <Password /> */}
-			{/* <Username /> */}
+			<Header nav={nav} />
+			<SignUpStack update_nav={update_nav} />
 		</View>
 	);
 };

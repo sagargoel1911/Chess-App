@@ -7,13 +7,14 @@ import Learn from '../screens/Learn';
 import Watch from '../screens/Watch';
 import More from '../screens/More';
 import theme from '../utils/theme';
+import { TabNames } from './RouteNames';
 
 const Tab = createBottomTabNavigator();
 
 const TabBar = () => {
 	return (
 		<Tab.Navigator
-			initialRouteName='Home'
+			initialRouteName={TabNames.Home}
 			screenOptions={{
 				headerShown: false,
 				tabBarInactiveTintColor: theme.colors.icon_inactive,
@@ -29,7 +30,7 @@ const TabBar = () => {
 				},
 			}}>
 			<Tab.Screen
-				name='Home'
+				name={TabNames.Home}
 				component={Home}
 				options={{
 					tabBarIcon: ({ color }) => <Text style={{ fontFamily: theme.fonts.chess, fontSize: 25, color: color }}></Text>,
@@ -37,7 +38,7 @@ const TabBar = () => {
 				}}
 			/>
 			<Tab.Screen
-				name='Puzzles'
+				name={TabNames.Puzzles}
 				component={Puzzles}
 				options={{
 					tabBarIcon: ({ color }) => <Text style={{ fontFamily: theme.fonts.chess, fontSize: 20, color: color }}>Ϟ</Text>,
@@ -45,7 +46,7 @@ const TabBar = () => {
 				}}
 			/>
 			<Tab.Screen
-				name='Learn'
+				name={TabNames.Learn}
 				component={Learn}
 				options={{
 					tabBarIcon: ({ color }) => <Text style={{ fontFamily: theme.fonts.chess, fontSize: 20, color: color }}>ἠ</Text>,
@@ -53,7 +54,7 @@ const TabBar = () => {
 				}}
 			/>
 			<Tab.Screen
-				name='Watch'
+				name={TabNames.Watch}
 				component={Watch}
 				options={{
 					tabBarIcon: ({ color }) => <Text style={{ fontFamily: theme.fonts.chess, fontSize: 20, color: color }}>—</Text>,
@@ -61,7 +62,7 @@ const TabBar = () => {
 				}}
 			/>
 			<Tab.Screen
-				name='More'
+				name={TabNames.More}
 				component={More}
 				options={{
 					tabBarIcon: ({ color }) => <Text style={{ fontFamily: theme.fonts.chess, fontSize: 20, color: color }}>t</Text>,

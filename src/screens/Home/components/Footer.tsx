@@ -1,6 +1,8 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 import theme from '../../../utils/theme';
+import RouteNames from '../../../navigation/RouteNames';
 
 const styles = StyleSheet.create({
 	container: {
@@ -30,10 +32,16 @@ const styles = StyleSheet.create({
 });
 
 const Footer = () => {
+	const navigation = useNavigation<any>();
+
 	return (
 		<View style={styles.container}>
 			<View style={styles.button_outer}>
-				<Pressable style={styles.button}>
+				<Pressable
+					style={styles.button}
+					onPress={() => {
+						navigation.navigate(RouteNames.GameInfo);
+					}}>
 					<Text style={styles.text}>Play</Text>
 				</Pressable>
 			</View>
