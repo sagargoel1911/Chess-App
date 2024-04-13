@@ -46,7 +46,7 @@ const Header = () => {
 		<View style={styles.container}>
 			<Pressable
 				onPress={() => {
-					navigation.pop();
+					navigation.goBack();
 				}}>
 				<Text style={styles.back}>[</Text>
 			</Pressable>

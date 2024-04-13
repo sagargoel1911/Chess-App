@@ -42,7 +42,7 @@ const Header = () => {
 		<View style={styles.container}>
 			<Pressable
 				onPress={() => {
-					navigation.pop();
+					navigation.goBack();
 				}}>
 				<Text style={styles.back}>[</Text>
 			</Pressable>
@@ -51,7 +51,7 @@ const Header = () => {
 			</View>
 			<Pressable
 				onPress={() => {
-					navigation.pop();
+					navigation.goBack();
 				}}>
 				<Text style={styles.signup_text}>SIGN UP</Text>
 			</Pressable>
