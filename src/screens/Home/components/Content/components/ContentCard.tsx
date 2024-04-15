@@ -44,12 +44,12 @@ interface Props {
 const ContentCard = ({ title, description, ImageComponent }: Props) => {
 	const navigation = useNavigation<any>();
 
+	const navigate = () => {
+		if (title === 'Pass and Play') navigation.navigate(RouteNames.GameInfo);
+	};
+
 	return (
-		<Pressable
-			style={styles.container}
-			onPress={() => {
-				if (title === 'Pass and Play') navigation.navigate(RouteNames.GameInfo);
-			}}>
+		<Pressable style={styles.container} onPress={navigate}>
 			<View style={styles.image_view}>
 				<Image source={ImageLinks.standard_board} style={styles.image} />
 			</View>
