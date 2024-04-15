@@ -1,7 +1,8 @@
-import { Image, KeyboardAvoidingView, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import { KeyboardAvoidingView, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import { useForm, Controller } from 'react-hook-form';
 
 import theme from '../../../utils/theme';
-import ImageLinks from '../../../assets/images/ImageLinks';
+import { useState } from 'react';
 
 const styles = StyleSheet.create({
 	container: {
@@ -55,40 +56,89 @@ const styles = StyleSheet.create({
 		backgroundColor: theme.colors.button_green_dark,
 		borderRadius: 8,
 	},
-	eye: {
-		width: 24,
-		height: 18,
-		alignSelf: 'center',
-	},
 });
 
 const Content = () => {
+	const methods = useForm<any>();
+	const { control, handleSubmit } = methods;
+	const [show_password, set_show_password] = useState<boolean>(false);
+
+	const onSubmit = (data: any) => {
+		console.log(data);
+	};
+
 	return (
 		<KeyboardAvoidingView behavior='padding' style={styles.container}>
-			<View style={styles.details}>
-				<Text style={styles.icon}>b</Text>
-				<TextInput
-					style={styles.input}
-					placeholder='Username or Email'
-					placeholderTextColor={theme.colors.brand_color_text_light}
-					selectionColor={theme.colors.white}
-				/>
-			</View>
-			<View style={styles.details}>
-				<Text style={styles.icon}>d</Text>
-				<TextInput
-					style={styles.input}
-					placeholder='Password'
-					placeholderTextColor={theme.colors.brand_color_text_light}
-					selectionColor={theme.colors.white}
-				/>
-				<Image source={ImageLinks.eye} style={styles.eye} />
-			</View>
+			<Controller
+				control={control}
+				name='username_email'
+				rules={{ required: true }}
+				render={({ field: { value, onChange, onBlur }, fieldState: { error } }) => (
+					<View style={{ gap: 4 }}>
+						<View
+							style={[
+								styles.details,
+								error && { paddingHorizontal: 18, borderWidth: 2, borderColor: theme.colors.icon_loss },
+							]}>
+							<Text style={styles.icon}>b</Text>
+							<TextInput
+								style={styles.input}
+								placeholder='Username or Email'
+								placeholderTextColor={theme.colors.brand_color_text_light}
+								selectionColor={theme.colors.white}
+								value={value}
+								onChangeText={onChange}
+								onBlur={onBlur}
+							/>
+						</View>
+						{error && (
+							<Text style={{ color: theme.colors.icon_loss, marginLeft: 22, fontWeight: 'bold' }}>Cannot Be Empty</Text>
+						)}
+					</View>
+				)}
+			/>
+
+			<Controller
+				control={control}
+				name='password'
+				rules={{ required: true }}
+				render={({ field: { value, onChange, onBlur }, fieldState: { error } }) => (
+					<View style={{ gap: 4 }}>
+						<View
+							style={[
+								styles.details,
+								error && { paddingHorizontal: 18, borderWidth: 2, borderColor: theme.colors.icon_loss },
+							]}>
+							<Text style={styles.icon}>d</Text>
+							<TextInput
+								style={styles.input}
+								placeholder='Password'
+								placeholderTextColor={theme.colors.brand_color_text_light}
+								selectionColor={theme.colors.white}
+								value={value}
+								onChangeText={onChange}
+								onBlur={onBlur}
+								secureTextEntry={!show_password}
+							/>
+							<Pressable
+								onPress={() => {
+									set_show_password((show_password) => !show_password);
+								}}>
+								<Text style={styles.icon}>{show_password ? 'W' : 'ὀ'}</Text>
+							</Pressable>
+						</View>
+						{error && (
+							<Text style={{ color: theme.colors.icon_loss, marginLeft: 22, fontWeight: 'bold' }}>Cannot Be Empty</Text>
+						)}
+					</View>
+				)}
+			/>
+
 			<View>
 				<Text style={styles.reset_text}>Forgot / Reset Password?</Text>
 			</View>
 			<View style={styles.login_button_outer}>
-				<Pressable style={styles.login_button}>
+				<Pressable style={styles.login_button} onPress={handleSubmit(onSubmit)}>
 					<Text style={styles.login_text}>Log In</Text>
 				</Pressable>
 			</View>

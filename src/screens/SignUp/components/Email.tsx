@@ -3,6 +3,7 @@ import { useNavigation } from '@react-navigation/native';
 
 import theme from '../../../utils/theme';
 import RouteNames from '../navigation/RouteNames';
+import { Controller, useFormContext } from 'react-hook-form';
 
 const styles = StyleSheet.create({
 	top_text: {
@@ -64,26 +65,54 @@ const styles = StyleSheet.create({
 
 const Email = () => {
 	const navigation = useNavigation<any>();
+	const { control, trigger, formState } = useFormContext();
+	const { errors } = formState;
 
 	return (
 		<KeyboardAvoidingView behavior='height' keyboardVerticalOffset={Platform.OS === 'ios' ? 50 : 0} style={styles.container}>
 			<View style={styles.top_section}>
 				<Text style={styles.top_text}>What is your email?</Text>
-				<View style={styles.details}>
-					<Text style={styles.icon}>u</Text>
-					<TextInput
-						style={styles.input}
-						placeholder='Email'
-						placeholderTextColor={theme.colors.brand_color_text_light}
-						selectionColor={theme.colors.white}
-					/>
-				</View>
+				<Controller
+					name='email'
+					control={control}
+					rules={{
+						pattern: {
+							value: /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/,
+							message: 'This value is not a valid email address.',
+						},
+					}}
+					render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
+						<View style={{ gap: 4 }}>
+							<View
+								style={[
+									styles.details,
+									error && { paddingHorizontal: 18, borderWidth: 2, borderColor: theme.colors.icon_loss },
+								]}>
+								<Text style={styles.icon}>u</Text>
+								<TextInput
+									style={styles.input}
+									placeholder='Email'
+									placeholderTextColor={theme.colors.brand_color_text_light}
+									selectionColor={theme.colors.white}
+									value={value}
+									onChangeText={onChange}
+									onBlur={onBlur}
+								/>
+							</View>
+							{error && (
+								<Text style={{ color: theme.colors.icon_loss, marginLeft: 22, fontWeight: 'bold' }}>
+									{error.message}
+								</Text>
+							)}
+						</View>
+					)}></Controller>
 			</View>
 			<View style={styles.continue_button_outer}>
 				<Pressable
 					style={styles.continue_button}
-					onPress={() => {
-						navigation.navigate(RouteNames.Password);
+					onPress={async () => {
+						await trigger('email');
+						if (!errors.email) navigation.navigate(RouteNames.Password);
 					}}>
 					<Text style={styles.continue_text}>Continue</Text>
 				</Pressable>

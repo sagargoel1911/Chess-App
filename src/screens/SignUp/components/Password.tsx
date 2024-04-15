@@ -1,9 +1,10 @@
-import { Image, KeyboardAvoidingView, Platform, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import { KeyboardAvoidingView, Platform, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 import theme from '../../../utils/theme';
-import ImageLinks from '../../../assets/images/ImageLinks';
 import RouteNames from '../navigation/RouteNames';
+import { Controller, useFormContext } from 'react-hook-form';
+import { useState } from 'react';
 
 const styles = StyleSheet.create({
 	top_text: {
@@ -70,27 +71,58 @@ const styles = StyleSheet.create({
 
 const Password = () => {
 	const navigation = useNavigation<any>();
+	const { control, trigger, formState } = useFormContext();
+	const [show_password, set_show_password] = useState<boolean>(false);
+	const { errors } = formState;
 
 	return (
 		<KeyboardAvoidingView behavior='height' keyboardVerticalOffset={Platform.OS === 'ios' ? 50 : 0} style={styles.container}>
 			<View style={styles.top_section}>
 				<Text style={styles.top_text}>Create a password</Text>
-				<View style={styles.details}>
-					<Text style={styles.icon}>d</Text>
-					<TextInput
-						style={styles.input}
-						placeholder='Password'
-						placeholderTextColor={theme.colors.brand_color_text_light}
-						selectionColor={theme.colors.white}
-					/>
-					<Image source={ImageLinks.eye} style={styles.eye} />
-				</View>
+				<Controller
+					control={control}
+					name='password'
+					rules={{ required: true }}
+					render={({ field: { value, onChange, onBlur }, fieldState: { error } }) => (
+						<View style={{ gap: 4 }}>
+							<View
+								style={[
+									styles.details,
+									error && { paddingHorizontal: 18, borderWidth: 2, borderColor: theme.colors.icon_loss },
+								]}>
+								<Text style={styles.icon}>d</Text>
+								<TextInput
+									style={styles.input}
+									placeholder='Password'
+									placeholderTextColor={theme.colors.brand_color_text_light}
+									selectionColor={theme.colors.white}
+									value={value}
+									onChangeText={onChange}
+									onBlur={onBlur}
+									secureTextEntry={!show_password}
+								/>
+								<Pressable
+									onPress={() => {
+										set_show_password((show_password) => !show_password);
+									}}>
+									<Text style={styles.icon}>{show_password ? 'W' : 'ὀ'}</Text>
+								</Pressable>
+							</View>
+							{error && (
+								<Text style={{ color: theme.colors.icon_loss, marginLeft: 22, fontWeight: 'bold' }}>
+									Cannot Be Empty
+								</Text>
+							)}
+						</View>
+					)}
+				/>
 			</View>
 			<View style={styles.continue_button_outer}>
 				<Pressable
 					style={styles.continue_button}
-					onPress={() => {
-						navigation.navigate(RouteNames.Username);
+					onPress={async () => {
+						await trigger('password');
+						if (!errors.password) navigation.navigate(RouteNames.Username);
 					}}>
 					<Text style={styles.continue_text}>Continue</Text>
 				</Pressable>

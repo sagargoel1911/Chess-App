@@ -4,6 +4,7 @@ import { useState } from 'react';
 import theme from '../../utils/theme';
 import SignUpStack from './navigation/SignUpStack';
 import Header from './components/Header';
+import { FormProvider, useForm } from 'react-hook-form';
 
 const styles = StyleSheet.create({
 	container: {
@@ -14,6 +15,7 @@ const styles = StyleSheet.create({
 
 const SignUp = () => {
 	const [nav, set_nav] = useState<any>();
+	const methods = useForm<any>();
 
 	const update_nav = (new_nav: any): void => {
 		set_nav(new_nav);
@@ -21,7 +23,9 @@ const SignUp = () => {
 	return (
 		<View style={styles.container}>
 			<Header nav={nav} />
-			<SignUpStack update_nav={update_nav} />
+			<FormProvider {...methods}>
+				<SignUpStack update_nav={update_nav} />
+			</FormProvider>
 		</View>
 	);
 };
