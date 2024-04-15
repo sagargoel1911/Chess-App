@@ -1,3 +1,4 @@
+import 'react-native-gesture-handler';
 import { SafeAreaView, StatusBar, StyleSheet } from 'react-native';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
@@ -5,8 +6,7 @@ import { useCallback } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 
 import theme from './src/utils/theme';
-import TabBar from './src/navigation/Tab';
-import Profile from './src/screens/Profile/Profile';
+import AppStack from './src/navigation/AppStack';
 
 const styles = StyleSheet.create({
 	container: {
@@ -38,7 +38,7 @@ const App = () => {
 		<NavigationContainer>
 			<SafeAreaView style={styles.container} onLayout={onLayoutRootView}>
 				<StatusBar />
-				<Profile />
+				<AppStack />
 			</SafeAreaView>
 		</NavigationContainer>
 	);

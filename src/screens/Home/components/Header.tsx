@@ -1,7 +1,9 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 import ImageLinks from '../../../assets/images/ImageLinks';
 import theme from '../../../utils/theme';
+import RouteNames from '../../../navigation/RouteNames';
 
 const styles = StyleSheet.create({
 	container: {
@@ -19,6 +21,7 @@ const styles = StyleSheet.create({
 		bottom: 0,
 		justifyContent: 'center',
 		alignItems: 'center',
+		pointerEvents: 'none',
 	},
 	signup_text: {
 		color: theme.colors.brand_color_text_light,
@@ -28,9 +31,14 @@ const styles = StyleSheet.create({
 });
 
 const Header = () => {
+	const navigation = useNavigation<any>();
+
 	return (
 		<View style={styles.container}>
-			<Pressable>
+			<Pressable
+				onPress={() => {
+					navigation.navigate(RouteNames.SignUp);
+				}}>
 				<Text style={styles.signup_text}>Sign Up</Text>
 			</Pressable>
 			<View style={styles.logo}>

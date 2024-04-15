@@ -1,7 +1,9 @@
 import { Image, KeyboardAvoidingView, Platform, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 import theme from '../../../utils/theme';
 import ImageLinks from '../../../assets/images/ImageLinks';
+import RouteNames from '../navigation/RouteNames';
 
 const styles = StyleSheet.create({
 	top_text: {
@@ -67,6 +69,8 @@ const styles = StyleSheet.create({
 });
 
 const Password = () => {
+	const navigation = useNavigation<any>();
+
 	return (
 		<KeyboardAvoidingView behavior='height' keyboardVerticalOffset={Platform.OS === 'ios' ? 50 : 0} style={styles.container}>
 			<View style={styles.top_section}>
@@ -83,7 +87,11 @@ const Password = () => {
 				</View>
 			</View>
 			<View style={styles.continue_button_outer}>
-				<Pressable style={styles.continue_button}>
+				<Pressable
+					style={styles.continue_button}
+					onPress={() => {
+						navigation.navigate(RouteNames.Username);
+					}}>
 					<Text style={styles.continue_text}>Continue</Text>
 				</Pressable>
 			</View>

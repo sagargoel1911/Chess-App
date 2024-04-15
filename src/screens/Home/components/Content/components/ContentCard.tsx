@@ -1,8 +1,10 @@
 import React, { ReactNode } from 'react';
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 import ImageLinks from '../../../../../assets/images/ImageLinks';
 import theme from '../../../../../utils/theme';
+import RouteNames from '../../../../../navigation/RouteNames';
 
 const styles = StyleSheet.create({
 	container: {
@@ -40,8 +42,14 @@ interface Props {
 }
 
 const ContentCard = ({ title, description, ImageComponent }: Props) => {
+	const navigation = useNavigation<any>();
+
+	const navigate = () => {
+		if (title === 'Pass and Play') navigation.navigate(RouteNames.GameInfo);
+	};
+
 	return (
-		<View style={styles.container}>
+		<Pressable style={styles.container} onPress={navigate}>
 			<View style={styles.image_view}>
 				<Image source={ImageLinks.standard_board} style={styles.image} />
 			</View>
@@ -50,7 +58,7 @@ const ContentCard = ({ title, description, ImageComponent }: Props) => {
 				<Text style={styles.description}>{description}</Text>
 				{ImageComponent}
 			</View>
-		</View>
+		</Pressable>
 	);
 };
 

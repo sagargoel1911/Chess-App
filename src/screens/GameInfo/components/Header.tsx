@@ -1,4 +1,5 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 import theme from '../../../utils/theme';
 
@@ -29,6 +30,7 @@ const styles = StyleSheet.create({
 		bottom: 0,
 		justifyContent: 'center',
 		alignItems: 'center',
+		pointerEvents: 'none',
 	},
 	title_text: {
 		color: theme.colors.white,
@@ -38,9 +40,14 @@ const styles = StyleSheet.create({
 });
 
 const Header = () => {
+	const navigation = useNavigation<any>();
+
 	return (
 		<View style={styles.container}>
-			<Pressable>
+			<Pressable
+				onPress={() => {
+					navigation.goBack();
+				}}>
 				<Text style={styles.back}>[</Text>
 			</Pressable>
 			<View style={styles.title_container}>

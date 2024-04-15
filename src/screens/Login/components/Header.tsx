@@ -1,4 +1,5 @@
-import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 import ImageLinks from '../../../assets/images/ImageLinks';
 import theme from '../../../utils/theme';
@@ -20,6 +21,7 @@ const styles = StyleSheet.create({
 		bottom: 0,
 		justifyContent: 'center',
 		alignItems: 'center',
+		pointerEvents: 'none',
 	},
 	signup_text: {
 		color: theme.colors.white,
@@ -34,15 +36,25 @@ const styles = StyleSheet.create({
 });
 
 const Header = () => {
+	const navigation = useNavigation<any>();
+
 	return (
 		<View style={styles.container}>
-			<Pressable>
+			<Pressable
+				onPress={() => {
+					navigation.goBack();
+				}}>
 				<Text style={styles.back}>[</Text>
 			</Pressable>
 			<View style={styles.logo}>
 				<ImageLinks.logo_white width={100} height={30} />
 			</View>
-			<Text style={styles.signup_text}>SIGN UP</Text>
+			<Pressable
+				onPress={() => {
+					navigation.goBack();
+				}}>
+				<Text style={styles.signup_text}>SIGN UP</Text>
+			</Pressable>
 		</View>
 	);
 };

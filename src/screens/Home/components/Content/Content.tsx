@@ -17,7 +17,7 @@ const Content = () => {
 		<ScrollView style={styles.container} contentContainerStyle={{ gap: 13, paddingBottom: 30 }}>
 			<ContentCard
 				title='Pass and Play'
-				description='Play someone at your level!'
+				description='Play with your friend offline!'
 				ImageComponent={<ImageLinks.play_icon width={38} height={38} />}
 			/>
 			<ContentCard
