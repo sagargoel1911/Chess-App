@@ -105,14 +105,25 @@ const Password = () => {
 									onPress={() => {
 										set_show_password((show_password) => !show_password);
 									}}>
-									<Text style={styles.icon}>{show_password ? 'W' : 'ὀ'}</Text>
+									<Text style={[styles.icon, error && { color: theme.colors.icon_loss }]}>
+										{error ? '†' : show_password ? 'W' : 'ὀ'}
+									</Text>
 								</Pressable>
 							</View>
-							{error && (
-								<Text style={{ color: theme.colors.icon_loss, marginLeft: 22, fontWeight: 'bold' }}>
-									Cannot Be Empty
-								</Text>
-							)}
+							<View
+								style={{
+									flexDirection: 'row',
+									marginLeft: 22,
+									marginRight: 14,
+									justifyContent: 'space-between',
+									gap: 25,
+								}}>
+								<View style={{ flex: 1 }}>
+									{error && (
+										<Text style={{ color: theme.colors.icon_loss, fontWeight: 'bold' }}>Cannot be empty.</Text>
+									)}
+								</View>
+							</View>
 						</View>
 					)}
 				/>

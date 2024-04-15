@@ -98,14 +98,25 @@ const Email = () => {
 									onChangeText={onChange}
 									onBlur={onBlur}
 								/>
+								{error && <Text style={[styles.icon, { color: theme.colors.icon_loss }]}>†</Text>}
 							</View>
-							{error && (
-								<Text style={{ color: theme.colors.icon_loss, marginLeft: 22, fontWeight: 'bold' }}>
-									{error.message}
-								</Text>
-							)}
+							<View
+								style={{
+									flexDirection: 'row',
+									marginLeft: 22,
+									marginRight: 14,
+									justifyContent: 'space-between',
+									gap: 25,
+								}}>
+								<View style={{ flex: 1 }}>
+									{error && (
+										<Text style={{ color: theme.colors.icon_loss, fontWeight: 'bold' }}>{error.message}</Text>
+									)}
+								</View>
+							</View>
 						</View>
-					)}></Controller>
+					)}
+				/>
 			</View>
 			<View style={styles.continue_button_outer}>
 				<Pressable

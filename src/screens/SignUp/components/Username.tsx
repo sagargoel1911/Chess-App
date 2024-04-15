@@ -1,6 +1,8 @@
 import { KeyboardAvoidingView, Platform, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 
 import theme from '../../../utils/theme';
+import { Controller, useFormContext } from 'react-hook-form';
+import { useState } from 'react';
 
 const styles = StyleSheet.create({
 	top_text: {
@@ -65,36 +67,75 @@ const styles = StyleSheet.create({
 		fontSize: 15,
 	},
 	num_of_char: {
-		alignSelf: 'flex-end',
 		color: theme.colors.brand_color_text_light,
-		marginRight: 14,
-		marginTop: 4,
 		fontSize: 12,
 		fontWeight: '600',
 	},
 });
 
 const Username = () => {
+	const { control, trigger, formState, watch } = useFormContext();
+	const { errors } = formState;
+	const username = watch('username');
 	return (
 		<KeyboardAvoidingView behavior='height' keyboardVerticalOffset={Platform.OS === 'ios' ? 50 : 0} style={styles.container}>
 			<View style={styles.top_section}>
 				<Text style={styles.top_text}>Choose a username</Text>
 				<Text style={styles.message}>This is what your friends and other players will see when you play</Text>
 				<View>
-					<View style={styles.details}>
-						<Text style={styles.icon}>b</Text>
-						<TextInput
-							style={styles.input}
-							placeholder='Username'
-							placeholderTextColor={theme.colors.brand_color_text_light}
-							selectionColor={theme.colors.white}
-						/>
-					</View>
-					<Text style={styles.num_of_char}>0/25</Text>
+					<Controller
+						control={control}
+						name='username'
+						rules={{ maxLength: 25 }}
+						render={({ field: { value, onChange, onBlur }, fieldState: { error } }) => (
+							<View style={{ gap: 4 }}>
+								<View
+									style={[
+										styles.details,
+										error && { paddingHorizontal: 18, borderWidth: 2, borderColor: theme.colors.icon_loss },
+									]}>
+									<Text style={styles.icon}>b</Text>
+									<TextInput
+										style={styles.input}
+										placeholder='Username'
+										placeholderTextColor={theme.colors.brand_color_text_light}
+										selectionColor={theme.colors.white}
+										value={value}
+										onChangeText={onChange}
+										onBlur={onBlur}
+									/>
+									{error && <Text style={[styles.icon, { color: theme.colors.icon_loss }]}>†</Text>}
+								</View>
+								<View
+									style={{
+										flexDirection: 'row',
+										marginLeft: 22,
+										marginRight: 14,
+										justifyContent: 'space-between',
+										gap: 25,
+									}}>
+									<View style={{ flex: 1 }}>
+										{error && (
+											<Text style={{ color: theme.colors.icon_loss, fontWeight: 'bold' }}>
+												Username should have 25 characters or less.
+											</Text>
+										)}
+									</View>
+									<Text style={[styles.num_of_char, username?.length > 25 && { color: theme.colors.icon_loss }]}>
+										{username ? username.length : 0}/25
+									</Text>
+								</View>
+							</View>
+						)}
+					/>
 				</View>
 			</View>
 			<View style={styles.continue_button_outer}>
-				<Pressable style={styles.continue_button}>
+				<Pressable
+					style={styles.continue_button}
+					onPress={async () => {
+						await trigger('username');
+					}}>
 					<Text style={styles.continue_text}>Create Account</Text>
 				</Pressable>
 			</View>
