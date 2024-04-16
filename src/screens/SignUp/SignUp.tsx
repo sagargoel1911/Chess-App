@@ -1,10 +1,10 @@
 import { StyleSheet, View } from 'react-native';
 import { useState } from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
 
 import theme from '../../utils/theme';
 import SignUpStack from './navigation/SignUpStack';
 import Header from './components/Header';
-import { FormProvider, useForm } from 'react-hook-form';
 
 const styles = StyleSheet.create({
 	container: {

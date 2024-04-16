@@ -1,9 +1,10 @@
-import { KeyboardAvoidingView, Platform, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import { KeyboardAvoidingView, Platform, Pressable, StyleSheet, Text, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { useFormContext } from 'react-hook-form';
 
 import theme from '../../../utils/theme';
 import RouteNames from '../navigation/RouteNames';
-import { Controller, useFormContext } from 'react-hook-form';
+import TextField from '../../../common/TextField';
 
 const styles = StyleSheet.create({
 	top_text: {
@@ -25,33 +26,10 @@ const styles = StyleSheet.create({
 		fontSize: 20,
 		fontFamily: theme.fonts.montserrat_extra_bold,
 	},
-	details: {
-		flexDirection: 'row',
-		backgroundColor: theme.colors.text_box_color,
-		borderRadius: 8,
-		paddingHorizontal: 20,
-		gap: 18,
-		height: 50,
-		alignItems: 'center',
-	},
-	icon: {
-		fontFamily: theme.fonts.chess,
-		fontSize: 24,
-		alignItems: 'center',
-		justifyContent: 'center',
-		color: theme.colors.brand_color_text_light,
-	},
-	input: {
-		flex: 1,
-		fontSize: 16,
-		fontWeight: '500',
-		color: theme.colors.white,
-	},
 	container: {
 		flex: 1,
 		justifyContent: 'space-between',
 		paddingHorizontal: 20,
-		paddingBottom: 24,
 	},
 	top_section: {
 		rowGap: 25,
@@ -61,74 +39,49 @@ const styles = StyleSheet.create({
 		backgroundColor: theme.colors.button_green_dark,
 		borderRadius: 8,
 	},
+	outer: {
+		paddingBottom: 24,
+		flex: 1,
+	},
 });
 
 const Email = () => {
 	const navigation = useNavigation<any>();
-	const { control, trigger, formState } = useFormContext();
-	const { errors } = formState;
+	const { trigger } = useFormContext();
+
+	const on_submit_email = async () => {
+		const is_valid = await trigger('email');
+		if (is_valid) navigation.navigate(RouteNames.Password);
+	};
 
 	return (
-		<KeyboardAvoidingView behavior='height' keyboardVerticalOffset={Platform.OS === 'ios' ? 50 : 0} style={styles.container}>
-			<View style={styles.top_section}>
-				<Text style={styles.top_text}>What is your email?</Text>
-				<Controller
-					name='email'
-					control={control}
-					rules={{
-						pattern: {
-							value: /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/,
-							message: 'This value is not a valid email address.',
-						},
-					}}
-					render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
-						<View style={{ gap: 4 }}>
-							<View
-								style={[
-									styles.details,
-									error && { paddingHorizontal: 18, borderWidth: 2, borderColor: theme.colors.icon_loss },
-								]}>
-								<Text style={styles.icon}>u</Text>
-								<TextInput
-									style={styles.input}
-									placeholder='Email'
-									placeholderTextColor={theme.colors.brand_color_text_light}
-									selectionColor={theme.colors.white}
-									value={value}
-									onChangeText={onChange}
-									onBlur={onBlur}
-								/>
-								{error && <Text style={[styles.icon, { color: theme.colors.icon_loss }]}>†</Text>}
-							</View>
-							<View
-								style={{
-									flexDirection: 'row',
-									marginLeft: 22,
-									marginRight: 14,
-									justifyContent: 'space-between',
-									gap: 25,
-								}}>
-								<View style={{ flex: 1 }}>
-									{error && (
-										<Text style={{ color: theme.colors.icon_loss, fontWeight: 'bold' }}>{error.message}</Text>
-									)}
-								</View>
-							</View>
-						</View>
-					)}
-				/>
-			</View>
-			<View style={styles.continue_button_outer}>
-				<Pressable
-					style={styles.continue_button}
-					onPress={async () => {
-						await trigger('email');
-						if (!errors.email) navigation.navigate(RouteNames.Password);
-					}}>
-					<Text style={styles.continue_text}>Continue</Text>
-				</Pressable>
-			</View>
-		</KeyboardAvoidingView>
+		<View style={styles.outer}>
+			<KeyboardAvoidingView behavior='padding' keyboardVerticalOffset={Platform.OS === 'ios' ? 130 : 0} style={styles.container}>
+				<View style={styles.top_section}>
+					<Text style={styles.top_text}>What is your email?</Text>
+					<TextField
+						name='email'
+						placeholder='Email'
+						leftIconText='u'
+						rules={{
+							pattern: {
+								value: /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/,
+								message: 'This value is not a valid email address.',
+							},
+							required: {
+								value: true,
+								message: 'Cannot be empty.',
+							},
+						}}
+					/>
+				</View>
+				<View style={styles.continue_button_outer}>
+					<Pressable style={styles.continue_button} onPress={on_submit_email}>
+						<Text style={styles.continue_text}>Continue</Text>
+					</Pressable>
+				</View>
+			</KeyboardAvoidingView>
+		</View>
 	);
 };
 
