@@ -54,6 +54,11 @@ const styles = StyleSheet.create({
 		fontSize: 12,
 		fontWeight: '600',
 	},
+	details_focus: {
+		paddingHorizontal: 18,
+		borderWidth: 2,
+		borderColor: theme.colors.white,
+	},
 });
 
 interface Props {
@@ -69,6 +74,7 @@ interface Props {
 const TextField = ({ name, rules, leftIconText, placeholder, eyeOption = false, lengthCheck = false, maxLength }: Props) => {
 	const { control, clearErrors } = useFormContext();
 	const [show_text, set_show_text] = useState<boolean>(false);
+	const [is_focused, set_is_focused] = useState<boolean>(false);
 
 	return (
 		<Controller
@@ -77,7 +83,7 @@ const TextField = ({ name, rules, leftIconText, placeholder, eyeOption = false, 
 			rules={rules}
 			render={({ field: { value, onChange, onBlur }, fieldState: { error } }) => (
 				<View style={styles.container}>
-					<View style={[styles.details, error && styles.details_error]}>
+					<View style={[styles.details, error && styles.details_error, !error && is_focused && styles.details_focus]}>
 						<Text style={styles.icon}>{leftIconText}</Text>
 						<TextInput
 							style={styles.input}
@@ -89,8 +95,12 @@ const TextField = ({ name, rules, leftIconText, placeholder, eyeOption = false, 
 								clearErrors(name);
 								onChange(e);
 							}}
-							onBlur={onBlur}
+							onBlur={() => {
+								set_is_focused(false);
+								onBlur();
+							}}
 							secureTextEntry={eyeOption && !show_text}
+							onFocus={() => set_is_focused(true)}
 						/>
 						{eyeOption && (
 							<Pressable
