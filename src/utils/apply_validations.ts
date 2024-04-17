@@ -8,7 +8,6 @@ export interface ValidationProps {
 const apply_validations = ({ required, email, maxLength, label }: ValidationProps) => {
 	let rules: any = {
 		validate: {},
-		pattern: {},
 	};
 
 	if (required) {
