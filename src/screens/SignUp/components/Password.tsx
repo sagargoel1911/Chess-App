@@ -66,13 +66,7 @@ const Password = () => {
 			<KeyboardAvoidingView behavior='padding' keyboardVerticalOffset={Platform.OS === 'ios' ? 130 : 0} style={styles.container}>
 				<View style={styles.top_section}>
 					<Text style={styles.top_text}>Create a password</Text>
-					<TextField
-						name='password'
-						rules={{ required: { value: true, message: 'Cannot be empty.' } }}
-						leftIconText='d'
-						placeholder='Password'
-						eyeOption={true}
-					/>
+					<TextField name='password' rules={{ required: true }} leftIconText='d' placeholder='Password' eyeOption={true} />
 				</View>
 				<View style={styles.continue_button_outer}>
 					<Pressable style={styles.continue_button} onPress={on_submit_password}>

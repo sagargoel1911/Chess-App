@@ -72,13 +72,14 @@ const Username = () => {
 						<TextField
 							name='username'
 							rules={{
-								maxLength: { value: 25, message: 'Username should have 25 characters or less.' },
-								required: { value: true, message: 'Cannot be empty.' },
+								required: true,
+								maxLength: 25,
 							}}
 							leftIconText='b'
 							placeholder='Username'
 							lengthCheck={true}
 							maxLength={25}
+							label='Username'
 						/>
 					</View>
 				</View>

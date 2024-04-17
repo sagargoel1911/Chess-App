@@ -47,20 +47,9 @@ const Content = () => {
 	return (
 		<KeyboardAvoidingView behavior='padding' style={styles.container}>
 			<FormProvider {...methods}>
-				<TextField
-					name='username_email'
-					rules={{ required: { value: true, message: 'Cannot be empty.' } }}
-					leftIconText='b'
-					placeholder='Username or Email'
-				/>
+				<TextField name='username_email' rules={{ required: true }} leftIconText='b' placeholder='Username or Email' />
 
-				<TextField
-					name='password'
-					rules={{ required: { value: true, message: 'Cannot be empty.' } }}
-					leftIconText='d'
-					placeholder='Password'
-					eyeOption={true}
-				/>
+				<TextField name='password' rules={{ required: true }} leftIconText='d' placeholder='Password' eyeOption={true} />
 			</FormProvider>
 			<View>
 				<Text style={styles.reset_text}>Forgot / Reset Password?</Text>

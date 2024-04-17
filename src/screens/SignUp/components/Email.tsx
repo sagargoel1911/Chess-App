@@ -64,14 +64,8 @@ const Email = () => {
 						placeholder='Email'
 						leftIconText='u'
 						rules={{
-							pattern: {
-								value: /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/,
-								message: 'This value is not a valid email address.',
-							},
-							required: {
-								value: true,
-								message: 'Cannot be empty.',
-							},
+							email: true,
+							required: true,
 						}}
 					/>
 				</View>

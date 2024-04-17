@@ -3,6 +3,7 @@ import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import { useState } from 'react';
 
 import theme from '../utils/theme';
+import apply_validations from '../utils/apply_validations';
 
 const styles = StyleSheet.create({
 	container: {
@@ -66,21 +67,29 @@ interface Props {
 	rules: any;
 	leftIconText: string;
 	placeholder: string;
+
 	eyeOption?: boolean;
 	lengthCheck?: boolean;
 	maxLength?: number;
+	label?: string;
 }
 
-const TextField = ({ name, rules, leftIconText, placeholder, eyeOption = false, lengthCheck = false, maxLength }: Props) => {
+const TextField = ({ name, rules, leftIconText, placeholder, eyeOption = false, lengthCheck = false, maxLength, label }: Props) => {
 	const { control, clearErrors } = useFormContext();
 	const [show_text, set_show_text] = useState<boolean>(false);
 	const [is_focused, set_is_focused] = useState<boolean>(false);
+
+	const toggle_show_text = (error: any) => {
+		if (!error) {
+			set_show_text((show_password) => !show_password);
+		}
+	};
 
 	return (
 		<Controller
 			control={control}
 			name={name}
-			rules={rules}
+			rules={apply_validations({ ...rules, label })}
 			render={({ field: { value, onChange, onBlur }, fieldState: { error } }) => (
 				<View style={styles.container}>
 					<View style={[styles.details, error && styles.details_error, !error && is_focused && styles.details_focus]}>
@@ -103,10 +112,7 @@ const TextField = ({ name, rules, leftIconText, placeholder, eyeOption = false, 
 							onFocus={() => set_is_focused(true)}
 						/>
 						{eyeOption && (
-							<Pressable
-								onPress={() => {
-									if (!error) set_show_text((show_password) => !show_password);
-								}}>
+							<Pressable onPress={() => toggle_show_text(error)}>
 								<Text style={[styles.icon, error && { color: theme.colors.icon_loss }]}>
 									{error ? '†' : show_text ? 'W' : 'ὀ'}
 								</Text>
