@@ -66,7 +66,9 @@ const Email = () => {
 						rules={{
 							email: true,
 							required: true,
+							signup: true,
 						}}
+						label='Email'
 					/>
 				</View>
 				<View style={styles.continue_button_outer}>

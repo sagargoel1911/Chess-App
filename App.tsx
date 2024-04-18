@@ -4,9 +4,12 @@ import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import { useCallback } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
+import { PersistGate } from 'redux-persist/integration/react';
+import { Provider } from 'react-redux';
 
 import theme from './src/utils/theme';
 import AppStack from './src/navigation/AppStack';
+import { persistor, store } from './src/store';
 
 const styles = StyleSheet.create({
 	container: {
@@ -35,12 +38,16 @@ const App = () => {
 		return null;
 	}
 	return (
-		<NavigationContainer>
-			<SafeAreaView style={styles.container} onLayout={onLayoutRootView}>
-				<StatusBar />
-				<AppStack />
-			</SafeAreaView>
-		</NavigationContainer>
+		<Provider store={store}>
+			<NavigationContainer>
+				<SafeAreaView style={styles.container} onLayout={onLayoutRootView}>
+					<PersistGate loading={null} persistor={persistor}>
+						<StatusBar />
+						<AppStack />
+					</PersistGate>
+				</SafeAreaView>
+			</NavigationContainer>
+		</Provider>
 	);
 };
 

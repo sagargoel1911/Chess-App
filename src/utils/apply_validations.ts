@@ -1,14 +1,28 @@
+import { shallowEqual } from 'react-redux';
+import _ from 'lodash';
+
+import { useAppSelector } from '../store';
+
 export interface ValidationProps {
 	required?: boolean;
 	email?: boolean;
 	maxLength?: number;
 	label?: string;
+	signup?: boolean;
+	login?: boolean;
+	name?: string;
 }
 
-const apply_validations = ({ required, email, maxLength, label }: ValidationProps) => {
+const apply_validations = ({ required, email, maxLength, label, signup, name }: ValidationProps) => {
 	let rules: any = {
 		validate: {},
 	};
+	const { user_list } = useAppSelector(
+		(state) => ({
+			user_list: state.persistedAllUsersData.user_list,
+		}),
+		shallowEqual,
+	);
 
 	if (required) {
 		rules = {
@@ -43,6 +57,16 @@ const apply_validations = ({ required, email, maxLength, label }: ValidationProp
 			validate: {
 				...rules.validate,
 				maxLength: (v: string) => v.length <= maxLength || `${label} should have ${maxLength} characters or less.`,
+			},
+		};
+	}
+
+	if (signup) {
+		rules = {
+			...rules,
+			validate: {
+				...rules.validate,
+				isTaken: (v: string) => _.findIndex(user_list, (user) => user[name] === v) === -1 || `${label} already taken.`,
 			},
 		};
 	}

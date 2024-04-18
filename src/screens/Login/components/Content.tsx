@@ -1,8 +1,14 @@
 import { KeyboardAvoidingView, Pressable, StyleSheet, Text, View } from 'react-native';
 import { useForm, FormProvider } from 'react-hook-form';
+import _ from 'lodash';
+import { useNavigation } from '@react-navigation/native';
+import { shallowEqual } from 'react-redux';
+import { useState } from 'react';
 
 import theme from '../../../utils/theme';
 import TextField from '../../../common/TextField';
+import { useAppDispatch, useAppSelector } from '../../../store';
+import { login_user } from '../../../actions/persistedUserData';
 
 const styles = StyleSheet.create({
 	container: {
@@ -34,22 +40,70 @@ const styles = StyleSheet.create({
 		backgroundColor: theme.colors.button_green_dark,
 		borderRadius: 8,
 	},
+	warning_container: {
+		paddingVertical: 16,
+		alignItems: 'center',
+		backgroundColor: theme.colors.icon_loss,
+		borderRadius: 8,
+	},
+	warning_text: {
+		fontSize: 16,
+		fontFamily: theme.fonts.montserrat_black,
+		color: theme.colors.white,
+	},
 });
 
 const Content = () => {
 	const methods = useForm<any>();
 	const { handleSubmit } = methods;
+	const navigation = useNavigation<any>();
+	const [worng_details, set_wrong_details] = useState<boolean>(false);
+	const { user_list } = useAppSelector(
+		(state) => ({
+			user_list: state.persistedAllUsersData.user_list,
+		}),
+		shallowEqual,
+	);
+	const dispatch = useAppDispatch();
 
-	const on_submit = (data: any) => {
-		console.log(data);
+	const on_submit = async (data: any) => {
+		let index: number = _.findIndex(user_list, (user) => user.email === data.id);
+		if (index === -1) {
+			index = _.findIndex(user_list, (user) => user.username === data.id);
+		}
+
+		if (index === -1 || user_list[index].password !== data.password) {
+			set_wrong_details(true);
+			return;
+		}
+
+		dispatch(login_user(user_list[index]));
+		navigation.popToTop();
 	};
 
 	return (
 		<KeyboardAvoidingView behavior='padding' style={styles.container}>
+			{worng_details && (
+				<View style={styles.warning_container}>
+					<Text style={styles.warning_text}>Wrong Details !</Text>
+				</View>
+			)}
 			<FormProvider {...methods}>
-				<TextField name='username_email' rules={{ required: true }} leftIconText='b' placeholder='Username or Email' />
-
-				<TextField name='password' rules={{ required: true }} leftIconText='d' placeholder='Password' eyeOption={true} />
+				<TextField
+					name='id'
+					rules={{ required: true }}
+					leftIconText='b'
+					placeholder='Username or Email'
+					onChangeValue={() => set_wrong_details(false)}
+				/>
+				<TextField
+					name='password'
+					rules={{ required: true }}
+					leftIconText='d'
+					placeholder='Password'
+					eyeOption={true}
+					onChangeValue={() => set_wrong_details(false)}
+				/>
 			</FormProvider>
 			<View>
 				<Text style={styles.reset_text}>Forgot / Reset Password?</Text>
