@@ -1,7 +1,8 @@
-import { Image, KeyboardAvoidingView, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import { KeyboardAvoidingView, Pressable, StyleSheet, Text, View } from 'react-native';
+import { useForm, FormProvider } from 'react-hook-form';
 
 import theme from '../../../utils/theme';
-import ImageLinks from '../../../assets/images/ImageLinks';
+import TextField from '../../../common/TextField';
 
 const styles = StyleSheet.create({
 	container: {
@@ -9,28 +10,6 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 		marginHorizontal: 15,
 		gap: 28,
-	},
-	details: {
-		flexDirection: 'row',
-		backgroundColor: theme.colors.text_box_color,
-		borderRadius: 8,
-		paddingHorizontal: 20,
-		gap: 18,
-		height: 50,
-		alignItems: 'center',
-	},
-	icon: {
-		fontFamily: theme.fonts.chess,
-		fontSize: 24,
-		alignItems: 'center',
-		justifyContent: 'center',
-		color: theme.colors.brand_color_text_light,
-	},
-	input: {
-		flex: 1,
-		fontSize: 16,
-		fontWeight: '500',
-		color: theme.colors.white,
 	},
 	login_button: {
 		backgroundColor: theme.colors.button_green,
@@ -55,40 +34,28 @@ const styles = StyleSheet.create({
 		backgroundColor: theme.colors.button_green_dark,
 		borderRadius: 8,
 	},
-	eye: {
-		width: 24,
-		height: 18,
-		alignSelf: 'center',
-	},
 });
 
 const Content = () => {
+	const methods = useForm<any>();
+	const { handleSubmit } = methods;
+
+	const on_submit = (data: any) => {
+		console.log(data);
+	};
+
 	return (
 		<KeyboardAvoidingView behavior='padding' style={styles.container}>
-			<View style={styles.details}>
-				<Text style={styles.icon}>b</Text>
-				<TextInput
-					style={styles.input}
-					placeholder='Username or Email'
-					placeholderTextColor={theme.colors.brand_color_text_light}
-					selectionColor={theme.colors.white}
-				/>
-			</View>
-			<View style={styles.details}>
-				<Text style={styles.icon}>d</Text>
-				<TextInput
-					style={styles.input}
-					placeholder='Password'
-					placeholderTextColor={theme.colors.brand_color_text_light}
-					selectionColor={theme.colors.white}
-				/>
-				<Image source={ImageLinks.eye} style={styles.eye} />
-			</View>
+			<FormProvider {...methods}>
+				<TextField name='username_email' rules={{ required: true }} leftIconText='b' placeholder='Username or Email' />
+
+				<TextField name='password' rules={{ required: true }} leftIconText='d' placeholder='Password' eyeOption={true} />
+			</FormProvider>
 			<View>
 				<Text style={styles.reset_text}>Forgot / Reset Password?</Text>
 			</View>
 			<View style={styles.login_button_outer}>
-				<Pressable style={styles.login_button}>
+				<Pressable style={styles.login_button} onPress={handleSubmit(on_submit)}>
 					<Text style={styles.login_text}>Log In</Text>
 				</Pressable>
 			</View>
