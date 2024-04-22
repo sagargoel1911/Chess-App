@@ -3,7 +3,6 @@ import { useForm, FormProvider } from 'react-hook-form';
 import _ from 'lodash';
 import { useNavigation } from '@react-navigation/native';
 import { shallowEqual } from 'react-redux';
-import { useState } from 'react';
 
 import theme from '../../../utils/theme';
 import TextField from '../../../common/TextField';
