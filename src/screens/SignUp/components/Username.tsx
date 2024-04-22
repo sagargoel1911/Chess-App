@@ -1,8 +1,13 @@
 import { KeyboardAvoidingView, Platform, Pressable, StyleSheet, Text, View } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import { useFormContext } from 'react-hook-form';
+import _ from 'lodash';
 
 import theme from '../../../utils/theme';
 import TextField from '../../../common/TextField';
+import { useAppDispatch } from '../../../store';
+import { signup_user } from '../../../actions/persistedAllUsersData';
+import { login_user } from '../../../actions/persistedUserData';
 
 const styles = StyleSheet.create({
 	top_text: {
@@ -50,16 +55,21 @@ const styles = StyleSheet.create({
 });
 
 const Username = () => {
-	const { trigger, handleSubmit, formState } = useFormContext();
+	const { trigger, handleSubmit } = useFormContext();
+	const navigation = useNavigation<any>();
+	const dispatch = useAppDispatch();
 
 	const on_submit = (data: any) => {
-		console.log(data);
+		dispatch(signup_user(data));
+		dispatch(login_user(_.find(data)));
+		navigation.popToTop();
+		navigation.pop();
 	};
 
 	const on_username_submit = async () => {
 		const is_valid = await trigger('username');
 		if (is_valid) {
-			await handleSubmit(on_submit)();
+			handleSubmit(on_submit)();
 		}
 	};
 	return (
@@ -74,6 +84,7 @@ const Username = () => {
 							rules={{
 								required: true,
 								maxLength: 25,
+								signup: true,
 							}}
 							leftIconText='b'
 							placeholder='Username'

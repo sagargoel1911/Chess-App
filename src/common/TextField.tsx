@@ -89,7 +89,7 @@ const TextField = ({ name, rules, leftIconText, placeholder, eyeOption = false, 
 		<Controller
 			control={control}
 			name={name}
-			rules={apply_validations({ ...rules, label })}
+			rules={apply_validations({ ...rules, label, name })}
 			render={({ field: { value, onChange, onBlur }, fieldState: { error } }) => (
 				<View style={styles.container}>
 					<View style={[styles.details, error && styles.details_error, !error && is_focused && styles.details_focus]}>
