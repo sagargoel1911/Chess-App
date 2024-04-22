@@ -8,7 +8,7 @@ import theme from '../../../utils/theme';
 import TextField from '../../../common/TextField';
 import { useAppDispatch, useAppSelector } from '../../../store';
 import { login_user } from '../../../actions/persistedUserData';
-import { Toast } from 'native-base';
+import { show_toast } from '../../../actions/app';
 
 const styles = StyleSheet.create({
 	container: {
@@ -77,19 +77,11 @@ const Content = () => {
 		}
 
 		if (index === -1 || user_list[index].password !== data.password) {
-			const id = 'wrong-details';
-			if (!Toast.isActive(id)) {
-				Toast.show({
-					id,
-					render: () => (
-						<View style={styles.warning_container}>
-							<Text style={styles.warning_text}>Wrong Details !</Text>
-						</View>
-					),
-					placement: 'top',
-					duration: 2000,
-				});
-			}
+			console.log('first');
+			show_toast({
+				message: 'Wrong Details!',
+			});
+			console.log('first2');
 			return;
 		}
 

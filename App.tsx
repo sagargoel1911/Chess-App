@@ -6,11 +6,11 @@ import { useCallback } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { PersistGate } from 'redux-persist/integration/react';
 import { Provider } from 'react-redux';
+import { NativeBaseProvider } from 'native-base';
 
 import theme from './src/utils/theme';
 import AppStack from './src/navigation/AppStack';
 import { persistor, store } from './src/store';
-import { NativeBaseProvider } from 'native-base';
 
 const styles = StyleSheet.create({
 	container: {
