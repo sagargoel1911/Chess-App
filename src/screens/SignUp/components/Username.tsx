@@ -61,7 +61,7 @@ const Username = () => {
 
 	const on_submit = (data: any) => {
 		dispatch(signup_user(data));
-		dispatch(login_user(_.find(data)));
+		dispatch(login_user(data));
 		navigation.popToTop();
 		navigation.pop();
 	};
