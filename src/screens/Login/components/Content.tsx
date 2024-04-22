@@ -3,12 +3,12 @@ import { useForm, FormProvider } from 'react-hook-form';
 import _ from 'lodash';
 import { useNavigation } from '@react-navigation/native';
 import { shallowEqual } from 'react-redux';
-import { useState } from 'react';
 
 import theme from '../../../utils/theme';
 import TextField from '../../../common/TextField';
 import { useAppDispatch, useAppSelector } from '../../../store';
 import { login_user } from '../../../actions/persistedUserData';
+import { show_toast } from '../../../actions/app';
 
 const styles = StyleSheet.create({
 	container: {
@@ -45,6 +45,11 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		backgroundColor: theme.colors.icon_loss,
 		borderRadius: 8,
+		position: 'absolute',
+		zIndex: 10000,
+		top: 0,
+		alignSelf: 'center',
+		paddingHorizontal: 10,
 	},
 	warning_text: {
 		fontSize: 16,
@@ -57,7 +62,6 @@ const Content = () => {
 	const methods = useForm<any>();
 	const { handleSubmit } = methods;
 	const navigation = useNavigation<any>();
-	const [worng_details, set_wrong_details] = useState<boolean>(false);
 	const { user_list } = useAppSelector(
 		(state) => ({
 			user_list: state.persistedAllUsersData.user_list,
@@ -73,7 +77,9 @@ const Content = () => {
 		}
 
 		if (index === -1 || user_list[index].password !== data.password) {
-			set_wrong_details(true);
+			show_toast({
+				message: 'Wrong Details!',
+			});
 			return;
 		}
 
@@ -83,27 +89,9 @@ const Content = () => {
 
 	return (
 		<KeyboardAvoidingView behavior='padding' style={styles.container}>
-			{worng_details && (
-				<View style={styles.warning_container}>
-					<Text style={styles.warning_text}>Wrong Details !</Text>
-				</View>
-			)}
 			<FormProvider {...methods}>
-				<TextField
-					name='id'
-					rules={{ required: true }}
-					leftIconText='b'
-					placeholder='Username or Email'
-					onChangeValue={() => set_wrong_details(false)}
-				/>
-				<TextField
-					name='password'
-					rules={{ required: true }}
-					leftIconText='d'
-					placeholder='Password'
-					eyeOption={true}
-					onChangeValue={() => set_wrong_details(false)}
-				/>
+				<TextField name='id' rules={{ required: true }} leftIconText='b' placeholder='Username or Email' />
+				<TextField name='password' rules={{ required: true }} leftIconText='d' placeholder='Password' eyeOption={true} />
 			</FormProvider>
 			<View>
 				<Text style={styles.reset_text}>Forgot / Reset Password?</Text>

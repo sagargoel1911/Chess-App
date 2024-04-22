@@ -6,8 +6,10 @@ import { persistStore, persistReducer } from 'redux-persist';
 
 import persistedAllUsersData from './reducers/persistedAllUsersData';
 import persistedUserData from './reducers/persistedUserData';
+import app from './reducers/app';
 
 const root_reducer = combineReducers({
+	app,
 	persistedUserData,
 	persistedAllUsersData,
 });
