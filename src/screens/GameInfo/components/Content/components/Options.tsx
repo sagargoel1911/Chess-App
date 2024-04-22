@@ -13,6 +13,7 @@ const styles = StyleSheet.create({
 	top: {
 		flexDirection: 'row',
 		justifyContent: 'space-between',
+		alignItems: 'center',
 	},
 	title: {
 		color: theme.colors.brand_color_text_light,

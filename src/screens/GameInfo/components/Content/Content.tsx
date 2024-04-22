@@ -1,4 +1,4 @@
-import { FlatList, ScrollView, StyleSheet, Switch, Text, View } from 'react-native';
+import { FlatList, Platform, ScrollView, StyleSheet, Switch, Text, View } from 'react-native';
 
 import theme from '../../../../utils/theme';
 import Options from './components/Options';
@@ -48,7 +48,6 @@ const styles = StyleSheet.create({
 		fontSize: 16,
 	},
 	switch: {
-		height: 20,
 		width: 50,
 		marginRight: -4,
 	},
@@ -99,7 +98,7 @@ const Content = () => {
 					title='Board Rotates'
 					CurrentOption={
 						<Switch
-							style={styles.switch}
+							style={[styles.switch, Platform.OS === 'android' && { height: 20 }]}
 							value={true}
 							thumbColor={true ? theme.colors.button_green : theme.colors.active_track_thumb}
 							trackColor={{ true: theme.colors.active_track, false: theme.colors.inactive_track }}
