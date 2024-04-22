@@ -77,11 +77,9 @@ const Content = () => {
 		}
 
 		if (index === -1 || user_list[index].password !== data.password) {
-			console.log('first');
 			show_toast({
 				message: 'Wrong Details!',
 			});
-			console.log('first2');
 			return;
 		}
 
