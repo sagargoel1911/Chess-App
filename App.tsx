@@ -10,6 +10,7 @@ import { Provider } from 'react-redux';
 import theme from './src/utils/theme';
 import AppStack from './src/navigation/AppStack';
 import { persistor, store } from './src/store';
+import { NativeBaseProvider } from 'native-base';
 
 const styles = StyleSheet.create({
 	container: {
@@ -41,10 +42,12 @@ const App = () => {
 		<Provider store={store}>
 			<NavigationContainer>
 				<SafeAreaView style={styles.container} onLayout={onLayoutRootView}>
-					<PersistGate loading={null} persistor={persistor}>
-						<StatusBar />
-						<AppStack />
-					</PersistGate>
+					<NativeBaseProvider>
+						<PersistGate loading={null} persistor={persistor}>
+							<StatusBar />
+							<AppStack />
+						</PersistGate>
+					</NativeBaseProvider>
 				</SafeAreaView>
 			</NavigationContainer>
 		</Provider>

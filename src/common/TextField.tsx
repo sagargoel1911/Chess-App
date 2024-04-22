@@ -72,20 +72,9 @@ interface Props {
 	lengthCheck?: boolean;
 	maxLength?: number;
 	label?: string;
-	onChangeValue?: () => void;
 }
 
-const TextField = ({
-	name,
-	rules,
-	leftIconText,
-	placeholder,
-	eyeOption = false,
-	lengthCheck = false,
-	maxLength,
-	label,
-	onChangeValue = () => {},
-}: Props) => {
+const TextField = ({ name, rules, leftIconText, placeholder, eyeOption = false, lengthCheck = false, maxLength, label }: Props) => {
 	const { control, clearErrors } = useFormContext();
 	const [show_text, set_show_text] = useState<boolean>(false);
 	const [is_focused, set_is_focused] = useState<boolean>(false);
@@ -113,7 +102,6 @@ const TextField = ({
 							value={value}
 							onChangeText={(e) => {
 								clearErrors(name);
-								onChangeValue();
 								onChange(e);
 							}}
 							onBlur={() => {
