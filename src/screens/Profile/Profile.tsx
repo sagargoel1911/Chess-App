@@ -1,9 +1,11 @@
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { shallowEqual } from 'react-redux';
 
 import theme from '../../utils/theme';
 import UserInfo from './components/UserInfo';
-import PreviousGames from './components/PreviousGames/PreviousGames';
+import PreviousGames from './components/PreviousGames';
+import { useAppSelector } from '../../store';
 
 const styles = StyleSheet.create({
 	container: {
@@ -26,6 +28,13 @@ const styles = StyleSheet.create({
 
 const Profile = () => {
 	const navigation = useNavigation<any>();
+	const { username, game_history } = useAppSelector(
+		(state) => ({
+			username: state.persistedUserData.username,
+			game_history: state.persistedUserData.game_history,
+		}),
+		shallowEqual,
+	);
 
 	return (
 		<View style={styles.container}>
@@ -35,8 +44,8 @@ const Profile = () => {
 				</Pressable>
 			</View>
 			<ScrollView>
-				<UserInfo />
-				<PreviousGames />
+				<UserInfo username={username} />
+				<PreviousGames game_history={game_history} />
 			</ScrollView>
 		</View>
 	);

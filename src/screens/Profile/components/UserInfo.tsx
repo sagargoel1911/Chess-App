@@ -54,13 +54,17 @@ const styles = StyleSheet.create({
 	},
 });
 
-const UserInfo = () => {
+interface Props {
+	username: string;
+}
+
+const UserInfo = ({ username }: Props) => {
 	return (
 		<View style={styles.container}>
 			<View style={styles.info}>
 				<ImageBackground source={ImageLinks.profile_pic} style={styles.profile_pic} />
 				<View style={styles.name_country}>
-					<Text style={styles.name}>sagargoel19</Text>
+					<Text style={styles.name}>{username}</Text>
 
 					<View style={styles.country}>
 						<ImageBackground source={ImageLinks.flags} style={styles.flag_container} imageStyle={styles.flag_pic} />
