@@ -3,6 +3,9 @@ import { useNavigation } from '@react-navigation/native';
 
 import theme from '../../utils/theme';
 import Content from './components/Content/Content';
+import { useState } from 'react';
+import { useAppSelector } from '../../store';
+import { shallowEqual } from 'react-redux';
 
 const styles = StyleSheet.create({
 	container: {
@@ -70,6 +73,29 @@ const styles = StyleSheet.create({
 const GameInfo = () => {
 	const navigation = useNavigation<any>();
 
+	const [player_color, set_player_color] = useState<string>('White');
+	const [rotates, set_rotates] = useState<boolean>(false);
+	const [time_control, set_time_control] = useState<string>('None');
+
+	const { username } = useAppSelector(
+		(state) => ({
+			username: state.persistedUserData.username,
+		}),
+		shallowEqual,
+	);
+
+	const toggle_color = () => {
+		set_player_color((current_color) => (current_color === 'White' ? 'Black' : 'White'));
+	};
+
+	const toggle_rotates = () => {
+		set_rotates((previous_value) => !previous_value);
+	};
+
+	const change_time_control = (new_time_control: string) => {
+		set_time_control(new_time_control);
+	};
+
 	return (
 		<View style={styles.container}>
 			<View style={styles.header_container}>
@@ -83,7 +109,15 @@ const GameInfo = () => {
 					<Text style={styles.title_text}>Pass and Play</Text>
 				</View>
 			</View>
-			<Content />
+			<Content
+				player_color={player_color}
+				toggle_color={toggle_color}
+				rotates={rotates}
+				toggle_rotates={toggle_rotates}
+				username={username ? username : 'You'}
+				time_control={time_control}
+				change_time_control={change_time_control}
+			/>
 			<View style={styles.footer_container}>
 				<View style={styles.button_outer}>
 					<Pressable style={styles.button}>

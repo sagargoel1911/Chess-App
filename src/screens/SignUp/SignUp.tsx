@@ -13,9 +13,21 @@ const styles = StyleSheet.create({
 	},
 });
 
+type FormValues = {
+	email: string;
+	password: string;
+	username: string;
+};
+
 const SignUp = () => {
 	const [nav, set_nav] = useState<any>();
-	const methods = useForm<any>();
+	const methods = useForm<FormValues>({
+		defaultValues: {
+			email: '',
+			password: '',
+			username: '',
+		},
+	});
 
 	const update_nav = (new_nav: any): void => {
 		set_nav(new_nav);

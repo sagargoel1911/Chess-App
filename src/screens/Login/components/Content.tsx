@@ -58,8 +58,18 @@ const styles = StyleSheet.create({
 	},
 });
 
+type FormValues = {
+	id: string;
+	password: string;
+};
+
 const Content = () => {
-	const methods = useForm<any>();
+	const methods = useForm<FormValues>({
+		defaultValues: {
+			id: '',
+			password: '',
+		},
+	});
 	const { handleSubmit } = methods;
 	const navigation = useNavigation<any>();
 	const { user_list } = useAppSelector(
