@@ -1,6 +1,6 @@
 import _ from 'lodash';
 
-import { SIGNUP_USER } from '../actions/reduxConstants';
+import { SIGNUP_USER } from 'src/actions/reduxConstants';
 
 const initial_state = {
 	user_list: [],

@@ -1,6 +1,6 @@
 import _ from 'lodash';
 
-import { CLOSE_TOAST, OPEN_TOAST } from '../actions/reduxConstants';
+import { CLOSE_TOAST, OPEN_TOAST } from 'src/actions/reduxConstants';
 
 const initial_toast_details = {
 	is_open: false,

@@ -3,11 +3,11 @@ import { useNavigation } from '@react-navigation/native';
 import { useFormContext } from 'react-hook-form';
 import _ from 'lodash';
 
-import theme from '../../../utils/theme';
-import TextField from '../../../common/TextField';
-import { useAppDispatch } from '../../../store';
-import { signup_user } from '../../../actions/persistedAllUsersData';
-import { login_user } from '../../../actions/persistedUserData';
+import theme from 'src/utils/theme';
+import TextField from 'src/common/TextField';
+import { useAppDispatch } from 'src/store';
+import { signup_user } from 'src/actions/persistedAllUsersData';
+import { login_user } from 'src/actions/persistedUserData';
 
 const styles = StyleSheet.create({
 	top_text: {
@@ -61,7 +61,7 @@ const Username = () => {
 
 	const on_submit = (data: any) => {
 		dispatch(signup_user(data));
-		dispatch(login_user(_.find(data)));
+		dispatch(login_user(data));
 		navigation.popToTop();
 		navigation.pop();
 	};

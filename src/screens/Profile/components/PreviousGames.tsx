@@ -1,7 +1,6 @@
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 
-import theme from '../../../../utils/theme';
-import GAMES from './constants';
+import theme from 'src/utils/theme';
 
 const styles = StyleSheet.create({
 	header: {
@@ -53,7 +52,11 @@ const styles = StyleSheet.create({
 	},
 });
 
-const PreviousGames = () => {
+interface Props {
+	game_history: any[];
+}
+
+const PreviousGames = ({ game_history }: Props) => {
 	return (
 		<View>
 			<View style={styles.header}>
@@ -64,7 +67,7 @@ const PreviousGames = () => {
 				</View>
 			</View>
 			<FlatList
-				data={GAMES}
+				data={game_history}
 				renderItem={({ item, index }) => {
 					return (
 						<View key={index} style={styles.item}>

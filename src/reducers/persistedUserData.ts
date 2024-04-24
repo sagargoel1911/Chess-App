@@ -1,6 +1,6 @@
 import _ from 'lodash';
 
-import { LOGIN_USER, LOGOUT_USER } from '../actions/reduxConstants';
+import { LOGIN_USER, LOGOUT_USER } from 'src/actions/reduxConstants';
 
 export const PERSIST_REDUX_PATHS = {
 	username: 'username',

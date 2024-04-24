@@ -4,9 +4,9 @@ import { useEffect } from 'react';
 import { shallowEqual, useDispatch } from 'react-redux';
 import _ from 'lodash';
 
-import theme from '../utils/theme';
-import { useAppSelector } from '../store';
-import { close_toast } from '../actions/app';
+import theme from 'src/utils/theme';
+import { useAppSelector } from 'src/store';
+import { close_toast } from 'src/actions/app';
 
 const styles = StyleSheet.create({
 	container: {
