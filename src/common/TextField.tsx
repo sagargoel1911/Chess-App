@@ -2,8 +2,8 @@ import { Controller, useFormContext } from 'react-hook-form';
 import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import { useState } from 'react';
 
-import theme from '../utils/theme';
-import apply_validations from '../utils/apply_validations';
+import theme from 'src/utils/theme';
+import apply_validations from 'src/utils/apply_validations';
 
 const styles = StyleSheet.create({
 	container: {

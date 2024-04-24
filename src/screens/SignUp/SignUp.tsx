@@ -2,7 +2,7 @@ import { StyleSheet, View } from 'react-native';
 import { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
-import theme from '../../utils/theme';
+import theme from 'src/utils/theme';
 import SignUpStack from './navigation/SignUpStack';
 import Header from './components/Header';
 

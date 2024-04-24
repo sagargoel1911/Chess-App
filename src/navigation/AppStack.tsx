@@ -1,12 +1,12 @@
 import { createStackNavigator, TransitionPresets } from '@react-navigation/stack';
 
 import TabBar from './Tab';
-import Login from '../screens/Login/Login';
-import SignUp from '../screens/SignUp/SignUp';
-import Profile from '../screens/Profile/Profile';
-import GameInfo from '../screens/GameInfo/GameInfo';
+import Login from 'src/screens/Login/Login';
+import SignUp from 'src/screens/SignUp/SignUp';
+import Profile from 'src/screens/Profile/Profile';
+import GameInfo from 'src/screens/GameInfo/GameInfo';
 import RouteNames from './RouteNames';
-import CustomToast from '../common/CustomToast';
+import CustomToast from 'src/common/CustomToast';
 
 const Stack = createStackNavigator();
 

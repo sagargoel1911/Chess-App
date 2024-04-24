@@ -2,9 +2,9 @@ import React, { ReactNode } from 'react';
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-import ImageLinks from '../../../../../assets/images/ImageLinks';
-import theme from '../../../../../utils/theme';
-import RouteNames from '../../../../../navigation/RouteNames';
+import ImageLinks from 'src/assets/images/ImageLinks';
+import theme from 'src/utils/theme';
+import RouteNames from 'src/navigation/RouteNames';
 
 const styles = StyleSheet.create({
 	container: {

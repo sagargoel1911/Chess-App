@@ -4,11 +4,11 @@ import _ from 'lodash';
 import { useNavigation } from '@react-navigation/native';
 import { shallowEqual } from 'react-redux';
 
-import theme from '../../../utils/theme';
-import TextField from '../../../common/TextField';
-import { useAppDispatch, useAppSelector } from '../../../store';
-import { login_user } from '../../../actions/persistedUserData';
-import { show_toast } from '../../../actions/app';
+import theme from 'src/utils/theme';
+import TextField from 'src/common/TextField';
+import { useAppDispatch, useAppSelector } from 'src/store';
+import { login_user } from 'src/actions/persistedUserData';
+import { show_toast } from 'src/actions/app';
 
 const styles = StyleSheet.create({
 	container: {

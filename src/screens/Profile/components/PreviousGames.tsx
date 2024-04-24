@@ -1,6 +1,6 @@
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 
-import theme from '../../../utils/theme';
+import theme from 'src/utils/theme';
 
 const styles = StyleSheet.create({
 	header: {

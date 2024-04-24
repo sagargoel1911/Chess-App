@@ -1,7 +1,7 @@
 import { Image, ScrollView, StyleSheet } from 'react-native';
 
-import theme from '../../../../utils/theme';
-import ImageLinks from '../../../../assets/images/ImageLinks';
+import theme from 'src/utils/theme';
+import ImageLinks from 'src/assets/images/ImageLinks';
 import ContentCard from './components/ContentCard';
 
 const styles = StyleSheet.create({
