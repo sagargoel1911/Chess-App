@@ -53,6 +53,9 @@ const styles = StyleSheet.create({
 		zIndex: 1,
 		alignSelf: 'center',
 	},
+	time_control: {
+		flex: 1,
+	},
 });
 
 interface Props {
@@ -97,7 +100,7 @@ const Content = ({ player_color, toggle_color, rotates, toggle_rotates, username
 							renderItem={({ item, index }) => {
 								const is_checked = time_control === item;
 								return (
-									<View style={{ flex: 1 }}>
+									<View style={styles.time_control}>
 										<Pressable
 											key={index}
 											style={[

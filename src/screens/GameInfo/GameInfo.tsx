@@ -73,10 +73,6 @@ const styles = StyleSheet.create({
 const GameInfo = () => {
 	const navigation = useNavigation<any>();
 
-	const go_back = () => {
-		navigation.goBack();
-	};
-
 	const [player_color, set_player_color] = useState<string>('White');
 	const [rotates, set_rotates] = useState<boolean>(false);
 	const [time_control, set_time_control] = useState<string>('None');
@@ -98,6 +94,10 @@ const GameInfo = () => {
 
 	const change_time_control = (new_time_control: string) => {
 		set_time_control(new_time_control);
+	};
+
+	const go_back = () => {
+		navigation.goBack();
 	};
 
 	return (
