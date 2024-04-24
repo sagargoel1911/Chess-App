@@ -1,11 +1,11 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { shallowEqual } from 'react-redux';
+import { useState } from 'react';
 
 import theme from 'src/utils/theme';
 import Content from './components/Content/Content';
-import { useState } from 'react';
 import { useAppSelector } from '../../store';
-import { shallowEqual } from 'react-redux';
 
 const styles = StyleSheet.create({
 	container: {
