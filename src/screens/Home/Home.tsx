@@ -79,7 +79,11 @@ const Home = () => {
 	);
 
 	const move_to_signup_or_profile = () => {
-		!username ? navigation.navigate(RouteNames.SignUp) : navigation.navigate(RouteNames.Profile);
+		if (username) {
+			navigation.navigate(RouteNames.Profile);
+		} else {
+			navigation.navigate(RouteNames.SignUp);
+		}
 	};
 
 	const navigate_to_game_info = () => {
