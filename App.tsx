@@ -11,16 +11,11 @@ import { NativeBaseProvider } from 'native-base';
 import theme from './src/utils/theme';
 import AppStack from './src/navigation/AppStack';
 import { persistor, store } from './src/store';
-import { SafeAreaView, StyleSheet, Text, View } from 'react-native';
-import Game from './src/screens/Game/Game';
 
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		backgroundColor: theme.colors.black,
-	},
-	container: {
-		flex: 1,
 	},
 });
 
@@ -56,16 +51,6 @@ const App = () => {
 				</SafeAreaView>
 			</NavigationContainer>
 		</Provider>
-	);
-};
-
-export default App;
-
-const App = () => {
-	return (
-		<SafeAreaView style={styles.container}>
-			<Game />
-		</SafeAreaView>
 	);
 };
 

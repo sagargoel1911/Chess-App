@@ -21,6 +21,8 @@ const colors = {
 	icon_loss: '#CA3737',
 	icon_win: '#75984F',
 	brand_color_text_extra_light: '#7D7C7A',
+	dark_square: '#739552',
+	light_square: '#EBECD0',
 };
 
 const fonts = {
@@ -31,14 +33,5 @@ const fonts = {
 };
 
 const theme = { colors, fonts };
-
-export default theme;
-
-const colors = {
-	dark_square: '#739552',
-	light_square: '#EBECD0',
-};
-
-const theme = { colors };
 
 export default theme;
