@@ -5,7 +5,7 @@ import { useState } from 'react';
 
 import theme from 'src/utils/theme';
 import Content from './components/Content/Content';
-import { useAppSelector } from '../../store';
+import { useAppSelector } from 'src/store';
 
 const styles = StyleSheet.create({
 	container: {
