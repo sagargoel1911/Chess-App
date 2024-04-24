@@ -1,7 +1,7 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-import theme from '../../utils/theme';
+import theme from 'src/utils/theme';
 import Content from './components/Content/Content';
 
 const styles = StyleSheet.create({
@@ -70,13 +70,14 @@ const styles = StyleSheet.create({
 const GameInfo = () => {
 	const navigation = useNavigation<any>();
 
+	const go_back = () => {
+		navigation.goBack();
+	};
+
 	return (
 		<View style={styles.container}>
 			<View style={styles.header_container}>
-				<Pressable
-					onPress={() => {
-						navigation.goBack();
-					}}>
+				<Pressable onPress={go_back}>
 					<Text style={styles.back}>[</Text>
 				</Pressable>
 				<View style={styles.title_container}>

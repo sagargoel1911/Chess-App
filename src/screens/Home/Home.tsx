@@ -1,13 +1,13 @@
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-
-import Content from './components/Content/Content';
-import theme from '../../utils/theme';
-import ImageLinks from '../../assets/images/ImageLinks';
-import RouteNames from '../../navigation/RouteNames';
-import { useAppDispatch, useAppSelector } from '../../store';
-import { logout_user } from '../../actions/persistedUserData';
 import { shallowEqual } from 'react-redux';
+
+import Content from 'src/screens/Home/components/Content/Content';
+import theme from 'src/utils/theme';
+import ImageLinks from 'src/assets/images/ImageLinks';
+import RouteNames from 'src/navigation/RouteNames';
+import { useAppDispatch, useAppSelector } from 'src/store';
+import { logout_user } from 'src/actions/persistedUserData';
 
 const styles = StyleSheet.create({
 	container: {
@@ -60,6 +60,12 @@ const styles = StyleSheet.create({
 		backgroundColor: theme.colors.button_green_dark,
 		borderRadius: 8,
 	},
+	profile_pic: {
+		height: 38,
+		width: 38,
+		borderRadius: 2,
+		marginLeft: 3,
+	},
 });
 
 const Home = () => {
@@ -72,27 +78,28 @@ const Home = () => {
 		shallowEqual,
 	);
 
+	const move_to_signup_or_profile = () => {
+		!username ? navigation.navigate(RouteNames.SignUp) : navigation.navigate(RouteNames.Profile);
+	};
+
+	const navigate_to_game_info = () => {
+		navigation.navigate(RouteNames.GameInfo);
+	};
 	return (
 		<View style={styles.container}>
 			<View style={styles.header_container}>
-				<Pressable
-					onPress={() => {
-						!username ? navigation.navigate(RouteNames.SignUp) : navigation.navigate(RouteNames.Profile);
-					}}>
+				<Pressable onPress={move_to_signup_or_profile}>
 					{!username ? (
 						<Text style={styles.signup_text}>Sign Up</Text>
 					) : (
-						<Image source={ImageLinks.profile_pic} style={{ height: 38, width: 38, borderRadius: 2, marginLeft: 3 }} />
+						<Image source={ImageLinks.profile_pic} style={styles.profile_pic} />
 					)}
 				</Pressable>
 				<View style={styles.logo}>
 					<ImageLinks.logo_white width={100} height={30} />
 				</View>
 				{username && (
-					<Pressable
-						onPress={() => {
-							dispatch(logout_user());
-						}}>
+					<Pressable onPress={dispatch(logout_user)}>
 						<Text style={styles.signup_text}>Log Out</Text>
 					</Pressable>
 				)}
@@ -100,11 +107,7 @@ const Home = () => {
 			<Content />
 			<View style={styles.footer_container}>
 				<View style={styles.button_outer}>
-					<Pressable
-						style={styles.button}
-						onPress={() => {
-							navigation.navigate(RouteNames.GameInfo);
-						}}>
+					<Pressable style={styles.button} onPress={navigate_to_game_info}>
 						<Text style={styles.text}>Play</Text>
 					</Pressable>
 				</View>

@@ -1,9 +1,9 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-import theme from '../../utils/theme';
+import theme from 'src/utils/theme';
 import Content from './components/Content';
-import ImageLinks from '../../assets/images/ImageLinks';
+import ImageLinks from 'src/assets/images/ImageLinks';
 
 const styles = StyleSheet.create({
 	container: {
@@ -43,22 +43,20 @@ const styles = StyleSheet.create({
 const Login = () => {
 	const navigation = useNavigation<any>();
 
+	const go_back = () => {
+		navigation.goBack();
+	};
+
 	return (
 		<View style={styles.container}>
 			<View style={styles.header_container}>
-				<Pressable
-					onPress={() => {
-						navigation.goBack();
-					}}>
+				<Pressable onPress={go_back}>
 					<Text style={styles.back}>[</Text>
 				</Pressable>
 				<View style={styles.logo}>
 					<ImageLinks.logo_white width={100} height={30} />
 				</View>
-				<Pressable
-					onPress={() => {
-						navigation.goBack();
-					}}>
+				<Pressable onPress={go_back}>
 					<Text style={styles.signup_text}>SIGN UP</Text>
 				</Pressable>
 			</View>

@@ -1,4 +1,4 @@
-import { store } from '../store';
+import { store } from 'src/store';
 import { CLOSE_TOAST, OPEN_TOAST } from './reduxConstants';
 
 export const show_toast = (payload: {

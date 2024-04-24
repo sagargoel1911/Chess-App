@@ -2,10 +2,10 @@ import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { shallowEqual } from 'react-redux';
 
-import theme from '../../utils/theme';
+import theme from 'src/utils/theme';
 import UserInfo from './components/UserInfo';
 import PreviousGames from './components/PreviousGames';
-import { useAppSelector } from '../../store';
+import { useAppSelector } from 'src/store';
 
 const styles = StyleSheet.create({
 	container: {
@@ -36,10 +36,14 @@ const Profile = () => {
 		shallowEqual,
 	);
 
+	const go_back = () => {
+		navigation.goBack();
+	};
+
 	return (
 		<View style={styles.container}>
 			<View style={styles.header_container}>
-				<Pressable onPress={() => navigation.goBack()}>
+				<Pressable onPress={go_back}>
 					<Text style={styles.back}>[</Text>
 				</Pressable>
 			</View>

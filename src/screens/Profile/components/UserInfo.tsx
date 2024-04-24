@@ -1,7 +1,7 @@
 import { ImageBackground, StyleSheet, Text, View } from 'react-native';
 
-import theme from '../../../utils/theme';
-import ImageLinks from '../../../assets/images/ImageLinks';
+import theme from 'src/utils/theme';
+import ImageLinks from 'src/assets/images/ImageLinks';
 
 const styles = StyleSheet.create({
 	container: {

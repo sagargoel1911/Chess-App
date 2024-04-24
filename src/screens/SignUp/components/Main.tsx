@@ -1,8 +1,8 @@
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-import theme from '../../../utils/theme';
-import ImageLinks from '../../../assets/images/ImageLinks';
+import theme from 'src/utils/theme';
+import ImageLinks from 'src/assets/images/ImageLinks';
 import RouteNames from '../navigation/RouteNames';
 
 const styles = StyleSheet.create({
@@ -48,16 +48,16 @@ const styles = StyleSheet.create({
 const Main = () => {
 	const navigation = useNavigation<any>();
 
+	const navigate_to_email = () => {
+		navigation.navigate(RouteNames.Email);
+	};
+
 	return (
 		<View style={styles.container}>
 			<Text style={styles.top_text}>Create your Chess.com account</Text>
 			<Image source={ImageLinks.logo_pawn_with_board} style={styles.pawn_image} />
 			<View style={styles.signup_button_outer}>
-				<Pressable
-					style={styles.signup_button}
-					onPress={() => {
-						navigation.navigate(RouteNames.Email);
-					}}>
+				<Pressable style={styles.signup_button} onPress={navigate_to_email}>
 					<Text style={styles.signup_text}>Sign Up with Email</Text>
 				</Pressable>
 			</View>

@@ -1,6 +1,6 @@
 import { FlatList, Platform, ScrollView, StyleSheet, Switch, Text, View } from 'react-native';
 
-import theme from '../../../../utils/theme';
+import theme from 'src/utils/theme';
 import Options from './components/Options';
 import TIME_CONTROLS from './constants';
 

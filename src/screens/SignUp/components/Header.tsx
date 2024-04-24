@@ -1,8 +1,8 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-import theme from '../../../utils/theme';
-import RouteNames from '../../../navigation/RouteNames';
+import theme from 'src/utils/theme';
+import RouteNames from 'src/navigation/RouteNames';
 
 const styles = StyleSheet.create({
 	container: {
@@ -28,17 +28,20 @@ const styles = StyleSheet.create({
 const Header = (props: any) => {
 	const navigation = useNavigation<any>();
 
+	const go_back = () => {
+		navigation.goBack();
+	};
+
+	const navigate_to_login = () => {
+		navigation.navigate(RouteNames.Login);
+	};
+
 	return (
 		<View style={styles.container}>
-			<Pressable
-				onPress={() => {
-					props.nav.goBack();
-				}}>
+			<Pressable onPress={go_back}>
 				<Text style={styles.back}>[</Text>
 			</Pressable>
-			<Pressable onPress={() => navigation.navigate(RouteNames.Login)}>
-				{true && <Text style={styles.login_text}>LOG IN</Text>}
-			</Pressable>
+			<Pressable onPress={navigate_to_login}>{true && <Text style={styles.login_text}>LOG IN</Text>}</Pressable>
 		</View>
 	);
 };

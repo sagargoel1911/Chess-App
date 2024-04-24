@@ -1,7 +1,7 @@
 import { shallowEqual } from 'react-redux';
 import _ from 'lodash';
 
-import { useAppSelector } from '../store';
+import { useAppSelector } from 'src/store';
 
 export interface ValidationProps {
 	required?: boolean;
