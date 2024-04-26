@@ -1,5 +1,6 @@
 import { View } from 'react-native';
 import _ from 'lodash';
+
 import Tile from './components/Tile';
 import { files, ranks } from './constants';
 

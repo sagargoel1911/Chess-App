@@ -1,4 +1,5 @@
 import { Image, StyleSheet, Text, View } from 'react-native';
+
 import ImageLinks from 'src/assets/images/ImageLinks';
 import theme from 'src/utils/theme';
 

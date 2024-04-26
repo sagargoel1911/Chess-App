@@ -1,7 +1,8 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+
 import Board from './components/Board/Board';
 import theme from 'src/utils/theme';
-import { useNavigation } from '@react-navigation/native';
 import PlayerInfo from './components/PlayerInfo';
 
 const styles = StyleSheet.create({
