@@ -5,7 +5,7 @@ import Main from '../components/Main';
 import Email from '../components/Email';
 import Password from '../components/Password';
 import Username from '../components/Username';
-import theme from '../../../utils/theme';
+import theme from 'src/utils/theme';
 
 const Stack = createStackNavigator();
 

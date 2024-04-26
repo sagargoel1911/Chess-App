@@ -2,9 +2,9 @@ import { KeyboardAvoidingView, Platform, Pressable, StyleSheet, Text, View } fro
 import { useNavigation } from '@react-navigation/native';
 import { useFormContext } from 'react-hook-form';
 
-import theme from '../../../utils/theme';
+import theme from 'src/utils/theme';
 import RouteNames from '../navigation/RouteNames';
-import TextField from '../../../common/TextField';
+import TextField from 'src/common/TextField';
 
 const styles = StyleSheet.create({
 	top_text: {

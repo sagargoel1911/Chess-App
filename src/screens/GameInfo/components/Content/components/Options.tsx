@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-import theme from '../../../../../utils/theme';
+import theme from 'src/utils/theme';
 
 const styles = StyleSheet.create({
 	container: {
@@ -13,6 +13,7 @@ const styles = StyleSheet.create({
 	top: {
 		flexDirection: 'row',
 		justifyContent: 'space-between',
+		alignItems: 'center',
 	},
 	title: {
 		color: theme.colors.brand_color_text_light,

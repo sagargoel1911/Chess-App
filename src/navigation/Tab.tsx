@@ -1,12 +1,12 @@
 import { Text } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-import Home from '../screens/Home/Home';
-import Puzzles from '../screens/Puzzles';
-import Learn from '../screens/Learn';
-import Watch from '../screens/Watch';
-import More from '../screens/More';
-import theme from '../utils/theme';
+import Home from 'src/screens/Home/Home';
+import Puzzles from 'src/screens/Puzzles';
+import Learn from 'src/screens/Learn';
+import Watch from 'src/screens/Watch';
+import More from 'src/screens/More';
+import theme from 'src/utils/theme';
 import { TabNames } from './RouteNames';
 
 const Tab = createBottomTabNavigator();
