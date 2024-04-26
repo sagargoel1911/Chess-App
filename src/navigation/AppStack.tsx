@@ -7,6 +7,7 @@ import Profile from 'src/screens/Profile/Profile';
 import GameInfo from 'src/screens/GameInfo/GameInfo';
 import RouteNames from './RouteNames';
 import CustomToast from 'src/common/CustomToast';
+import Game from 'src/screens/Game/Game';
 
 const Stack = createStackNavigator();
 
