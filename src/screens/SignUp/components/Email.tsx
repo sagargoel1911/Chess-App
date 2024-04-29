@@ -5,6 +5,7 @@ import { useFormContext } from 'react-hook-form';
 import theme from 'src/utils/theme';
 import RouteNames from '../navigation/RouteNames';
 import TextField from 'src/common/TextField';
+import { FORM_ELEMENTS } from '../constants';
 
 const styles = StyleSheet.create({
 	top_text: {
@@ -50,7 +51,7 @@ const Email = () => {
 	const { trigger } = useFormContext();
 
 	const on_submit_email = async () => {
-		const is_valid = await trigger('email');
+		const is_valid = await trigger(FORM_ELEMENTS.email);
 		if (is_valid) navigation.navigate(RouteNames.Password);
 	};
 
@@ -60,7 +61,7 @@ const Email = () => {
 				<View style={styles.top_section}>
 					<Text style={styles.top_text}>What is your email?</Text>
 					<TextField
-						name='email'
+						name={FORM_ELEMENTS.email}
 						placeholder='Email'
 						leftIconText='u'
 						rules={{

@@ -2,7 +2,7 @@ import { FlatList, Platform, Pressable, ScrollView, StyleSheet, Switch, Text, Vi
 
 import theme from 'src/utils/theme';
 import Options from './components/Options';
-import TIME_CONTROLS from './constants';
+import { TIME_CONTROLS } from '../../constants';
 
 const styles = StyleSheet.create({
 	container: {

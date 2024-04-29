@@ -5,6 +5,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import theme from 'src/utils/theme';
 import SignUpStack from './navigation/SignUpStack';
 import Header from './components/Header';
+import { FORM_ELEMENTS } from './constants';
 
 const styles = StyleSheet.create({
 	container: {
@@ -13,19 +14,13 @@ const styles = StyleSheet.create({
 	},
 });
 
-type FormValues = {
-	email: string;
-	password: string;
-	username: string;
-};
-
 const SignUp = () => {
 	const [nav, set_nav] = useState<any>();
-	const methods = useForm<FormValues>({
+	const methods = useForm<any>({
 		defaultValues: {
-			email: '',
-			password: '',
-			username: '',
+			[FORM_ELEMENTS.email]: '',
+			[FORM_ELEMENTS.password]: '',
+			[FORM_ELEMENTS.username]: '',
 		},
 	});
 

@@ -6,6 +6,7 @@ import { useState } from 'react';
 import theme from 'src/utils/theme';
 import Content from './components/Content/Content';
 import { useAppSelector } from 'src/store';
+import { COLORS } from './constants';
 
 const styles = StyleSheet.create({
 	container: {
@@ -73,7 +74,7 @@ const styles = StyleSheet.create({
 const GameInfo = () => {
 	const navigation = useNavigation<any>();
 
-	const [player_color, set_player_color] = useState<string>('White');
+	const [player_color, set_player_color] = useState<string>(COLORS.WHITE);
 	const [rotates, set_rotates] = useState<boolean>(false);
 	const [time_control, set_time_control] = useState<string>('None');
 
@@ -85,7 +86,7 @@ const GameInfo = () => {
 	);
 
 	const toggle_color = () => {
-		set_player_color((current_color) => (current_color === 'White' ? 'Black' : 'White'));
+		set_player_color((current_color) => (current_color === COLORS.WHITE ? COLORS.BLACK : COLORS.WHITE));
 	};
 
 	const toggle_rotates = () => {

@@ -8,6 +8,7 @@ import TextField from 'src/common/TextField';
 import { useAppDispatch } from 'src/store';
 import { signup_user } from 'src/actions/persistedAllUsersData';
 import { login_user } from 'src/actions/persistedUserData';
+import { FORM_ELEMENTS } from '../constants';
 
 const styles = StyleSheet.create({
 	top_text: {
@@ -67,7 +68,7 @@ const Username = () => {
 	};
 
 	const on_username_submit = async () => {
-		const is_valid = await trigger('username');
+		const is_valid = await trigger(FORM_ELEMENTS.username);
 		if (is_valid) {
 			handleSubmit(on_submit)();
 		}
@@ -80,7 +81,7 @@ const Username = () => {
 					<Text style={styles.message}>This is what your friends and other players will see when you play</Text>
 					<View>
 						<TextField
-							name='username'
+							name={FORM_ELEMENTS.username}
 							rules={{
 								required: true,
 								maxLength: 25,
