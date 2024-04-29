@@ -53,7 +53,7 @@ const Piece = ({ file, rank, current_position, change_position }: Props) => {
 			const new_rank = rank + Math.floor((offset.value.y + tile_size / 2) / tile_size);
 			const new_file = file + Math.floor((offset.value.x + tile_size / 2) / tile_size);
 
-			if (rank === new_rank && file === new_file) {
+			if ((rank === new_rank && file === new_file) || new_rank >= 8 || new_file >= 8 || new_rank < 0 || new_file < 0) {
 				z_index.value = 100;
 				offset.value = {
 					x: 0,
