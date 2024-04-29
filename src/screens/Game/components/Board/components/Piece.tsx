@@ -30,6 +30,7 @@ const Piece = ({ file, rank, current_position, change_position }: Props) => {
 	const animatedStyles = useAnimatedStyle(() => {
 		return {
 			transform: [{ translateX: offset.value.x }, { translateY: offset.value.y }],
+			zIndex: z_index.value,
 		};
 	});
 
@@ -68,7 +69,6 @@ const Piece = ({ file, rank, current_position, change_position }: Props) => {
 			<Animated.View
 				style={[
 					{
-						zIndex: z_index,
 						top: tile_size * rank,
 						left: tile_size * file,
 					},
