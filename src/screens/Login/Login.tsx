@@ -2,7 +2,7 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 import theme from 'src/utils/theme';
-import Content from './components/Content';
+import Content from './components/Content/Content';
 import ImageLinks from 'src/assets/images/ImageLinks';
 
 const styles = StyleSheet.create({

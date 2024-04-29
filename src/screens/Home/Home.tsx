@@ -104,7 +104,7 @@ const Home = () => {
 					<ImageLinks.logo_white width={100} height={30} />
 				</View>
 				{username && (
-					<Pressable onPress={dispatch(logout_user)}>
+					<Pressable onPress={() => dispatch(logout_user())}>
 						<Text style={styles.signup_text}>Log Out</Text>
 					</Pressable>
 				)}

@@ -76,13 +76,13 @@ const Content = () => {
 	);
 	const dispatch = useAppDispatch();
 
-	const on_submit = async (data: any) => {
-		let index: number = _.findIndex(user_list, (user) => user.email === data.FORM_ELEMENTS.id);
+	const on_submit = handleSubmit((data: any) => {
+		let index: number = _.findIndex(user_list, (user) => user.email === data[FORM_ELEMENTS.id]);
 		if (index === -1) {
-			index = _.findIndex(user_list, (user) => user.username === data.FORM_ELEMENTS.id);
+			index = _.findIndex(user_list, (user) => user.username === data[FORM_ELEMENTS.id]);
 		}
 
-		if (index === -1 || user_list[index].password !== data.FORM_ELEMENTS.password) {
+		if (index === -1 || user_list[index].password !== data[FORM_ELEMENTS.password]) {
 			show_toast({
 				message: 'Wrong Details!',
 			});
@@ -91,7 +91,7 @@ const Content = () => {
 
 		dispatch(login_user(user_list[index]));
 		navigation.popToTop();
-	};
+	});
 
 	return (
 		<KeyboardAvoidingView behavior='padding' style={styles.container}>
@@ -109,7 +109,7 @@ const Content = () => {
 				<Text style={styles.reset_text}>Forgot / Reset Password?</Text>
 			</View>
 			<View style={styles.login_button_outer}>
-				<Pressable style={styles.login_button} onPress={handleSubmit(on_submit)}>
+				<Pressable style={styles.login_button} onPress={on_submit}>
 					<Text style={styles.login_text}>Log In</Text>
 				</Pressable>
 			</View>
