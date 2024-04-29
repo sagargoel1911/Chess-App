@@ -2,7 +2,7 @@ import { FlatList, Platform, Pressable, ScrollView, StyleSheet, Switch, Text, Vi
 
 import theme from 'src/utils/theme';
 import Options from './components/Options';
-import { TIME_CONTROLS } from '../../constants';
+import { COLORS, TIME_CONTROLS } from '../../constants';
 
 const styles = StyleSheet.create({
 	container: {
@@ -80,13 +80,13 @@ const Content = ({ player_color, toggle_color, rotates, toggle_rotates, username
 				</Pressable>
 				<Options
 					title='White'
-					CurrentOption={<Text style={styles.current_option}>{player_color === 'White' ? username : 'Opponent'}</Text>}
+					CurrentOption={<Text style={styles.current_option}>{player_color === COLORS.WHITE ? username : 'Opponent'}</Text>}
 					BelowComponent={null}
 				/>
 				<View style={styles.line} />
 				<Options
 					title='Black'
-					CurrentOption={<Text style={styles.current_option}>{player_color === 'Black' ? username : 'Opponent'}</Text>}
+					CurrentOption={<Text style={styles.current_option}>{player_color === COLORS.BLACK ? username : 'Opponent'}</Text>}
 					BelowComponent={null}
 				/>
 				<View style={styles.line} />
