@@ -7,6 +7,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { PersistGate } from 'redux-persist/integration/react';
 import { Provider } from 'react-redux';
 import { NativeBaseProvider } from 'native-base';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import theme from './src/utils/theme';
 import AppStack from './src/navigation/AppStack';
@@ -41,14 +42,16 @@ const App = () => {
 	return (
 		<Provider store={store}>
 			<NavigationContainer>
-				<SafeAreaView style={styles.container} onLayout={onLayoutRootView}>
-					<NativeBaseProvider>
-						<PersistGate loading={null} persistor={persistor}>
-							<StatusBar />
-							<AppStack />
-						</PersistGate>
-					</NativeBaseProvider>
-				</SafeAreaView>
+				<GestureHandlerRootView style={{ flex: 1, backgroundColor: theme.colors.white }}>
+					<SafeAreaView style={styles.container} onLayout={onLayoutRootView}>
+						<NativeBaseProvider>
+							<PersistGate loading={null} persistor={persistor}>
+								<StatusBar />
+								<AppStack />
+							</PersistGate>
+						</NativeBaseProvider>
+					</SafeAreaView>
+				</GestureHandlerRootView>
 			</NavigationContainer>
 		</Provider>
 	);
