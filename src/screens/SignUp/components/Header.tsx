@@ -25,11 +25,15 @@ const styles = StyleSheet.create({
 	},
 });
 
-const Header = (props: any) => {
+interface Props {
+	nav: any;
+}
+
+const Header = ({ nav }: Props) => {
 	const navigation = useNavigation<any>();
 
 	const go_back = () => {
-		navigation.goBack();
+		nav.goBack();
 	};
 
 	const navigate_to_login = () => {

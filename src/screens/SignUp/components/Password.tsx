@@ -5,6 +5,7 @@ import { useFormContext } from 'react-hook-form';
 import theme from 'src/utils/theme';
 import RouteNames from '../navigation/RouteNames';
 import TextField from 'src/common/TextField';
+import { FORM_ELEMENTS } from '../constants';
 
 const styles = StyleSheet.create({
 	top_text: {
@@ -56,7 +57,7 @@ const Password = () => {
 	const { trigger } = useFormContext();
 
 	const on_submit_password = async () => {
-		const is_valid = await trigger('password');
+		const is_valid = await trigger(FORM_ELEMENTS.password);
 		if (is_valid) {
 			navigation.navigate(RouteNames.Username);
 		}
@@ -66,7 +67,13 @@ const Password = () => {
 			<KeyboardAvoidingView behavior='padding' keyboardVerticalOffset={Platform.OS === 'ios' ? 130 : 0} style={styles.container}>
 				<View style={styles.top_section}>
 					<Text style={styles.top_text}>Create a password</Text>
-					<TextField name='password' rules={{ required: true }} leftIconText='d' placeholder='Password' eyeOption={true} />
+					<TextField
+						name={FORM_ELEMENTS.password}
+						rules={{ required: true }}
+						leftIconText='d'
+						placeholder='Password'
+						eyeOption={true}
+					/>
 				</View>
 				<View style={styles.continue_button_outer}>
 					<Pressable style={styles.continue_button} onPress={on_submit_password}>

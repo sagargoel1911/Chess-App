@@ -110,6 +110,7 @@ const TextField = ({ name, rules, leftIconText, placeholder, eyeOption = false, 
 							}}
 							secureTextEntry={eyeOption && !show_text}
 							onFocus={() => set_is_focused(true)}
+							autoCapitalize='none'
 						/>
 						{eyeOption && (
 							<Pressable onPress={() => toggle_show_text(error)}>
