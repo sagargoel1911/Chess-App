@@ -9,6 +9,7 @@ import TextField from 'src/common/TextField';
 import { useAppDispatch, useAppSelector } from 'src/store';
 import { login_user } from 'src/actions/persistedUserData';
 import { show_toast } from 'src/actions/app';
+import { FORM_ELEMENTS } from './constants';
 
 const styles = StyleSheet.create({
 	container: {
@@ -59,7 +60,12 @@ const styles = StyleSheet.create({
 });
 
 const Content = () => {
-	const methods = useForm<any>();
+	const methods = useForm<any>({
+		defaultValues: {
+			[FORM_ELEMENTS.id]: '',
+			[FORM_ELEMENTS.password]: '',
+		},
+	});
 	const { handleSubmit } = methods;
 	const navigation = useNavigation<any>();
 	const { user_list } = useAppSelector(
@@ -71,12 +77,12 @@ const Content = () => {
 	const dispatch = useAppDispatch();
 
 	const on_submit = async (data: any) => {
-		let index: number = _.findIndex(user_list, (user) => user.email === data.id);
+		let index: number = _.findIndex(user_list, (user) => user.email === data.FORM_ELEMENTS.id);
 		if (index === -1) {
-			index = _.findIndex(user_list, (user) => user.username === data.id);
+			index = _.findIndex(user_list, (user) => user.username === data.FORM_ELEMENTS.id);
 		}
 
-		if (index === -1 || user_list[index].password !== data.password) {
+		if (index === -1 || user_list[index].password !== data.FORM_ELEMENTS.password) {
 			show_toast({
 				message: 'Wrong Details!',
 			});
@@ -90,8 +96,14 @@ const Content = () => {
 	return (
 		<KeyboardAvoidingView behavior='padding' style={styles.container}>
 			<FormProvider {...methods}>
-				<TextField name='id' rules={{ required: true }} leftIconText='b' placeholder='Username or Email' />
-				<TextField name='password' rules={{ required: true }} leftIconText='d' placeholder='Password' eyeOption={true} />
+				<TextField name={FORM_ELEMENTS.id} rules={{ required: true }} leftIconText='b' placeholder='Username or Email' />
+				<TextField
+					name={FORM_ELEMENTS.password}
+					rules={{ required: true }}
+					leftIconText='d'
+					placeholder='Password'
+					eyeOption={true}
+				/>
 			</FormProvider>
 			<View>
 				<Text style={styles.reset_text}>Forgot / Reset Password?</Text>

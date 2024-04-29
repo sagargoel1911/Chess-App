@@ -1,8 +1,8 @@
-import { FlatList, Platform, ScrollView, StyleSheet, Switch, Text, View } from 'react-native';
+import { FlatList, Platform, Pressable, ScrollView, StyleSheet, Switch, Text, View } from 'react-native';
 
 import theme from 'src/utils/theme';
 import Options from './components/Options';
-import TIME_CONTROLS from './constants';
+import { COLORS, TIME_CONTROLS } from '../../constants';
 
 const styles = StyleSheet.create({
 	container: {
@@ -19,12 +19,8 @@ const styles = StyleSheet.create({
 	},
 	toggle_colors_logo: {
 		fontFamily: theme.fonts.chess,
-		position: 'absolute',
 		color: theme.colors.brand_color_text_light,
 		fontSize: 24,
-		top: 43.8,
-		zIndex: 1,
-		alignSelf: 'center',
 	},
 	line: {
 		backgroundColor: theme.colors.black,
@@ -51,40 +47,74 @@ const styles = StyleSheet.create({
 		width: 50,
 		marginRight: -4,
 	},
+	time_toggle_container: {
+		position: 'absolute',
+		top: 43.8,
+		zIndex: 1,
+		alignSelf: 'center',
+	},
+	time_control: {
+		flex: 1,
+	},
 });
 
-const Content = () => {
+interface Props {
+	player_color: string;
+	toggle_color: () => void;
+	rotates: boolean;
+	toggle_rotates: () => void;
+	username: string;
+	time_control: string;
+	change_time_control: (new_time_control: string) => void;
+}
+
+const Content = ({ player_color, toggle_color, rotates, toggle_rotates, username, time_control, change_time_control }: Props) => {
 	return (
 		<ScrollView style={styles.container}>
 			<View style={styles.heading}>
 				<Text style={styles.heading_text}>Play with a friend offline</Text>
 			</View>
 			<View>
-				<Text style={styles.toggle_colors_logo}>Đ</Text>
-				<Options title='White' CurrentOption={<Text style={styles.current_option}>Username</Text>} BelowComponent={null} />
+				<Pressable style={styles.time_toggle_container} onPress={toggle_color}>
+					<Text style={styles.toggle_colors_logo}>Đ</Text>
+				</Pressable>
+				<Options
+					title='White'
+					CurrentOption={<Text style={styles.current_option}>{player_color === COLORS.WHITE ? username : 'Opponent'}</Text>}
+					BelowComponent={null}
+				/>
 				<View style={styles.line} />
-				<Options title='Black' CurrentOption={<Text style={styles.current_option}>Opponent</Text>} BelowComponent={null} />
+				<Options
+					title='Black'
+					CurrentOption={<Text style={styles.current_option}>{player_color === COLORS.BLACK ? username : 'Opponent'}</Text>}
+					BelowComponent={null}
+				/>
 				<View style={styles.line} />
 				<Options
 					title='Time Control'
-					CurrentOption={<Text style={styles.current_option}>None</Text>}
+					CurrentOption={<Text style={styles.current_option}>{time_control}</Text>}
 					BelowComponent={
 						<FlatList
 							data={TIME_CONTROLS}
 							numColumns={3}
 							renderItem={({ item, index }) => {
+								const is_checked = time_control === item;
 								return (
-									<View
-										key={index}
-										style={[
-											styles.item,
-											{
-												backgroundColor:
-													item !== 'None' ? theme.colors.tile_unselected : theme.colors.tile_selected,
-												borderWidth: item !== 'None' ? 0 : 2,
-											},
-										]}>
-										<Text style={styles.item_text}>{item}</Text>
+									<View style={styles.time_control}>
+										<Pressable
+											key={index}
+											style={[
+												styles.item,
+												{
+													backgroundColor: is_checked
+														? theme.colors.tile_selected
+														: theme.colors.tile_unselected,
+													borderWidth: is_checked ? 2 : 0,
+												},
+											]}
+											onPress={() => change_time_control(item)}>
+											<Text style={styles.item_text}>{item}</Text>
+										</Pressable>
 									</View>
 								);
 							}}
@@ -99,9 +129,10 @@ const Content = () => {
 					CurrentOption={
 						<Switch
 							style={[styles.switch, Platform.OS === 'android' && { height: 20 }]}
-							value={true}
-							thumbColor={true ? theme.colors.button_green : theme.colors.active_track_thumb}
+							value={rotates}
+							thumbColor={rotates ? theme.colors.button_green : theme.colors.active_track_thumb}
 							trackColor={{ true: theme.colors.active_track, false: theme.colors.inactive_track }}
+							onValueChange={toggle_rotates}
 						/>
 					}
 					BelowComponent={null}
