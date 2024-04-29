@@ -62,7 +62,10 @@ const PreviousGames = ({ game_history }: Props) => {
 			<View style={styles.header}>
 				<Text style={styles.heading}>Recent Games</Text>
 				<View style={styles.header_right}>
-					<Text style={styles.number_of_games}>15{'  '} </Text>
+					<Text style={styles.number_of_games}>
+						{game_history.length}
+						{'  '}
+					</Text>
 					<Text style={styles.more_games_icon}>…</Text>
 				</View>
 			</View>
