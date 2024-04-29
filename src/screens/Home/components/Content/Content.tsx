@@ -1,4 +1,5 @@
-import { Image, ScrollView, StyleSheet } from 'react-native';
+import { ScrollView, StyleSheet } from 'react-native';
+import { Image } from 'expo-image';
 
 import theme from 'src/utils/theme';
 import ImageLinks from 'src/assets/images/ImageLinks';

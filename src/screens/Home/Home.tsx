@@ -1,6 +1,7 @@
-import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { shallowEqual } from 'react-redux';
+import { Image } from 'expo-image';
 
 import Content from 'src/screens/Home/components/Content/Content';
 import theme from 'src/utils/theme';

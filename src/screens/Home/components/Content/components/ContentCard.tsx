@@ -1,6 +1,7 @@
 import React, { ReactNode } from 'react';
-import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { Image } from 'expo-image';
 
 import ImageLinks from 'src/assets/images/ImageLinks';
 import theme from 'src/utils/theme';
