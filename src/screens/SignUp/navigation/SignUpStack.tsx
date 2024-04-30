@@ -6,15 +6,25 @@ import Email from '../components/Email';
 import Password from '../components/Password';
 import Username from '../components/Username';
 import theme from 'src/utils/theme';
+import { useEffect } from 'react';
 
 const Stack = createStackNavigator();
 
-const SignUpStack = (props: any) => {
+interface Props {
+	update_nav: any;
+}
+
+const SignUpStack = ({ update_nav }: Props) => {
+	let nav: any = null;
+	useEffect(() => {
+		update_nav(nav);
+	}, [nav]);
+
 	return (
 		<Stack.Navigator
 			initialRouteName={RouteNames.Main}
 			screenOptions={({ navigation: navigation }) => {
-				props.update_nav(navigation);
+				nav = navigation;
 				return {
 					headerShown: false,
 					cardStyle: { backgroundColor: theme.colors.brand_color_dark },

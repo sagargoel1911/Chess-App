@@ -70,6 +70,7 @@ const PreviousGames = ({ game_history }: Props) => {
 				</View>
 			</View>
 			<FlatList
+				scrollEnabled={false}
 				data={game_history}
 				renderItem={({ item, index }) => {
 					return (

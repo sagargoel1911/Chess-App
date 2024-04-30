@@ -27,7 +27,7 @@ const Board = () => {
 		<View style={styles.board}>
 			{_.map(ranks, (rank: number) => {
 				return _.map(files, (file: number) => {
-					return <Tile key={`${file}${rank}`} file={file} rank={rank} />;
+					return <Tile key={`${file}${rank}_tile`} file={file} rank={rank} />;
 				});
 			})}
 			{_.map(ranks, (rank: number) => {
@@ -35,7 +35,15 @@ const Board = () => {
 					if (current_position[rank][file] === '') {
 						return null;
 					} else {
-						return <Piece rank={rank} file={file} current_position={current_position} change_position={change_position} />;
+						return (
+							<Piece
+								key={`${file}${rank}_piece`}
+								rank={rank}
+								file={file}
+								current_position={current_position}
+								change_position={change_position}
+							/>
+						);
 					}
 				});
 			})}
