@@ -1,6 +1,7 @@
-import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { shallowEqual } from 'react-redux';
+import { Image } from 'expo-image';
 
 import Content from 'src/screens/Home/components/Content/Content';
 import theme from 'src/utils/theme';
@@ -103,7 +104,7 @@ const Home = () => {
 					<ImageLinks.logo_white width={100} height={30} />
 				</View>
 				{username && (
-					<Pressable onPress={dispatch(logout_user)}>
+					<Pressable onPress={() => dispatch(logout_user())}>
 						<Text style={styles.signup_text}>Log Out</Text>
 					</Pressable>
 				)}

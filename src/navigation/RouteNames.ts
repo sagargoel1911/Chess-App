@@ -12,6 +12,7 @@ const RouteNames = {
 	SignUp: 'SignUp',
 	Profile: 'Profile',
 	GameInfo: 'GameInfo',
+	Game: 'Game',
 };
 
 export default RouteNames;

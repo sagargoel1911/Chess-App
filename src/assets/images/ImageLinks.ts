@@ -8,6 +8,18 @@ import jimmy from './jimmy.png';
 import puzzle_icon from './puzzle_icon.svg';
 import flags from './flags.png';
 import profile_pic from './profile_pic.png';
+import br from './pieces/black/br.png';
+import bn from './pieces/black/bn.png';
+import bp from './pieces/black/bp.png';
+import bk from './pieces/black/bk.png';
+import bq from './pieces/black/bq.png';
+import bb from './pieces/black/bb.png';
+import wr from './pieces/white/wr.png';
+import wn from './pieces/white/wn.png';
+import wp from './pieces/white/wp.png';
+import wk from './pieces/white/wk.png';
+import wq from './pieces/white/wq.png';
+import wb from './pieces/white/wb.png';
 
 const ImageLinks = {
 	logo_dark,
@@ -20,6 +32,18 @@ const ImageLinks = {
 	puzzle_icon,
 	flags,
 	profile_pic,
+	br,
+	bn,
+	bp,
+	bk,
+	bq,
+	bb,
+	wr,
+	wn,
+	wp,
+	wk,
+	wq,
+	wb,
 };
 
 export default ImageLinks;

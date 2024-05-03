@@ -95,6 +95,7 @@ const Content = ({ player_color, toggle_color, rotates, toggle_rotates, username
 					CurrentOption={<Text style={styles.current_option}>{time_control}</Text>}
 					BelowComponent={
 						<FlatList
+							scrollEnabled={false}
 							data={TIME_CONTROLS}
 							numColumns={3}
 							renderItem={({ item, index }) => {

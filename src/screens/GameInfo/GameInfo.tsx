@@ -7,6 +7,7 @@ import theme from 'src/utils/theme';
 import Content from './components/Content/Content';
 import { useAppSelector } from 'src/store';
 import { COLORS } from './constants';
+import RouteNames from 'src/navigation/RouteNames';
 
 const styles = StyleSheet.create({
 	container: {
@@ -101,6 +102,10 @@ const GameInfo = () => {
 		navigation.goBack();
 	};
 
+	const start_game = () => {
+		navigation.navigate(RouteNames.Game);
+	};
+
 	return (
 		<View style={styles.container}>
 			<View style={styles.header_container}>
@@ -122,7 +127,7 @@ const GameInfo = () => {
 			/>
 			<View style={styles.footer_container}>
 				<View style={styles.button_outer}>
-					<Pressable style={styles.button}>
+					<Pressable onPress={start_game} style={styles.button}>
 						<Text style={styles.text}>Play</Text>
 					</Pressable>
 				</View>

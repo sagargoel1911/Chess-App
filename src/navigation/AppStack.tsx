@@ -7,6 +7,7 @@ import Profile from 'src/screens/Profile/Profile';
 import GameInfo from 'src/screens/GameInfo/GameInfo';
 import RouteNames from './RouteNames';
 import CustomToast from 'src/common/CustomToast';
+import Game from 'src/screens/Game/Game';
 
 const Stack = createStackNavigator();
 
@@ -24,6 +25,7 @@ const AppStack = () => {
 				<Stack.Screen name={RouteNames.SignUp} component={SignUp} />
 				<Stack.Screen name={RouteNames.Profile} component={Profile} />
 				<Stack.Screen name={RouteNames.GameInfo} component={GameInfo} />
+				<Stack.Screen name={RouteNames.Game} component={Game} />
 			</Stack.Navigator>
 			<CustomToast />
 		</>

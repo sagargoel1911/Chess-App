@@ -60,17 +60,17 @@ const Username = () => {
 	const navigation = useNavigation<any>();
 	const dispatch = useAppDispatch();
 
-	const on_submit = (data: any) => {
+	const on_submit = handleSubmit((data: any) => {
 		dispatch(signup_user(data));
 		dispatch(login_user(data));
 		navigation.popToTop();
 		navigation.pop();
-	};
+	});
 
 	const on_username_submit = async () => {
 		const is_valid = await trigger(FORM_ELEMENTS.username);
 		if (is_valid) {
-			handleSubmit(on_submit)();
+			on_submit();
 		}
 	};
 	return (

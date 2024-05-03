@@ -1,9 +1,9 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
+import Board from './components/Board/Board';
 import theme from 'src/utils/theme';
-import Content from './components/Content/Content';
-import ImageLinks from 'src/assets/images/ImageLinks';
+import PlayerInfo from './components/PlayerInfo';
 
 const styles = StyleSheet.create({
 	container: {
@@ -18,7 +18,12 @@ const styles = StyleSheet.create({
 		height: 55,
 		paddingHorizontal: 15,
 	},
-	logo: {
+	back: {
+		fontFamily: theme.fonts.chess,
+		fontSize: 24,
+		color: theme.colors.brand_color_text_light,
+	},
+	title_container: {
 		position: 'absolute',
 		top: 0,
 		left: 0,
@@ -28,19 +33,19 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		pointerEvents: 'none',
 	},
-	signup_text: {
-		color: theme.colors.white,
-		fontWeight: '600',
-		fontSize: 14,
-	},
-	back: {
-		fontFamily: theme.fonts.chess,
-		fontSize: 24,
+	title_text: {
 		color: theme.colors.brand_color_text_light,
+		fontFamily: theme.fonts.montserrat_extra_bold,
+		fontSize: 20,
+	},
+	content: {
+		justifyContent: 'center',
+		flex: 1,
+		rowGap: 40,
 	},
 });
 
-const Login = () => {
+const Game = () => {
 	const navigation = useNavigation<any>();
 
 	const go_back = () => {
@@ -53,16 +58,17 @@ const Login = () => {
 				<Pressable onPress={go_back}>
 					<Text style={styles.back}>[</Text>
 				</Pressable>
-				<View style={styles.logo}>
-					<ImageLinks.logo_white width={100} height={30} />
+				<View style={styles.title_container}>
+					<Text style={styles.title_text}>Pass and Play</Text>
 				</View>
-				<Pressable onPress={go_back}>
-					<Text style={styles.signup_text}>SIGN UP</Text>
-				</Pressable>
 			</View>
-			<Content />
+			<View style={styles.content}>
+				<PlayerInfo />
+				<Board />
+				<PlayerInfo />
+			</View>
 		</View>
 	);
 };
 
-export default Login;
+export default Game;
