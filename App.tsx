@@ -18,6 +18,10 @@ const styles = StyleSheet.create({
 		flex: 1,
 		backgroundColor: theme.colors.black,
 	},
+	gesture_container: {
+		flex: 1,
+		backgroundColor: theme.colors.white,
+	},
 });
 
 SplashScreen.preventAutoHideAsync();
@@ -42,7 +46,7 @@ const App = () => {
 	return (
 		<Provider store={store}>
 			<NavigationContainer>
-				<GestureHandlerRootView style={{ flex: 1, backgroundColor: theme.colors.white }}>
+				<GestureHandlerRootView style={styles.gesture_container}>
 					<SafeAreaView style={styles.container} onLayout={onLayoutRootView}>
 						<NativeBaseProvider>
 							<PersistGate loading={null} persistor={persistor}>
