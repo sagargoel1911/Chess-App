@@ -88,7 +88,7 @@ const Home = () => {
 	};
 
 	const navigate_to_game_info = () => {
-		navigation.navigate(RouteNames.GameInfo);
+		navigation.navigate(RouteNames.Game);
 	};
 	return (
 		<View style={styles.container}>

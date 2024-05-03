@@ -29,6 +29,7 @@ const SignUpStack = ({ update_nav }: Props) => {
 					headerShown: false,
 					cardStyle: { backgroundColor: theme.colors.brand_color_dark },
 					...TransitionPresets.SlideFromRightIOS,
+					gestureEnabled: false,
 				};
 			}}>
 			<Stack.Screen name={RouteNames.Main} component={Main} />

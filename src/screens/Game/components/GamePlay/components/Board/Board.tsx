@@ -1,10 +1,11 @@
 import { StyleSheet, View } from 'react-native';
 import _ from 'lodash';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 
 import Tile from './components/Tile';
-import { files, initial_position, ranks } from './constants';
+import { files, ranks } from './constants';
 import Piece from './components/Piece';
+import GameContext from 'src/screens/Game/context';
 
 const styles = StyleSheet.create({
 	board: {
@@ -14,20 +15,16 @@ const styles = StyleSheet.create({
 });
 
 const Board = () => {
-	const [current_position, set_current_position] = useState<any>(initial_position);
-
-	const change_position = (new_rank: number, new_file: number, rank: number, file: number) => {
-		const new_position = _.cloneDeep(current_position);
-		new_position[rank][file] = '';
-		new_position[new_rank][new_file] = current_position[rank][file];
-		set_current_position(new_position);
-	};
+	const { current_candidate_moves, current_position, change_position, get_candidate_moves, reset_candidate_moves } =
+		useContext(GameContext);
 
 	return (
 		<View style={styles.board}>
 			{_.map(ranks, (rank: number) => {
 				return _.map(files, (file: number) => {
-					return <Tile key={`${file}${rank}_tile`} file={file} rank={rank} />;
+					return (
+						<Tile key={`${file}${rank}_tile`} file={file} rank={rank} current_candidate_moves={current_candidate_moves} />
+					);
 				});
 			})}
 			{_.map(ranks, (rank: number) => {
@@ -42,6 +39,8 @@ const Board = () => {
 								file={file}
 								current_position={current_position}
 								change_position={change_position}
+								get_candidate_moves={get_candidate_moves}
+								reset_candidate_moves={reset_candidate_moves}
 							/>
 						);
 					}

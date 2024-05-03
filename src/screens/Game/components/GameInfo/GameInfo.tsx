@@ -1,13 +1,14 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { shallowEqual } from 'react-redux';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 
 import theme from 'src/utils/theme';
 import Content from './components/Content/Content';
 import { useAppSelector } from 'src/store';
 import { COLORS } from './constants';
 import RouteNames from 'src/navigation/RouteNames';
+import GameContext from '../../context';
 
 const styles = StyleSheet.create({
 	container: {
@@ -73,6 +74,7 @@ const styles = StyleSheet.create({
 });
 
 const GameInfo = () => {
+	const { start_game } = useContext(GameContext);
 	const navigation = useNavigation<any>();
 
 	const [player_color, set_player_color] = useState<string>(COLORS.WHITE);
@@ -100,10 +102,6 @@ const GameInfo = () => {
 
 	const go_back = () => {
 		navigation.goBack();
-	};
-
-	const start_game = () => {
-		navigation.navigate(RouteNames.Game);
 	};
 
 	return (
