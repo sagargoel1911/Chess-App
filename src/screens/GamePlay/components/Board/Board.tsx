@@ -5,7 +5,7 @@ import { useContext, useState } from 'react';
 import Tile from './components/Tile';
 import { files, ranks } from './constants';
 import Piece from './components/Piece';
-import GameContext from 'src/screens/Game/context';
+import GameContext from 'src/screens/GamePlay/context';
 
 const styles = StyleSheet.create({
 	board: {

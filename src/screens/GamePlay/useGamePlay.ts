@@ -2,8 +2,7 @@ import { useEffect, useState } from 'react';
 import { COLORS, PIECES, initial_candidate_moves, initial_position } from './constants';
 import _ from 'lodash';
 
-const useGame = () => {
-	const [is_game_started, set_is_game_started] = useState<boolean>(false);
+const useGamePlay = () => {
 	const [current_position, set_current_position] = useState<any>(initial_position);
 	const [current_candidate_moves, set_current_candidate_moves] = useState<any>(initial_candidate_moves);
 	const [en_passant_square, set_en_passant_square] = useState<any>(null);
@@ -484,9 +483,8 @@ const useGame = () => {
 	};
 
 	useEffect(() => {
-		// if (is_game_started) {
 		const current_all_candidate_moves = get_all_candidate_moves();
-		if (_.isEqual(current_all_candidate_moves, {}) && is_game_started) {
+		if (_.isEqual(current_all_candidate_moves, {})) {
 			if (in_check) {
 				console.log('checkmate');
 			} else {
@@ -494,25 +492,12 @@ const useGame = () => {
 			}
 		}
 		set_all_candidate_moves(current_all_candidate_moves);
-		// }
 	}, [turn]);
 
 	const reset_candidate_moves = () => {
 		set_current_candidate_moves(_.cloneDeep(initial_candidate_moves));
 	};
-	const start_game = () => {
-		set_is_game_started(true);
-		// set_turn(COLORS.WHITE);
-	};
-	const end_game = () => {
-		set_is_game_started(false);
-		// set_turn('');
-		// set_current_position(_.cloneDeep(initial_position));
-	};
 	return {
-		is_game_started,
-		start_game,
-		end_game,
 		current_candidate_moves,
 		current_position,
 		change_position,
@@ -522,4 +507,4 @@ const useGame = () => {
 	};
 };
 
-export default useGame;
+export default useGamePlay;

@@ -6,7 +6,7 @@ import { Image } from 'expo-image';
 import ImageLinks from 'src/assets/images/ImageLinks';
 import { tile_size } from '../constants';
 import { useContext, useEffect } from 'react';
-import GameContext from 'src/screens/Game/context';
+import GameContext from 'src/screens/GamePlay/context';
 
 const styles = StyleSheet.create({
 	container: {
