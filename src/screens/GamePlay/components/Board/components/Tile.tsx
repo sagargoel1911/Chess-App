@@ -1,4 +1,5 @@
 import { StyleSheet, Text, View } from 'react-native';
+import React from 'react';
 
 import theme from 'src/utils/theme';
 import { tile_size } from '../constants';
@@ -7,6 +8,8 @@ const styles = StyleSheet.create({
 	container: {
 		width: tile_size,
 		height: tile_size,
+		alignItems: 'center',
+		justifyContent: 'center',
 	},
 	tile_text_rank: {
 		position: 'absolute',
@@ -27,18 +30,18 @@ const styles = StyleSheet.create({
 interface Props {
 	file: number;
 	rank: number;
-	current_candidate_moves: any;
+	candidate_move_status: number;
 }
 
-const Tile = ({ file, rank, current_candidate_moves }: Props) => {
+const Tile = ({ file, rank, candidate_move_status }: Props) => {
+	// const { current_candidate_moves } = useContext(GamePlayContext);
+	console.log('hi', file, rank);
 	return (
 		<View
 			style={[
 				styles.container,
 				{
 					backgroundColor: (file + rank) % 2 == 1 ? theme.colors.dark_square : theme.colors.light_square,
-					alignItems: 'center',
-					justifyContent: 'center',
 				},
 			]}>
 			{file === 0 ? (
@@ -63,7 +66,7 @@ const Tile = ({ file, rank, current_candidate_moves }: Props) => {
 					{`${String.fromCharCode(97 + file)}`}
 				</Text>
 			) : null}
-			{current_candidate_moves[rank][file] === 1 && (
+			{candidate_move_status === 1 && (
 				<View
 					style={{
 						backgroundColor: (file + rank) % 2 == 1 ? theme.colors.dark_candidate_move : theme.colors.light_candidate_move,
@@ -73,7 +76,7 @@ const Tile = ({ file, rank, current_candidate_moves }: Props) => {
 					}}
 				/>
 			)}
-			{current_candidate_moves[rank][file] === 2 && (
+			{candidate_move_status === 2 && (
 				<View
 					style={{
 						borderColor: (file + rank) % 2 == 1 ? theme.colors.dark_candidate_move : theme.colors.light_candidate_move,
@@ -88,4 +91,4 @@ const Tile = ({ file, rank, current_candidate_moves }: Props) => {
 	);
 };
 
-export default Tile;
+export default React.memo(Tile);

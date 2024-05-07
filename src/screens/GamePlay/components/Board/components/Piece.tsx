@@ -2,11 +2,11 @@ import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, { runOnJS, useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
 import { StyleSheet } from 'react-native';
 import { Image } from 'expo-image';
+import { useContext } from 'react';
 
 import ImageLinks from 'src/assets/images/ImageLinks';
 import { tile_size } from '../constants';
-import { useContext, useEffect } from 'react';
-import GameContext from 'src/screens/GamePlay/context';
+import GamePlayContext from 'src/screens/GamePlay/context';
 
 const styles = StyleSheet.create({
 	container: {
@@ -21,14 +21,11 @@ const styles = StyleSheet.create({
 interface Props {
 	file: number;
 	rank: number;
-	current_position: any;
-	change_position: any;
-	get_candidate_moves: any;
-	reset_candidate_moves: any;
 }
 
-const Piece = ({ file, rank, current_position, change_position, get_candidate_moves, reset_candidate_moves }: Props) => {
-	const { current_candidate_moves, get_piece_candidate_moves } = useContext(GameContext);
+const Piece = ({ file, rank }: Props) => {
+	const { current_candidate_moves, get_piece_candidate_moves, current_position, change_position, reset_candidate_moves } =
+		useContext(GamePlayContext);
 	const offset = useSharedValue({ x: 0, y: 0 });
 	const z_index = useSharedValue(100);
 

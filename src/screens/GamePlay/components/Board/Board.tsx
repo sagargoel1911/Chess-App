@@ -15,15 +15,19 @@ const styles = StyleSheet.create({
 });
 
 const Board = () => {
-	const { current_candidate_moves, current_position, change_position, get_candidate_moves, reset_candidate_moves } =
-		useContext(GameContext);
+	const { current_position, current_candidate_moves } = useContext(GameContext);
 
 	return (
 		<View style={styles.board}>
 			{_.map(ranks, (rank: number) => {
 				return _.map(files, (file: number) => {
 					return (
-						<Tile key={`${file}${rank}_tile`} file={file} rank={rank} current_candidate_moves={current_candidate_moves} />
+						<Tile
+							key={`${file}${rank}_tile`}
+							file={file}
+							rank={rank}
+							candidate_move_status={current_candidate_moves[rank][file]}
+						/>
 					);
 				});
 			})}
@@ -32,17 +36,7 @@ const Board = () => {
 					if (current_position[rank][file] === '') {
 						return null;
 					} else {
-						return (
-							<Piece
-								key={`${file}${rank}_piece`}
-								rank={rank}
-								file={file}
-								current_position={current_position}
-								change_position={change_position}
-								get_candidate_moves={get_candidate_moves}
-								reset_candidate_moves={reset_candidate_moves}
-							/>
-						);
+						return <Piece key={`${file}${rank}_piece`} rank={rank} file={file} />;
 					}
 				});
 			})}

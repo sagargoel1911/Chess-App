@@ -13,6 +13,7 @@ const useGamePlay = () => {
 	const [black_king_position, set_black_king_position] = useState<any>([0, 4]);
 	const [in_check, set_in_check] = useState<boolean>(false);
 	const [all_candidate_moves, set_all_candidate_moves] = useState<any>({});
+	const [half_moves, set_half_moves] = useState<number>(0);
 
 	const is_attacked = (rank: number, file: number, position: any, enemy_color: string): boolean => {
 		if (enemy_color === COLORS.BLACK && rank > 0) {
@@ -96,6 +97,14 @@ const useGamePlay = () => {
 		const new_position = _.cloneDeep(current_position);
 		new_position[rank][file] = '';
 		new_position[new_rank][new_file] = current_position[rank][file];
+
+		//increment half move for 50 move draw
+		if (piece[1] == PIECES.PAWN || current_position[new_rank][new_file] !== '') {
+			set_half_moves(0);
+		} else {
+			set_half_moves((previous_count) => previous_count + 1);
+		}
+
 		if (piece[1] === PIECES.PAWN && en_passant_square && en_passant_square[0] === new_rank && en_passant_square[1] === new_file) {
 			if (piece[0] === COLORS.WHITE) {
 				new_position[new_rank + 1][new_file] = '';
@@ -482,14 +491,102 @@ const useGamePlay = () => {
 		set_current_candidate_moves(updated_candidate_moves);
 	};
 
+	const get_piece_situation = () => {
+		const white_piece_situation = {},
+			black_piece_situation = {};
+		let white_bishop_square = '',
+			black_bishop_square = '';
+		for (let i = 0; i < 8; i++) {
+			for (let j = 0; j < 8; j++) {
+				if (current_position[i][j] !== '' && current_position[i][j][0] === COLORS.WHITE) {
+					const piece = current_position[i][j][1];
+					white_piece_situation[piece] = (white_piece_situation[piece] || 0) + 1;
+					if (piece === PIECES.BISHOP) {
+						const current_bishop_type = (i + j) % 2 ? COLORS.BLACK : COLORS.WHITE;
+						if (white_bishop_square == '') {
+							white_bishop_square = current_bishop_type;
+						} else if (white_bishop_square !== current_bishop_type) {
+							white_bishop_square = 'both';
+						}
+					}
+				} else if (current_position[i][j] !== '' && current_position[i][j][0] === COLORS.BLACK) {
+					const piece = current_position[i][j][1];
+					black_piece_situation[piece] = (black_piece_situation[piece] || 0) + 1;
+					if (piece === PIECES.BISHOP) {
+						const current_bishop_type = (i + j) % 2 ? COLORS.BLACK : COLORS.WHITE;
+						if (black_bishop_square == '') {
+							black_bishop_square = current_bishop_type;
+						} else if (black_bishop_square !== current_bishop_type) {
+							black_bishop_square = 'both';
+						}
+					}
+				}
+			}
+		}
+		const piece_situation = {
+			[COLORS.WHITE]: white_piece_situation,
+			[COLORS.BLACK]: black_piece_situation,
+			white_bishop_square: white_bishop_square,
+			black_bishop_square: black_bishop_square,
+		};
+		return piece_situation;
+	};
+
+	const check_insufficient_material = (piece_situation: any) => {
+		if (
+			_.isEqual(piece_situation[COLORS.WHITE], { [PIECES.KING]: 1 }) &&
+			_.isEqual(piece_situation[COLORS.BLACK], { [PIECES.KING]: 1 })
+		) {
+			return true;
+		}
+		if (
+			_.isEqual(piece_situation[COLORS.WHITE], { [PIECES.KING]: 1, [PIECES.BISHOP]: 1 }) &&
+			_.isEqual(piece_situation[COLORS.BLACK], { [PIECES.KING]: 1 })
+		) {
+			return true;
+		}
+		if (
+			_.isEqual(piece_situation[COLORS.WHITE], { [PIECES.KING]: 1 }) &&
+			_.isEqual(piece_situation[COLORS.BLACK], { [PIECES.KING]: 1, [PIECES.BISHOP]: 1 })
+		) {
+			return true;
+		}
+		if (
+			_.isEqual(piece_situation[COLORS.WHITE], { [PIECES.KING]: 1 }) &&
+			_.isEqual(piece_situation[COLORS.BLACK], { [PIECES.KING]: 1, [PIECES.KNIGHT]: 1 })
+		) {
+			return true;
+		}
+		if (
+			_.isEqual(piece_situation[COLORS.WHITE], { [PIECES.KING]: 1, [PIECES.KNIGHT]: 1 }) &&
+			_.isEqual(piece_situation[COLORS.BLACK], { [PIECES.KING]: 1 })
+		) {
+			return true;
+		}
+		if (
+			_.isEqual(piece_situation[COLORS.WHITE], { [PIECES.KING]: 1, [PIECES.BISHOP]: 1 }) &&
+			_.isEqual(piece_situation[COLORS.BLACK], { [PIECES.KING]: 1, [PIECES.BISHOP]: 1 }) &&
+			piece_situation.white_bishop_square === piece_situation.black_bishop_square
+		) {
+			return true;
+		}
+		return false;
+	};
+
 	useEffect(() => {
 		const current_all_candidate_moves = get_all_candidate_moves();
+		const piece_situation = get_piece_situation();
 		if (_.isEqual(current_all_candidate_moves, {})) {
 			if (in_check) {
 				console.log('checkmate');
 			} else {
 				console.log('stalemate');
 			}
+		} else if (half_moves === 100) {
+			// check for 50 move rule
+			console.log('Draw by 50 move rule');
+		} else if (check_insufficient_material(piece_situation)) {
+			console.log('Draw by insufficient material');
 		}
 		set_all_candidate_moves(current_all_candidate_moves);
 	}, [turn]);
