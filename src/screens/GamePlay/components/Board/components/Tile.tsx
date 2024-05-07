@@ -34,8 +34,6 @@ interface Props {
 }
 
 const Tile = ({ file, rank, candidate_move_status }: Props) => {
-	// const { current_candidate_moves } = useContext(GamePlayContext);
-	console.log('hi', file, rank);
 	return (
 		<View
 			style={[
