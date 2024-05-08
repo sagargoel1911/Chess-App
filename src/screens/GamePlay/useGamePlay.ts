@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
-import { COLORS, PIECES, initial_candidate_moves, initial_position } from './constants';
 import _ from 'lodash';
+
+import { COLORS, PIECES, RESULTS, RESULT_DESCRIPTIONS, initial_candidate_moves, initial_position } from './constants';
 
 const useGamePlay = () => {
 	const [current_position, set_current_position] = useState<any>(initial_position);
@@ -14,6 +15,9 @@ const useGamePlay = () => {
 	const [in_check, set_in_check] = useState<boolean>(false);
 	const [all_candidate_moves, set_all_candidate_moves] = useState<any>({});
 	const [half_moves, set_half_moves] = useState<number>(0);
+	const [result, set_result] = useState<string>('');
+	const [result_description, set_result_description] = useState<string>('');
+	const [is_open_results_modal, set_is_open_results_modal] = useState<boolean>(false);
 
 	const is_attacked = (rank: number, file: number, position: any, enemy_color: string): boolean => {
 		if (enemy_color === COLORS.BLACK && rank > 0) {
@@ -573,22 +577,43 @@ const useGamePlay = () => {
 		return false;
 	};
 
+	const open_results_modal = () => {
+		set_is_open_results_modal(true);
+	};
+
+	const close_results_modal = () => {
+		set_is_open_results_modal(false);
+	};
+
 	useEffect(() => {
 		const current_all_candidate_moves = get_all_candidate_moves();
 		const piece_situation = get_piece_situation();
 		if (_.isEqual(current_all_candidate_moves, {})) {
 			if (in_check) {
-				console.log('checkmate');
+				set_result(turn === COLORS.WHITE ? RESULTS.BLACK_WON : RESULTS.WHITE_WON);
+				set_result_description(RESULT_DESCRIPTIONS.CHECKMATE);
+				set_all_candidate_moves({});
+				open_results_modal();
 			} else {
-				console.log('stalemate');
+				set_result(RESULTS.DRAW);
+				set_result_description(RESULT_DESCRIPTIONS.STALEMATE);
+				set_all_candidate_moves({});
+				open_results_modal();
 			}
 		} else if (half_moves === 100) {
 			// check for 50 move rule
-			console.log('Draw by 50 move rule');
+			set_result(RESULTS.DRAW);
+			set_result_description(RESULT_DESCRIPTIONS.FIFTY_MOVE_RULE);
+			set_all_candidate_moves({});
+			open_results_modal();
 		} else if (check_insufficient_material(piece_situation)) {
-			console.log('Draw by insufficient material');
+			set_result(RESULTS.DRAW);
+			set_result_description(RESULT_DESCRIPTIONS.INSUFFICIENT_MATERIAL);
+			set_all_candidate_moves({});
+			open_results_modal();
+		} else {
+			set_all_candidate_moves(current_all_candidate_moves);
 		}
-		set_all_candidate_moves(current_all_candidate_moves);
 	}, [turn]);
 
 	const reset_candidate_moves = () => {
@@ -601,6 +626,10 @@ const useGamePlay = () => {
 		get_candidate_moves,
 		reset_candidate_moves,
 		get_piece_candidate_moves,
+		close_results_modal,
+		result,
+		result_description,
+		is_open_results_modal,
 	};
 };
 

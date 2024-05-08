@@ -33,3 +33,16 @@ export const COLORS = {
 	WHITE: 'w',
 	BLACK: 'b',
 };
+
+export const RESULTS = {
+	WHITE_WON: 'White Won',
+	BLACK_WON: 'Black Won',
+	DRAW: 'Draw',
+};
+
+export const RESULT_DESCRIPTIONS = {
+	CHECKMATE: 'checkmate',
+	STALEMATE: 'stalemate',
+	FIFTY_MOVE_RULE: '50 move rule',
+	INSUFFICIENT_MATERIAL: 'insufficient material',
+};

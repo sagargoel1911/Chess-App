@@ -25,6 +25,9 @@ const colors = {
 	light_square: '#EBECD0',
 	light_candidate_move: '#CACBB2',
 	dark_candidate_move: '#638046',
+	modal_white_background: '#BEBDB9',
+	modal_black_background: '#4B4645',
+	modal_draw_background: '#656462',
 };
 
 const fonts = {
