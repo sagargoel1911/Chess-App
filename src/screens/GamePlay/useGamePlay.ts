@@ -127,16 +127,11 @@ const useGamePlay = () => {
 		set_is_open_promotion_modal(false);
 	};
 
-	const reset_promotion_square = () => {
-		set_promotion_square([-1, -1]);
-	};
-
 	const perform_promotion = (piece: string) => {
 		const new_position = _.cloneDeep(current_position);
 		new_position[promotion_square[0]][promotion_square[1]] = piece;
 		set_current_position(new_position);
 		check_and_turn_change(piece, new_position);
-		reset_promotion_square();
 		close_promotion_modal();
 	};
 
