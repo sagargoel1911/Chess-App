@@ -18,6 +18,8 @@ const useGamePlay = () => {
 	const [result, set_result] = useState<string>('');
 	const [result_description, set_result_description] = useState<string>('');
 	const [is_open_results_modal, set_is_open_results_modal] = useState<boolean>(false);
+	const [is_open_promotion_modal, set_is_open_promotion_modal] = useState<boolean>(false);
+	const [promotion_square, set_promotion_square] = useState<any>([-1, -1]);
 
 	const is_attacked = (rank: number, file: number, position: any, enemy_color: string): boolean => {
 		if (enemy_color === COLORS.BLACK && rank > 0) {
@@ -97,6 +99,47 @@ const useGamePlay = () => {
 		}
 	};
 
+	const check_and_turn_change = (piece: string, new_position: any) => {
+		if (piece[0] === COLORS.WHITE) {
+			if (is_in_check(black_king_position[0], black_king_position[1], new_position, COLORS.BLACK)) {
+				set_in_check(true);
+			} else {
+				set_in_check(false);
+			}
+			set_turn(COLORS.BLACK);
+		}
+
+		if (piece[0] === COLORS.BLACK) {
+			if (is_in_check(white_king_position[0], white_king_position[1], new_position, COLORS.WHITE)) {
+				set_in_check(true);
+			} else {
+				set_in_check(false);
+			}
+			set_turn(COLORS.WHITE);
+		}
+	};
+
+	const open_promotion_modal = () => {
+		set_is_open_promotion_modal(true);
+	};
+
+	const close_promotion_modal = () => {
+		set_is_open_promotion_modal(false);
+	};
+
+	const reset_promotion_square = () => {
+		set_promotion_square([-1, -1]);
+	};
+
+	const perform_promotion = (piece: string) => {
+		const new_position = _.cloneDeep(current_position);
+		new_position[promotion_square[0]][promotion_square[1]] = piece;
+		set_current_position(new_position);
+		check_and_turn_change(piece, new_position);
+		reset_promotion_square();
+		close_promotion_modal();
+	};
+
 	const change_position = (new_rank: number, new_file: number, rank: number, file: number, piece: string) => {
 		const new_position = _.cloneDeep(current_position);
 		new_position[rank][file] = '';
@@ -162,22 +205,11 @@ const useGamePlay = () => {
 			set_en_passant_square(null);
 		}
 		set_current_position(new_position);
-		if (piece[0] === COLORS.WHITE) {
-			if (is_in_check(black_king_position[0], black_king_position[1], new_position, COLORS.BLACK)) {
-				set_in_check(true);
-			} else {
-				set_in_check(false);
-			}
-			set_turn(COLORS.BLACK);
-		}
-
-		if (piece[0] === COLORS.BLACK) {
-			if (is_in_check(white_king_position[0], white_king_position[1], new_position, COLORS.WHITE)) {
-				set_in_check(true);
-			} else {
-				set_in_check(false);
-			}
-			set_turn(COLORS.WHITE);
+		if (piece[1] === PIECES.PAWN && (new_rank === 0 || new_rank === 7)) {
+			set_promotion_square([new_rank, new_file]);
+			open_promotion_modal();
+		} else {
+			check_and_turn_change(piece, new_position);
 		}
 	};
 
@@ -630,6 +662,9 @@ const useGamePlay = () => {
 		result,
 		result_description,
 		is_open_results_modal,
+		is_open_promotion_modal,
+		perform_promotion,
+		promotion_square,
 	};
 };
 

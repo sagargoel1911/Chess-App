@@ -8,6 +8,7 @@ import RouteNames from 'src/navigation/RouteNames';
 import useGamePlay from './useGamePlay';
 import GamePlayContext from './context';
 import ResultsModal from './components/ResultsModal';
+import PromotionModal from './components/PromotionModal';
 
 const styles = StyleSheet.create({
 	container: {
@@ -74,6 +75,7 @@ const GamePlay = () => {
 					<PlayerInfo />
 				</View>
 				<ResultsModal />
+				<PromotionModal />
 			</GamePlayContext.Provider>
 		</View>
 	);
