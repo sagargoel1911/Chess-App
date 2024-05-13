@@ -1,9 +1,14 @@
 import { useEffect, useState } from 'react';
 import _ from 'lodash';
+import { shallowEqual } from 'react-redux';
 
 import { COLORS, PIECES, RESULTS, RESULT_DESCRIPTIONS, initial_candidate_moves, initial_position } from './constants';
+import { useAppDispatch, useAppSelector } from 'src/store';
+import { update_result } from 'src/actions/persistedUserData';
+import { GAME_RESULTS } from 'src/utils/constants';
+import { update_user_data } from 'src/actions/persistedAllUsersData';
 
-const useGamePlay = () => {
+const useGamePlay = (game_info) => {
 	const [current_position, set_current_position] = useState<any>(initial_position);
 	const [current_candidate_moves, set_current_candidate_moves] = useState<any>(initial_candidate_moves);
 	const [en_passant_square, set_en_passant_square] = useState<any>(null);
@@ -20,6 +25,17 @@ const useGamePlay = () => {
 	const [is_open_results_modal, set_is_open_results_modal] = useState<boolean>(false);
 	const [is_open_promotion_modal, set_is_open_promotion_modal] = useState<boolean>(false);
 	const [promotion_square, set_promotion_square] = useState<any>([-1, -1]);
+
+	const { player_color } = game_info;
+
+	const { username } = useAppSelector(
+		(state) => ({
+			username: state.persistedUserData.username,
+		}),
+		shallowEqual,
+	);
+
+	const dispatch = useAppDispatch();
 
 	const is_attacked = (rank: number, file: number, position: any, enemy_color: string): boolean => {
 		if (enemy_color === COLORS.BLACK && rank > 0) {
@@ -621,11 +637,37 @@ const useGamePlay = () => {
 				set_result_description(RESULT_DESCRIPTIONS.CHECKMATE);
 				set_all_candidate_moves({});
 				open_results_modal();
+				const winner_color = turn === COLORS.WHITE ? COLORS.BLACK : COLORS.WHITE;
+				if (username) {
+					dispatch(
+						update_result({
+							opponent: 'Opponent',
+							result: winner_color === player_color ? GAME_RESULTS.WIN : GAME_RESULTS.LOSS,
+						}),
+					);
+					dispatch(
+						update_user_data({
+							username,
+							game: {
+								opponent: 'Opponent',
+								result: winner_color === player_color ? GAME_RESULTS.WIN : GAME_RESULTS.LOSS,
+							},
+						}),
+					);
+				}
 			} else {
 				set_result(RESULTS.DRAW);
 				set_result_description(RESULT_DESCRIPTIONS.STALEMATE);
 				set_all_candidate_moves({});
 				open_results_modal();
+				if (username) {
+					dispatch(
+						update_result({
+							opponent: 'Opponent',
+							result: GAME_RESULTS.DRAW,
+						}),
+					);
+				}
 			}
 		} else if (half_moves === 100) {
 			// check for 50 move rule
@@ -633,11 +675,27 @@ const useGamePlay = () => {
 			set_result_description(RESULT_DESCRIPTIONS.FIFTY_MOVE_RULE);
 			set_all_candidate_moves({});
 			open_results_modal();
+			if (username) {
+				dispatch(
+					update_result({
+						opponent: 'Opponent',
+						result: GAME_RESULTS.DRAW,
+					}),
+				);
+			}
 		} else if (check_insufficient_material(piece_situation)) {
 			set_result(RESULTS.DRAW);
 			set_result_description(RESULT_DESCRIPTIONS.INSUFFICIENT_MATERIAL);
 			set_all_candidate_moves({});
 			open_results_modal();
+			if (username) {
+				dispatch(
+					update_result({
+						opponent: 'Opponent',
+						result: GAME_RESULTS.DRAW,
+					}),
+				);
+			}
 		} else {
 			set_all_candidate_moves(current_all_candidate_moves);
 		}

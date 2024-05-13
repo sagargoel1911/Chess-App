@@ -1,5 +1,6 @@
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 
+import { GAME_RESULTS } from 'src/utils/constants';
 import theme from 'src/utils/theme';
 
 const styles = StyleSheet.create({
@@ -81,14 +82,14 @@ const PreviousGames = ({ game_history }: Props) => {
 									styles.result,
 									{
 										color:
-											item.result === 'D'
+											item.result === GAME_RESULTS.DRAW
 												? theme.colors.icon_draw
-												: item.result === 'W'
+												: item.result === GAME_RESULTS.WIN
 													? theme.colors.icon_win
 													: theme.colors.icon_loss,
 									},
 								]}>
-								{item.result === 'D' ? 'ἃ' : item.result === 'W' ? 'ἁ' : 'ἂ'}
+								{item.result === GAME_RESULTS.DRAW ? 'ἃ' : item.result === GAME_RESULTS.WIN ? 'ἁ' : 'ἂ'}
 							</Text>
 						</View>
 					);

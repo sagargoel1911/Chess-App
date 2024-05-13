@@ -1,7 +1,6 @@
 import { combineReducers, createStore } from 'redux';
 import { TypedUseSelectorHook, useSelector, useDispatch } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2';
 import { persistStore, persistReducer } from 'redux-persist';
 
 import persistedAllUsersData from './reducers/persistedAllUsersData';
@@ -18,7 +17,6 @@ const persistConfig = {
 	key: 'root_chess',
 	version: 1,
 	storage: AsyncStorage,
-	stateReconciler: autoMergeLevel2,
 };
 
 export type RootReducer = ReturnType<typeof root_reducer>;

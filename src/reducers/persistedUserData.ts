@@ -1,6 +1,6 @@
 import _ from 'lodash';
 
-import { LOGIN_USER, LOGOUT_USER } from 'src/actions/reduxConstants';
+import { LOGIN_USER, LOGOUT_USER, UPDATE_RESULT } from 'src/actions/reduxConstants';
 
 export const PERSIST_REDUX_PATHS = {
 	username: 'username',
@@ -26,6 +26,10 @@ const persistedUserData = (state = _.cloneDeep(initial_state), action: any) => {
 		}
 		case LOGOUT_USER: {
 			return _.cloneDeep(initial_state);
+		}
+		case UPDATE_RESULT: {
+			const new_state = { ...state, [PERSIST_REDUX_PATHS.game_history]: [data, ...state[PERSIST_REDUX_PATHS.game_history]] };
+			return new_state;
 		}
 		default:
 			return state;
