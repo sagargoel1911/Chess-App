@@ -7,6 +7,7 @@ import { useNavigation } from '@react-navigation/native';
 import RouteNames from 'src/navigation/RouteNames';
 import useGamePlay from './useGamePlay';
 import GamePlayContext from './context';
+import ResultsModal from './components/ResultsModal';
 
 const styles = StyleSheet.create({
 	container: {
@@ -72,6 +73,7 @@ const GamePlay = () => {
 					<Board />
 					<PlayerInfo />
 				</View>
+				<ResultsModal />
 			</GamePlayContext.Provider>
 		</View>
 	);
