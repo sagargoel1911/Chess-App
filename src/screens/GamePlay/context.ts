@@ -11,6 +11,9 @@ interface Props {
 	result: string;
 	result_description: string;
 	is_open_results_modal: boolean;
+	is_open_promotion_modal: boolean;
+	perform_promotion: any;
+	promotion_square: any;
 }
 
 const GamePlayContext = React.createContext<Props>(null);
