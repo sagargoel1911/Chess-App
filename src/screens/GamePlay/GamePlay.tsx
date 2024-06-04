@@ -50,10 +50,14 @@ const styles = StyleSheet.create({
 	},
 });
 
-const GamePlay = () => {
+interface Props {
+	route: any;
+}
+
+const GamePlay = ({ route }: Props) => {
 	const navigation = useNavigation<any>();
 
-	const value = useGamePlay();
+	const value = useGamePlay({ ...route.params });
 
 	const end_game = () => {
 		navigation.navigate(RouteNames.GameInfo);

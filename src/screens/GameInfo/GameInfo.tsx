@@ -103,7 +103,9 @@ const GameInfo = () => {
 	};
 
 	const start_game = () => {
-		navigation.navigate(RouteNames.GamePlay);
+		navigation.navigate(RouteNames.GamePlay, {
+			player_color: player_color,
+		});
 	};
 
 	return (
