@@ -1,4 +1,5 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { shallowEqual } from 'react-redux';
 
 import Board from './components/Board/Board';
 import theme from 'src/utils/theme';
@@ -9,6 +10,8 @@ import useGamePlay from './useGamePlay';
 import GamePlayContext from './context';
 import ResultsModal from './components/ResultsModal';
 import PromotionModal from './components/PromotionModal';
+import { useAppSelector } from 'src/store';
+import { COLORS } from './constants';
 
 const styles = StyleSheet.create({
 	container: {
@@ -59,6 +62,15 @@ const GamePlay = ({ route }: Props) => {
 
 	const value = useGamePlay({ ...route.params });
 
+	const { username } = useAppSelector(
+		(state) => ({
+			username: state.persistedUserData.username,
+		}),
+		shallowEqual,
+	);
+
+	const { player_color, opponent_name } = route.params;
+
 	const end_game = () => {
 		navigation.navigate(RouteNames.GameInfo);
 	};
@@ -74,9 +86,9 @@ const GamePlay = ({ route }: Props) => {
 					</View>
 				</View>
 				<View style={styles.content}>
-					<PlayerInfo />
+					<PlayerInfo name={player_color === COLORS.BLACK ? (username ? username : 'You') : opponent_name} />
 					<Board />
-					<PlayerInfo />
+					<PlayerInfo name={player_color === COLORS.WHITE ? (username ? username : 'You') : opponent_name} />
 				</View>
 				<ResultsModal />
 				<PromotionModal />

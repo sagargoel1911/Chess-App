@@ -1,4 +1,4 @@
-import { FlatList, Platform, Pressable, ScrollView, StyleSheet, Switch, Text, View } from 'react-native';
+import { FlatList, Platform, Pressable, ScrollView, StyleSheet, Switch, Text, TextInput, View } from 'react-native';
 
 import theme from 'src/utils/theme';
 import Options from './components/Options';
@@ -66,9 +66,21 @@ interface Props {
 	username: string;
 	time_control: string;
 	change_time_control: (new_time_control: string) => void;
+	opponent_name: string;
+	change_opponent_name: any;
 }
 
-const Content = ({ player_color, toggle_color, rotates, toggle_rotates, username, time_control, change_time_control }: Props) => {
+const Content = ({
+	player_color,
+	toggle_color,
+	rotates,
+	toggle_rotates,
+	username,
+	time_control,
+	change_time_control,
+	opponent_name,
+	change_opponent_name,
+}: Props) => {
 	return (
 		<ScrollView style={styles.container}>
 			<View style={styles.heading}>
@@ -80,13 +92,25 @@ const Content = ({ player_color, toggle_color, rotates, toggle_rotates, username
 				</Pressable>
 				<Options
 					title='White'
-					CurrentOption={<Text style={styles.current_option}>{player_color === COLORS.WHITE ? username : 'Opponent'}</Text>}
+					CurrentOption={
+						player_color === COLORS.WHITE ? (
+							<Text style={styles.current_option}>{username}</Text>
+						) : (
+							<TextInput style={styles.current_option} value={opponent_name} onChangeText={change_opponent_name} />
+						)
+					}
 					BelowComponent={null}
 				/>
 				<View style={styles.line} />
 				<Options
 					title='Black'
-					CurrentOption={<Text style={styles.current_option}>{player_color === COLORS.BLACK ? username : 'Opponent'}</Text>}
+					CurrentOption={
+						player_color === COLORS.BLACK ? (
+							<Text style={styles.current_option}>{username}</Text>
+						) : (
+							<TextInput style={styles.current_option} value={opponent_name} onChangeText={change_opponent_name} />
+						)
+					}
 					BelowComponent={null}
 				/>
 				<View style={styles.line} />

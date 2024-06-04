@@ -78,6 +78,7 @@ const GameInfo = () => {
 	const [player_color, set_player_color] = useState<string>(COLORS.WHITE);
 	const [rotates, set_rotates] = useState<boolean>(false);
 	const [time_control, set_time_control] = useState<string>('None');
+	const [opponent_name, set_opponent_name] = useState<string>('Opponent');
 
 	const { username } = useAppSelector(
 		(state) => ({
@@ -85,6 +86,10 @@ const GameInfo = () => {
 		}),
 		shallowEqual,
 	);
+
+	const change_opponent_name = (updated_opponent_name: string) => {
+		set_opponent_name(updated_opponent_name);
+	};
 
 	const toggle_color = () => {
 		set_player_color((current_color) => (current_color === COLORS.WHITE ? COLORS.BLACK : COLORS.WHITE));
@@ -105,6 +110,7 @@ const GameInfo = () => {
 	const start_game = () => {
 		navigation.navigate(RouteNames.GamePlay, {
 			player_color: player_color,
+			opponent_name: opponent_name,
 		});
 	};
 
@@ -126,6 +132,8 @@ const GameInfo = () => {
 				username={username ? username : 'You'}
 				time_control={time_control}
 				change_time_control={change_time_control}
+				opponent_name={opponent_name}
+				change_opponent_name={change_opponent_name}
 			/>
 			<View style={styles.footer_container}>
 				<View style={styles.button_outer}>

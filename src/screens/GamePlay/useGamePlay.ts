@@ -26,7 +26,7 @@ const useGamePlay = (game_info) => {
 	const [is_open_promotion_modal, set_is_open_promotion_modal] = useState<boolean>(false);
 	const [promotion_square, set_promotion_square] = useState<any>([-1, -1]);
 
-	const { player_color } = game_info;
+	const { player_color, opponent_name } = game_info;
 
 	const { username } = useAppSelector(
 		(state) => ({
@@ -641,7 +641,7 @@ const useGamePlay = (game_info) => {
 				if (username) {
 					dispatch(
 						update_result({
-							opponent: 'Opponent',
+							opponent: opponent_name,
 							result: winner_color === player_color ? GAME_RESULTS.WIN : GAME_RESULTS.LOSS,
 						}),
 					);
@@ -649,7 +649,7 @@ const useGamePlay = (game_info) => {
 						update_user_data({
 							username,
 							game: {
-								opponent: 'Opponent',
+								opponent: opponent_name,
 								result: winner_color === player_color ? GAME_RESULTS.WIN : GAME_RESULTS.LOSS,
 							},
 						}),
@@ -663,7 +663,7 @@ const useGamePlay = (game_info) => {
 				if (username) {
 					dispatch(
 						update_result({
-							opponent: 'Opponent',
+							opponent: opponent_name,
 							result: GAME_RESULTS.DRAW,
 						}),
 					);
@@ -678,7 +678,7 @@ const useGamePlay = (game_info) => {
 			if (username) {
 				dispatch(
 					update_result({
-						opponent: 'Opponent',
+						opponent: opponent_name,
 						result: GAME_RESULTS.DRAW,
 					}),
 				);
@@ -691,7 +691,7 @@ const useGamePlay = (game_info) => {
 			if (username) {
 				dispatch(
 					update_result({
-						opponent: 'Opponent',
+						opponent: opponent_name,
 						result: GAME_RESULTS.DRAW,
 					}),
 				);
