@@ -1,9 +1,12 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 
 import Board from './components/Board/Board';
 import theme from 'src/utils/theme';
 import PlayerInfo from './components/PlayerInfo';
+import { useNavigation } from '@react-navigation/native';
+import RouteNames from 'src/navigation/RouteNames';
+import useGamePlay from './useGamePlay';
+import GamePlayContext from './context';
 
 const styles = StyleSheet.create({
 	container: {
@@ -45,30 +48,33 @@ const styles = StyleSheet.create({
 	},
 });
 
-const Game = () => {
+const GamePlay = () => {
 	const navigation = useNavigation<any>();
 
-	const go_back = () => {
-		navigation.goBack();
-	};
+	const value = useGamePlay();
 
+	const end_game = () => {
+		navigation.navigate(RouteNames.GameInfo);
+	};
 	return (
 		<View style={styles.container}>
-			<View style={styles.header_container}>
-				<Pressable onPress={go_back}>
-					<Text style={styles.back}>[</Text>
-				</Pressable>
-				<View style={styles.title_container}>
-					<Text style={styles.title_text}>Pass and Play</Text>
+			<GamePlayContext.Provider value={value}>
+				<View style={styles.header_container}>
+					<Pressable onPress={end_game}>
+						<Text style={styles.back}>[</Text>
+					</Pressable>
+					<View style={styles.title_container}>
+						<Text style={styles.title_text}>Pass and Play</Text>
+					</View>
 				</View>
-			</View>
-			<View style={styles.content}>
-				<PlayerInfo />
-				<Board />
-				<PlayerInfo />
-			</View>
+				<View style={styles.content}>
+					<PlayerInfo />
+					<Board />
+					<PlayerInfo />
+				</View>
+			</GamePlayContext.Provider>
 		</View>
 	);
 };
 
-export default Game;
+export default GamePlay;

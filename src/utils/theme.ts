@@ -23,6 +23,8 @@ const colors = {
 	brand_color_text_extra_light: '#7D7C7A',
 	dark_square: '#739552',
 	light_square: '#EBECD0',
+	light_candidate_move: '#CACBB2',
+	dark_candidate_move: '#638046',
 };
 
 const fonts = {

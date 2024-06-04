@@ -4,10 +4,10 @@ import TabBar from './Tab';
 import Login from 'src/screens/Login/Login';
 import SignUp from 'src/screens/SignUp/SignUp';
 import Profile from 'src/screens/Profile/Profile';
-import GameInfo from 'src/screens/GameInfo/GameInfo';
 import RouteNames from './RouteNames';
 import CustomToast from 'src/common/CustomToast';
-import Game from 'src/screens/Game/Game';
+import GameInfo from 'src/screens/GameInfo/GameInfo';
+import GamePlay from 'src/screens/GamePlay/GamePlay';
 
 const Stack = createStackNavigator();
 
@@ -19,13 +19,14 @@ const AppStack = () => {
 				screenOptions={{
 					headerShown: false,
 					...TransitionPresets.SlideFromRightIOS,
+					gestureEnabled: false,
 				}}>
 				<Stack.Screen name={RouteNames.MainApp} component={TabBar} />
 				<Stack.Screen name={RouteNames.Login} component={Login} />
 				<Stack.Screen name={RouteNames.SignUp} component={SignUp} />
 				<Stack.Screen name={RouteNames.Profile} component={Profile} />
 				<Stack.Screen name={RouteNames.GameInfo} component={GameInfo} />
-				<Stack.Screen name={RouteNames.Game} component={Game} />
+				<Stack.Screen name={RouteNames.GamePlay} component={GamePlay} />
 			</Stack.Navigator>
 			<CustomToast />
 		</>

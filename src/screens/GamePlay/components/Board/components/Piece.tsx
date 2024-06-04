@@ -2,9 +2,11 @@ import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, { runOnJS, useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
 import { StyleSheet } from 'react-native';
 import { Image } from 'expo-image';
+import { useContext } from 'react';
 
 import ImageLinks from 'src/assets/images/ImageLinks';
 import { tile_size } from '../constants';
+import GamePlayContext from 'src/screens/GamePlay/context';
 
 const styles = StyleSheet.create({
 	container: {
@@ -19,11 +21,11 @@ const styles = StyleSheet.create({
 interface Props {
 	file: number;
 	rank: number;
-	current_position: any;
-	change_position: any;
 }
 
-const Piece = ({ file, rank, current_position, change_position }: Props) => {
+const Piece = ({ file, rank }: Props) => {
+	const { current_candidate_moves, get_piece_candidate_moves, current_position, change_position, reset_candidate_moves } =
+		useContext(GamePlayContext);
 	const offset = useSharedValue({ x: 0, y: 0 });
 	const z_index = useSharedValue(100);
 
@@ -40,6 +42,7 @@ const Piece = ({ file, rank, current_position, change_position }: Props) => {
 		.onStart(() => {
 			'worklet';
 			z_index.value = 101;
+			runOnJS(get_piece_candidate_moves)(rank, file);
 		})
 		.onChange((e) => {
 			'worklet';
@@ -54,15 +57,23 @@ const Piece = ({ file, rank, current_position, change_position }: Props) => {
 			const new_rank = rank + Math.floor((offset.value.y + tile_size / 2) / tile_size);
 			const new_file = file + Math.floor((offset.value.x + tile_size / 2) / tile_size);
 
-			if ((rank === new_rank && file === new_file) || new_rank >= 8 || new_file >= 8 || new_rank < 0 || new_file < 0) {
+			if (
+				(rank === new_rank && file === new_file) ||
+				new_rank >= 8 ||
+				new_file >= 8 ||
+				new_rank < 0 ||
+				new_file < 0 ||
+				current_candidate_moves[new_rank][new_file] === 0
+			) {
 				z_index.value = 100;
 				offset.value = {
 					x: 0,
 					y: 0,
 				};
 			} else {
-				runOnJS(change_position)(new_rank, new_file, rank, file);
+				runOnJS(change_position)(new_rank, new_file, rank, file, pic);
 			}
+			runOnJS(reset_candidate_moves)();
 		});
 	return (
 		<GestureDetector gesture={gesture} key={`${rank}${file}`}>

@@ -103,7 +103,7 @@ const GameInfo = () => {
 	};
 
 	const start_game = () => {
-		navigation.navigate(RouteNames.Game);
+		navigation.navigate(RouteNames.GamePlay);
 	};
 
 	return (

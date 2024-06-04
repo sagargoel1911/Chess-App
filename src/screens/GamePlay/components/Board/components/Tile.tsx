@@ -1,4 +1,5 @@
 import { StyleSheet, Text, View } from 'react-native';
+import React from 'react';
 
 import theme from 'src/utils/theme';
 import { tile_size } from '../constants';
@@ -7,6 +8,8 @@ const styles = StyleSheet.create({
 	container: {
 		width: tile_size,
 		height: tile_size,
+		alignItems: 'center',
+		justifyContent: 'center',
 	},
 	tile_text_rank: {
 		position: 'absolute',
@@ -27,9 +30,10 @@ const styles = StyleSheet.create({
 interface Props {
 	file: number;
 	rank: number;
+	candidate_move_status: number;
 }
 
-const Tile = ({ file, rank }: Props) => {
+const Tile = ({ file, rank, candidate_move_status }: Props) => {
 	return (
 		<View
 			style={[
@@ -60,8 +64,29 @@ const Tile = ({ file, rank }: Props) => {
 					{`${String.fromCharCode(97 + file)}`}
 				</Text>
 			) : null}
+			{candidate_move_status === 1 && (
+				<View
+					style={{
+						backgroundColor: (file + rank) % 2 == 1 ? theme.colors.dark_candidate_move : theme.colors.light_candidate_move,
+						width: tile_size / 3,
+						height: tile_size / 3,
+						borderRadius: tile_size / 6,
+					}}
+				/>
+			)}
+			{candidate_move_status === 2 && (
+				<View
+					style={{
+						borderColor: (file + rank) % 2 == 1 ? theme.colors.dark_candidate_move : theme.colors.light_candidate_move,
+						width: tile_size,
+						height: tile_size,
+						borderRadius: tile_size / 2,
+						borderWidth: tile_size / 12,
+					}}
+				/>
+			)}
 		</View>
 	);
 };
 
-export default Tile;
+export default React.memo(Tile);
