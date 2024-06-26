@@ -22,12 +22,16 @@ const styles = StyleSheet.create({
 	},
 });
 
-const PlayerInfo = () => {
+interface Props {
+	name: string;
+}
+
+const PlayerInfo = ({ name }: Props) => {
 	return (
 		<View style={styles.container}>
 			<Image source={ImageLinks.profile_pic} style={styles.profile_pic} />
 			<View>
-				<Text style={styles.name}>Opponent</Text>
+				<Text style={styles.name}>{name}</Text>
 			</View>
 		</View>
 	);
