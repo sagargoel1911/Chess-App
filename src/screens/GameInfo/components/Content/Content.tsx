@@ -148,8 +148,8 @@ const Content = ({
 						/>
 					}
 				/>
-				<View style={styles.line} />
-				<Options
+				{/* <View style={styles.line} /> */}
+				{/* <Options
 					title='Board Rotates'
 					CurrentOption={
 						<Switch
@@ -161,7 +161,7 @@ const Content = ({
 						/>
 					}
 					BelowComponent={null}
-				/>
+				/> */}
 			</View>
 		</ScrollView>
 	);

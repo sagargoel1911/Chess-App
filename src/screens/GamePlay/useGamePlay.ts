@@ -7,6 +7,8 @@ import { useAppDispatch, useAppSelector } from 'src/store';
 import { update_result } from 'src/actions/persistedUserData';
 import { GAME_RESULTS } from 'src/utils/constants';
 import { update_user_data } from 'src/actions/persistedAllUsersData';
+import { SOUNDS } from 'src/assets/sounds/Sounds';
+import { Audio } from 'expo-av';
 
 const useGamePlay = (game_info) => {
 	const [current_position, set_current_position] = useState<any>(initial_position);
@@ -25,6 +27,7 @@ const useGamePlay = (game_info) => {
 	const [is_open_results_modal, set_is_open_results_modal] = useState<boolean>(false);
 	const [is_open_promotion_modal, set_is_open_promotion_modal] = useState<boolean>(false);
 	const [promotion_square, set_promotion_square] = useState<any>([-1, -1]);
+	const [sound, set_sound] = useState<any>();
 
 	const { player_color, opponent_name } = game_info;
 
@@ -36,6 +39,103 @@ const useGamePlay = (game_info) => {
 	);
 
 	const dispatch = useAppDispatch();
+
+	useEffect(() => {
+		return sound
+			? () => {
+					sound.unloadAsync();
+				}
+			: undefined;
+	}, []);
+
+	useEffect(() => {
+		play_sound(SOUNDS.game_start.id);
+	}, []);
+
+	useEffect(() => {
+		const current_all_candidate_moves = get_all_candidate_moves();
+		const piece_situation = get_piece_situation();
+		if (_.isEqual(current_all_candidate_moves, {})) {
+			if (in_check) {
+				set_result(turn === COLORS.WHITE ? RESULTS.BLACK_WON : RESULTS.WHITE_WON);
+				set_result_description(RESULT_DESCRIPTIONS.CHECKMATE);
+				set_all_candidate_moves({});
+				open_results_modal();
+				const winner_color = turn === COLORS.WHITE ? COLORS.BLACK : COLORS.WHITE;
+				if (username) {
+					dispatch(
+						update_result({
+							opponent: opponent_name,
+							result: winner_color === player_color ? GAME_RESULTS.WIN : GAME_RESULTS.LOSS,
+						}),
+					);
+					dispatch(
+						update_user_data({
+							username,
+							game: {
+								opponent: opponent_name,
+								result: winner_color === player_color ? GAME_RESULTS.WIN : GAME_RESULTS.LOSS,
+							},
+						}),
+					);
+				}
+				play_sound(SOUNDS.game_end.id);
+			} else {
+				set_result(RESULTS.DRAW);
+				set_result_description(RESULT_DESCRIPTIONS.STALEMATE);
+				set_all_candidate_moves({});
+				open_results_modal();
+				if (username) {
+					dispatch(
+						update_result({
+							opponent: opponent_name,
+							result: GAME_RESULTS.DRAW,
+						}),
+					);
+				}
+				play_sound(SOUNDS.game_end.id);
+			}
+		} else if (half_moves === 100) {
+			// check for 50 move rule
+			set_result(RESULTS.DRAW);
+			set_result_description(RESULT_DESCRIPTIONS.FIFTY_MOVE_RULE);
+			set_all_candidate_moves({});
+			open_results_modal();
+			if (username) {
+				dispatch(
+					update_result({
+						opponent: opponent_name,
+						result: GAME_RESULTS.DRAW,
+					}),
+				);
+			}
+			play_sound(SOUNDS.game_end.id);
+		} else if (check_insufficient_material(piece_situation)) {
+			set_result(RESULTS.DRAW);
+			set_result_description(RESULT_DESCRIPTIONS.INSUFFICIENT_MATERIAL);
+			set_all_candidate_moves({});
+			open_results_modal();
+			if (username) {
+				dispatch(
+					update_result({
+						opponent: opponent_name,
+						result: GAME_RESULTS.DRAW,
+					}),
+				);
+			}
+			play_sound(SOUNDS.game_end.id);
+		} else {
+			set_all_candidate_moves(current_all_candidate_moves);
+		}
+	}, [turn]);
+
+	const play_sound = async (sound_name: any) => {
+		const { sound: sound_to_play } = await Audio.Sound.createAsync(SOUNDS[sound_name].file);
+
+		set_sound(sound_to_play);
+
+		await sound_to_play.playAsync();
+	};
 
 	const is_attacked = (rank: number, file: number, position: any, enemy_color: string): boolean => {
 		if (enemy_color === COLORS.BLACK && rank > 0) {
@@ -115,23 +215,29 @@ const useGamePlay = (game_info) => {
 		}
 	};
 
-	const check_and_turn_change = (piece: string, new_position: any) => {
+	const check_and_turn_change = (piece: string, new_position: any): boolean => {
 		if (piece[0] === COLORS.WHITE) {
 			if (is_in_check(black_king_position[0], black_king_position[1], new_position, COLORS.BLACK)) {
 				set_in_check(true);
+				set_turn(COLORS.BLACK);
+				return true;
 			} else {
 				set_in_check(false);
+				set_turn(COLORS.BLACK);
+				return false;
 			}
-			set_turn(COLORS.BLACK);
 		}
 
 		if (piece[0] === COLORS.BLACK) {
 			if (is_in_check(white_king_position[0], white_king_position[1], new_position, COLORS.WHITE)) {
 				set_in_check(true);
+				set_turn(COLORS.WHITE);
+				return true;
 			} else {
 				set_in_check(false);
+				set_turn(COLORS.WHITE);
+				return false;
 			}
-			set_turn(COLORS.WHITE);
 		}
 	};
 
@@ -147,14 +253,27 @@ const useGamePlay = (game_info) => {
 		const new_position = _.cloneDeep(current_position);
 		new_position[promotion_square[0]][promotion_square[1]] = piece;
 		set_current_position(new_position);
-		check_and_turn_change(piece, new_position);
+		const is_check_done: boolean = check_and_turn_change(piece, new_position);
+		//make sound
+		if (is_check_done) {
+			play_sound(SOUNDS.check.id);
+		} else {
+			play_sound(SOUNDS.promote.id);
+		}
 		close_promotion_modal();
 	};
 
 	const change_position = (new_rank: number, new_file: number, rank: number, file: number, piece: string) => {
+		let is_capture: boolean = false,
+			is_castle: boolean = false;
+
 		const new_position = _.cloneDeep(current_position);
 		new_position[rank][file] = '';
 		new_position[new_rank][new_file] = current_position[rank][file];
+
+		if (current_position[new_rank][new_file] !== '') {
+			is_capture = true;
+		}
 
 		//increment half move for 50 move draw
 		if (piece[1] == PIECES.PAWN || current_position[new_rank][new_file] !== '') {
@@ -163,14 +282,17 @@ const useGamePlay = (game_info) => {
 			set_half_moves((previous_count) => previous_count + 1);
 		}
 
+		//en passant move check
 		if (piece[1] === PIECES.PAWN && en_passant_square && en_passant_square[0] === new_rank && en_passant_square[1] === new_file) {
 			if (piece[0] === COLORS.WHITE) {
 				new_position[new_rank + 1][new_file] = '';
 			} else {
 				new_position[new_rank - 1][new_file] = '';
 			}
+			is_capture = true;
 		}
 
+		//castling rights logic
 		if (piece[1] === PIECES.KING) {
 			if (piece[0] === COLORS.WHITE) {
 				set_white_castling_rights({ k: false, q: false });
@@ -193,6 +315,7 @@ const useGamePlay = (game_info) => {
 			}
 		}
 
+		//castling move logic
 		if (piece[1] === PIECES.KING) {
 			if (piece[0] === COLORS.WHITE) {
 				set_white_king_position([new_rank, new_file]);
@@ -202,12 +325,15 @@ const useGamePlay = (game_info) => {
 			if (file - new_file === 2) {
 				new_position[rank][3] = current_position[rank][0];
 				new_position[rank][0] = '';
+				is_castle = true;
 			} else if (new_file - file === 2) {
 				new_position[rank][5] = current_position[rank][7];
 				new_position[rank][7] = '';
+				is_castle = true;
 			}
 		}
 
+		//en passant square change logic
 		if (piece === 'wp' && rank - new_rank === 2) {
 			set_en_passant_square([new_rank + 1, file]);
 		} else if (piece === 'bp' && new_rank - rank === 2) {
@@ -215,12 +341,25 @@ const useGamePlay = (game_info) => {
 		} else {
 			set_en_passant_square(null);
 		}
+
 		set_current_position(new_position);
+
+		//promotion logic
 		if (piece[1] === PIECES.PAWN && (new_rank === 0 || new_rank === 7)) {
 			set_promotion_square([new_rank, new_file]);
 			open_promotion_modal();
 		} else {
-			check_and_turn_change(piece, new_position);
+			const is_check_done = check_and_turn_change(piece, new_position);
+
+			if (is_check_done) {
+				play_sound(SOUNDS.check.id);
+			} else if (is_capture) {
+				play_sound(SOUNDS.capture.id);
+			} else if (is_castle) {
+				play_sound(SOUNDS.castle.id);
+			} else {
+				play_sound(SOUNDS.move.id);
+			}
 		}
 	};
 
@@ -627,79 +766,6 @@ const useGamePlay = (game_info) => {
 	const close_results_modal = () => {
 		set_is_open_results_modal(false);
 	};
-
-	useEffect(() => {
-		const current_all_candidate_moves = get_all_candidate_moves();
-		const piece_situation = get_piece_situation();
-		if (_.isEqual(current_all_candidate_moves, {})) {
-			if (in_check) {
-				set_result(turn === COLORS.WHITE ? RESULTS.BLACK_WON : RESULTS.WHITE_WON);
-				set_result_description(RESULT_DESCRIPTIONS.CHECKMATE);
-				set_all_candidate_moves({});
-				open_results_modal();
-				const winner_color = turn === COLORS.WHITE ? COLORS.BLACK : COLORS.WHITE;
-				if (username) {
-					dispatch(
-						update_result({
-							opponent: opponent_name,
-							result: winner_color === player_color ? GAME_RESULTS.WIN : GAME_RESULTS.LOSS,
-						}),
-					);
-					dispatch(
-						update_user_data({
-							username,
-							game: {
-								opponent: opponent_name,
-								result: winner_color === player_color ? GAME_RESULTS.WIN : GAME_RESULTS.LOSS,
-							},
-						}),
-					);
-				}
-			} else {
-				set_result(RESULTS.DRAW);
-				set_result_description(RESULT_DESCRIPTIONS.STALEMATE);
-				set_all_candidate_moves({});
-				open_results_modal();
-				if (username) {
-					dispatch(
-						update_result({
-							opponent: opponent_name,
-							result: GAME_RESULTS.DRAW,
-						}),
-					);
-				}
-			}
-		} else if (half_moves === 100) {
-			// check for 50 move rule
-			set_result(RESULTS.DRAW);
-			set_result_description(RESULT_DESCRIPTIONS.FIFTY_MOVE_RULE);
-			set_all_candidate_moves({});
-			open_results_modal();
-			if (username) {
-				dispatch(
-					update_result({
-						opponent: opponent_name,
-						result: GAME_RESULTS.DRAW,
-					}),
-				);
-			}
-		} else if (check_insufficient_material(piece_situation)) {
-			set_result(RESULTS.DRAW);
-			set_result_description(RESULT_DESCRIPTIONS.INSUFFICIENT_MATERIAL);
-			set_all_candidate_moves({});
-			open_results_modal();
-			if (username) {
-				dispatch(
-					update_result({
-						opponent: opponent_name,
-						result: GAME_RESULTS.DRAW,
-					}),
-				);
-			}
-		} else {
-			set_all_candidate_moves(current_all_candidate_moves);
-		}
-	}, [turn]);
 
 	const reset_candidate_moves = () => {
 		set_current_candidate_moves(_.cloneDeep(initial_candidate_moves));
