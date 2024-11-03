@@ -86,9 +86,15 @@ const GamePlay = ({ route }: Props) => {
 					</View>
 				</View>
 				<View style={styles.content}>
-					<PlayerInfo name={player_color === COLORS.BLACK ? (username ? username : 'You') : opponent_name} />
+					<PlayerInfo
+						name={player_color === COLORS.BLACK ? (username ? username : 'You') : opponent_name}
+						color={COLORS.BLACK}
+					/>
 					<Board />
-					<PlayerInfo name={player_color === COLORS.WHITE ? (username ? username : 'You') : opponent_name} />
+					<PlayerInfo
+						name={player_color === COLORS.WHITE ? (username ? username : 'You') : opponent_name}
+						color={COLORS.WHITE}
+					/>
 				</View>
 				<ResultsModal />
 				<PromotionModal />

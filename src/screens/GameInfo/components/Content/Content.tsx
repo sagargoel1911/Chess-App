@@ -1,8 +1,10 @@
 import { FlatList, Platform, Pressable, ScrollView, StyleSheet, Switch, Text, TextInput, View } from 'react-native';
+import _ from 'lodash';
 
 import theme from 'src/utils/theme';
 import Options from './components/Options';
-import { COLORS, TIME_CONTROLS } from '../../constants';
+import { COLORS } from '../../constants';
+import { TIME_CONTROLS } from 'src/utils/constants';
 
 const styles = StyleSheet.create({
 	container: {
@@ -64,8 +66,8 @@ interface Props {
 	rotates: boolean;
 	toggle_rotates: () => void;
 	username: string;
-	time_control: string;
-	change_time_control: (new_time_control: string) => void;
+	time_control: any;
+	change_time_control: (new_time_control: any) => void;
 	opponent_name: string;
 	change_opponent_name: any;
 }
@@ -116,14 +118,14 @@ const Content = ({
 				<View style={styles.line} />
 				<Options
 					title='Time Control'
-					CurrentOption={<Text style={styles.current_option}>{time_control}</Text>}
+					CurrentOption={<Text style={styles.current_option}>{time_control.label}</Text>}
 					BelowComponent={
 						<FlatList
 							scrollEnabled={false}
 							data={TIME_CONTROLS}
 							numColumns={3}
 							renderItem={({ item, index }) => {
-								const is_checked = time_control === item;
+								const is_checked = _.isEqual(time_control, item);
 								return (
 									<View style={styles.time_control}>
 										<Pressable
@@ -138,7 +140,7 @@ const Content = ({
 												},
 											]}
 											onPress={() => change_time_control(item)}>
-											<Text style={styles.item_text}>{item}</Text>
+											<Text style={styles.item_text}>{item.label}</Text>
 										</Pressable>
 									</View>
 								);

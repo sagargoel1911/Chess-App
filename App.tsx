@@ -8,6 +8,7 @@ import { PersistGate } from 'redux-persist/integration/react';
 import { Provider } from 'react-redux';
 import { NativeBaseProvider } from 'native-base';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import dayjs from 'dayjs';
 
 import theme from './src/utils/theme';
 import AppStack from './src/navigation/AppStack';
@@ -23,6 +24,10 @@ const styles = StyleSheet.create({
 		backgroundColor: theme.colors.white,
 	},
 });
+
+var utc = require('dayjs/plugin/utc');
+
+dayjs.extend(utc);
 
 SplashScreen.preventAutoHideAsync();
 

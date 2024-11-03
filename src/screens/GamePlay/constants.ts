@@ -45,4 +45,5 @@ export const RESULT_DESCRIPTIONS = {
 	STALEMATE: 'stalemate',
 	FIFTY_MOVE_RULE: '50 move rule',
 	INSUFFICIENT_MATERIAL: 'insufficient material',
+	TIMEOUT: 'timeout',
 };
