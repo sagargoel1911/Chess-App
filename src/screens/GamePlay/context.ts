@@ -14,6 +14,9 @@ interface Props {
 	is_open_promotion_modal: boolean;
 	perform_promotion: any;
 	promotion_square: any;
+	white_time_left: number;
+	black_time_left: number;
+	time_control: any;
 }
 
 const GamePlayContext = React.createContext<Props>(null);

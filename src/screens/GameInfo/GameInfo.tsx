@@ -2,6 +2,7 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { shallowEqual } from 'react-redux';
 import { useState } from 'react';
+import _ from 'lodash';
 
 import theme from 'src/utils/theme';
 import Content from './components/Content/Content';
@@ -77,7 +78,7 @@ const GameInfo = () => {
 
 	const [player_color, set_player_color] = useState<string>(COLORS.WHITE);
 	const [rotates, set_rotates] = useState<boolean>(false);
-	const [time_control, set_time_control] = useState<string>('None');
+	const [time_control, set_time_control] = useState<any>({ label: 'None', time: null, increment: null });
 	const [opponent_name, set_opponent_name] = useState<string>('Opponent');
 
 	const { username } = useAppSelector(
@@ -99,8 +100,8 @@ const GameInfo = () => {
 		set_rotates((previous_value) => !previous_value);
 	};
 
-	const change_time_control = (new_time_control: string) => {
-		set_time_control(new_time_control);
+	const change_time_control = (new_time_control: any) => {
+		set_time_control(_.cloneDeep(new_time_control));
 	};
 
 	const go_back = () => {
@@ -109,8 +110,9 @@ const GameInfo = () => {
 
 	const start_game = () => {
 		navigation.navigate(RouteNames.GamePlay, {
-			player_color: player_color,
-			opponent_name: opponent_name,
+			player_color,
+			opponent_name,
+			time_control,
 		});
 	};
 

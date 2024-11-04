@@ -11,6 +11,8 @@ import { SOUNDS } from 'src/assets/sounds/Sounds';
 import { Audio } from 'expo-av';
 
 const useGamePlay = (game_info) => {
+	const { player_color, opponent_name, time_control } = game_info;
+
 	const [current_position, set_current_position] = useState<any>(initial_position);
 	const [current_candidate_moves, set_current_candidate_moves] = useState<any>(initial_candidate_moves);
 	const [en_passant_square, set_en_passant_square] = useState<any>(null);
@@ -28,8 +30,9 @@ const useGamePlay = (game_info) => {
 	const [is_open_promotion_modal, set_is_open_promotion_modal] = useState<boolean>(false);
 	const [promotion_square, set_promotion_square] = useState<any>([-1, -1]);
 	const [sound, set_sound] = useState<any>();
-
-	const { player_color, opponent_name } = game_info;
+	const [white_time_left, set_white_time_left] = useState<number>(time_control.time);
+	const [black_time_left, set_black_time_left] = useState<number>(time_control.time);
+	const [clock_interval_id, set_clock_interval_id] = useState<any>(null);
 
 	const { username } = useAppSelector(
 		(state) => ({
@@ -50,7 +53,31 @@ const useGamePlay = (game_info) => {
 
 	useEffect(() => {
 		play_sound(SOUNDS.game_start.id);
+
+		if (time_control.label !== 'NULL') {
+			set_clock_interval_id(
+				setInterval(() => {
+					set_white_time_left((previous_time) => previous_time - 1000);
+				}, 1000),
+			);
+		}
 	}, []);
+
+	useEffect(() => {
+		if (white_time_left === 0) {
+			clearInterval(clock_interval_id);
+			set_result(RESULTS.BLACK_WON);
+			set_result_description(RESULT_DESCRIPTIONS.TIMEOUT);
+			open_results_modal();
+			play_sound(SOUNDS.game_end.id);
+		} else if (black_time_left === 0) {
+			clearInterval(clock_interval_id);
+			set_result(RESULTS.WHITE_WON);
+			set_result_description(RESULT_DESCRIPTIONS.TIMEOUT);
+			open_results_modal();
+			play_sound(SOUNDS.game_end.id);
+		}
+	}, [white_time_left, black_time_left]);
 
 	useEffect(() => {
 		const current_all_candidate_moves = get_all_candidate_moves();
@@ -220,9 +247,28 @@ const useGamePlay = (game_info) => {
 			if (is_in_check(black_king_position[0], black_king_position[1], new_position, COLORS.BLACK)) {
 				set_in_check(true);
 				set_turn(COLORS.BLACK);
+
+				if (time_control.label !== 'NULL') {
+					set_white_time_left((previous_time) => previous_time + time_control.increment);
+					clearInterval(clock_interval_id);
+					set_clock_interval_id(
+						setInterval(() => {
+							set_black_time_left((previous_time) => previous_time - 1000);
+						}, 1000),
+					);
+				}
 				return true;
 			} else {
 				set_in_check(false);
+				if (time_control.label !== 'NULL') {
+					set_white_time_left((previous_time) => previous_time + time_control.increment);
+					clearInterval(clock_interval_id);
+					set_clock_interval_id(
+						setInterval(() => {
+							set_black_time_left((previous_time) => previous_time - 1000);
+						}, 1000),
+					);
+				}
 				set_turn(COLORS.BLACK);
 				return false;
 			}
@@ -232,10 +278,30 @@ const useGamePlay = (game_info) => {
 			if (is_in_check(white_king_position[0], white_king_position[1], new_position, COLORS.WHITE)) {
 				set_in_check(true);
 				set_turn(COLORS.WHITE);
+
+				if (time_control.label !== 'NULL') {
+					set_black_time_left((previous_time) => previous_time + time_control.increment);
+					clearInterval(clock_interval_id);
+					set_clock_interval_id(
+						setInterval(() => {
+							set_white_time_left((previous_time) => previous_time - 1000);
+						}, 1000),
+					);
+				}
 				return true;
 			} else {
 				set_in_check(false);
 				set_turn(COLORS.WHITE);
+
+				if (time_control.label !== 'NULL') {
+					set_black_time_left((previous_time) => previous_time + time_control.increment);
+					clearInterval(clock_interval_id);
+					set_clock_interval_id(
+						setInterval(() => {
+							set_white_time_left((previous_time) => previous_time - 1000);
+						}, 1000),
+					);
+				}
 				return false;
 			}
 		}
@@ -349,7 +415,7 @@ const useGamePlay = (game_info) => {
 			set_promotion_square([new_rank, new_file]);
 			open_promotion_modal();
 		} else {
-			const is_check_done = check_and_turn_change(piece, new_position);
+			const is_check_done: boolean = check_and_turn_change(piece, new_position);
 
 			if (is_check_done) {
 				play_sound(SOUNDS.check.id);
@@ -784,6 +850,9 @@ const useGamePlay = (game_info) => {
 		is_open_promotion_modal,
 		perform_promotion,
 		promotion_square,
+		white_time_left,
+		black_time_left,
+		time_control,
 	};
 };
 
