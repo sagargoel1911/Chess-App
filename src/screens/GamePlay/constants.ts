@@ -46,4 +46,5 @@ export const RESULT_DESCRIPTIONS = {
 	FIFTY_MOVE_RULE: '50 move rule',
 	INSUFFICIENT_MATERIAL: 'insufficient material',
 	TIMEOUT: 'timeout',
+	THREEFOLD_REPETITION: 'threefold repetition',
 };
