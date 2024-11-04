@@ -33,6 +33,7 @@ const useGamePlay = (game_info) => {
 	const [white_time_left, set_white_time_left] = useState<number>(time_control.time);
 	const [black_time_left, set_black_time_left] = useState<number>(time_control.time);
 	const [clock_interval_id, set_clock_interval_id] = useState<any>(null);
+	const [position_count, set_position_count] = useState<any>({});
 
 	const { username } = useAppSelector(
 		(state) => ({
@@ -42,6 +43,100 @@ const useGamePlay = (game_info) => {
 	);
 
 	const dispatch = useAppDispatch();
+
+	const convert_current_position_to_fen = () => {
+		let fen: string = '';
+
+		//part 1 of fen
+		for (let i = 0; i < 8; i++) {
+			for (let j = 0; j < 8; j++) {
+				if (current_position[i][j] === '') {
+					let num = 0;
+					while (j < 8 && current_position[i][j] === '') {
+						num++;
+						j++;
+					}
+					fen += `${num}`;
+					j--;
+				} else {
+					if (current_position[i][j][0] === COLORS.WHITE) {
+						fen += _.upperCase(current_position[i][j][1]);
+					} else {
+						fen += current_position[i][j][1];
+					}
+				}
+			}
+			if (i < 7) fen += '/';
+		}
+
+		//part 2 of fen: active color
+
+		fen += ' ';
+		fen += turn;
+
+		//part 3 of fen: castling rights
+
+		fen += ' ';
+		let castling_string = '';
+
+		if (white_castling_rights.k) castling_string += 'K';
+		if (white_castling_rights.q) castling_string += 'Q';
+		if (black_castling_rights.k) castling_string += 'k';
+		if (black_castling_rights.q) castling_string += 'q';
+		if (castling_string.length === 0) castling_string = '-';
+
+		fen += castling_string;
+
+		//currently not doing part 4, 5 of fen
+		//Adding a new field, is pawn en passant possible
+
+		fen += ' ';
+
+		if (_.isNil(en_passant_square)) {
+			fen += '-';
+		} else {
+			if (en_passant_square[0] == 2) {
+				if (en_passant_square[1] < 7 && current_position[3][en_passant_square[1] + 1] == `${COLORS.WHITE}${PIECES.PAWN}`) {
+					fen += en_passant_square;
+				} else if (
+					en_passant_square[1] > 0 &&
+					current_position[3][en_passant_square[1] - 1] == `${COLORS.WHITE}${PIECES.PAWN}`
+				) {
+					fen += en_passant_square;
+				} else {
+					fen += '-';
+				}
+			} else if (en_passant_square[0] == 6) {
+				if (en_passant_square[1] < 7 && current_position[5][en_passant_square[1] + 1] == `${COLORS.BLACK}${PIECES.PAWN}`) {
+					fen += en_passant_square;
+				} else if (
+					en_passant_square[1] > 0 &&
+					current_position[5][en_passant_square[1] - 1] == `${COLORS.BLACK}${PIECES.PAWN}`
+				) {
+					fen += en_passant_square;
+				} else {
+					fen += '-';
+				}
+			} else {
+				fen += '-';
+			}
+		}
+
+		return fen;
+	};
+
+	const check_threefold_repitition = () => {
+		const new_position_count = _.cloneDeep(position_count);
+		const fen = convert_current_position_to_fen();
+
+		new_position_count[fen] = new_position_count[fen] ? new_position_count[fen] + 1 : 1;
+
+		set_position_count(_.cloneDeep(new_position_count));
+		if (new_position_count[fen] >= 3) {
+			return true;
+		}
+		return false;
+	};
 
 	useEffect(() => {
 		return sound
@@ -68,13 +163,51 @@ const useGamePlay = (game_info) => {
 			clearInterval(clock_interval_id);
 			set_result(RESULTS.BLACK_WON);
 			set_result_description(RESULT_DESCRIPTIONS.TIMEOUT);
+			set_all_candidate_moves({});
 			open_results_modal();
+			const winner_color = turn;
+			if (username) {
+				dispatch(
+					update_result({
+						opponent: opponent_name,
+						result: winner_color === player_color ? GAME_RESULTS.WIN : GAME_RESULTS.LOSS,
+					}),
+				);
+				dispatch(
+					update_user_data({
+						username,
+						game: {
+							opponent: opponent_name,
+							result: winner_color === player_color ? GAME_RESULTS.WIN : GAME_RESULTS.LOSS,
+						},
+					}),
+				);
+			}
 			play_sound(SOUNDS.game_end.id);
 		} else if (black_time_left === 0) {
 			clearInterval(clock_interval_id);
 			set_result(RESULTS.WHITE_WON);
 			set_result_description(RESULT_DESCRIPTIONS.TIMEOUT);
+			set_all_candidate_moves({});
 			open_results_modal();
+			const winner_color = turn;
+			if (username) {
+				dispatch(
+					update_result({
+						opponent: opponent_name,
+						result: winner_color === player_color ? GAME_RESULTS.WIN : GAME_RESULTS.LOSS,
+					}),
+				);
+				dispatch(
+					update_user_data({
+						username,
+						game: {
+							opponent: opponent_name,
+							result: winner_color === player_color ? GAME_RESULTS.WIN : GAME_RESULTS.LOSS,
+						},
+					}),
+				);
+			}
 			play_sound(SOUNDS.game_end.id);
 		}
 	}, [white_time_left, black_time_left]);
@@ -140,6 +273,20 @@ const useGamePlay = (game_info) => {
 		} else if (check_insufficient_material(piece_situation)) {
 			set_result(RESULTS.DRAW);
 			set_result_description(RESULT_DESCRIPTIONS.INSUFFICIENT_MATERIAL);
+			set_all_candidate_moves({});
+			open_results_modal();
+			if (username) {
+				dispatch(
+					update_result({
+						opponent: opponent_name,
+						result: GAME_RESULTS.DRAW,
+					}),
+				);
+			}
+			play_sound(SOUNDS.game_end.id);
+		} else if (check_threefold_repitition()) {
+			set_result(RESULTS.DRAW);
+			set_result_description(RESULT_DESCRIPTIONS.THREEFOLD_REPETITION);
 			set_all_candidate_moves({});
 			open_results_modal();
 			if (username) {
