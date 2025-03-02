@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import _ from 'lodash';
 import { shallowEqual } from 'react-redux';
+import { Audio } from 'expo-av';
+import { useNavigation, useRoute } from '@react-navigation/native';
 
 import { COLORS, PIECES, RESULTS, RESULT_DESCRIPTIONS, initial_candidate_moves, initial_position } from './constants';
 import { useAppDispatch, useAppSelector } from 'src/store';
@@ -8,10 +10,12 @@ import { update_result } from 'src/actions/persistedUserData';
 import { GAME_RESULTS } from 'src/utils/constants';
 import { update_user_data } from 'src/actions/persistedAllUsersData';
 import { SOUNDS } from 'src/assets/sounds/Sounds';
-import { Audio } from 'expo-av';
+import RouteNames from 'src/navigation/RouteNames';
 
-const useGamePlay = (game_info) => {
-	const { player_color, opponent_name, time_control } = game_info;
+const useGamePlay = () => {
+	const {
+		params: { player_color, opponent_name, time_control },
+	} = useRoute<any>();
 
 	const [current_position, set_current_position] = useState<any>(initial_position);
 	const [current_candidate_moves, set_current_candidate_moves] = useState<any>(initial_candidate_moves);
@@ -43,6 +47,8 @@ const useGamePlay = (game_info) => {
 	);
 
 	const dispatch = useAppDispatch();
+
+	const navigation = useNavigation<any>();
 
 	const convert_current_position_to_fen = () => {
 		let fen: string = '';
@@ -983,6 +989,11 @@ const useGamePlay = (game_info) => {
 	const reset_candidate_moves = () => {
 		set_current_candidate_moves(_.cloneDeep(initial_candidate_moves));
 	};
+
+	const end_game = () => {
+		navigation.navigate(RouteNames.GameInfo);
+	};
+
 	return {
 		current_candidate_moves,
 		current_position,
@@ -1000,6 +1011,10 @@ const useGamePlay = (game_info) => {
 		white_time_left,
 		black_time_left,
 		time_control,
+		player_color,
+		opponent_name,
+		end_game,
+		username,
 	};
 };
 

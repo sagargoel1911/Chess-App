@@ -1,16 +1,13 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native';
-import { shallowEqual } from 'react-redux';
+import { useContext, useMemo } from 'react';
 
 import Board from './components/Board/Board';
 import theme from 'src/utils/theme';
 import PlayerInfo from './components/PlayerInfo';
-import { useNavigation } from '@react-navigation/native';
-import RouteNames from 'src/navigation/RouteNames';
 import useGamePlay from './useGamePlay';
 import GamePlayContext from './context';
 import ResultsModal from './components/ResultsModal';
 import PromotionModal from './components/PromotionModal';
-import { useAppSelector } from 'src/store';
 import { COLORS } from './constants';
 
 const styles = StyleSheet.create({
@@ -53,53 +50,43 @@ const styles = StyleSheet.create({
 	},
 });
 
-interface Props {
-	route: any;
-}
+const GamePlayComp = () => {
+	const { player_color, opponent_name, end_game, username } = useContext(GamePlayContext);
 
-const GamePlay = ({ route }: Props) => {
-	const navigation = useNavigation<any>();
-
-	const value = useGamePlay({ ...route.params });
-
-	const { username } = useAppSelector(
-		(state) => ({
-			username: state.persistedUserData.username,
-		}),
-		shallowEqual,
-	);
-
-	const { player_color, opponent_name } = route.params;
-
-	const end_game = () => {
-		navigation.navigate(RouteNames.GameInfo);
-	};
 	return (
 		<View style={styles.container}>
-			<GamePlayContext.Provider value={value}>
-				<View style={styles.header_container}>
-					<Pressable onPress={end_game}>
-						<Text style={styles.back}>[</Text>
-					</Pressable>
-					<View style={styles.title_container}>
-						<Text style={styles.title_text}>Pass and Play</Text>
-					</View>
+			<View style={styles.header_container}>
+				<Pressable onPress={end_game}>
+					<Text style={styles.back}>[</Text>
+				</Pressable>
+				<View style={styles.title_container}>
+					<Text style={styles.title_text}>Pass and Play</Text>
 				</View>
-				<View style={styles.content}>
-					<PlayerInfo
-						name={player_color === COLORS.BLACK ? (username ? username : 'You') : opponent_name}
-						color={COLORS.BLACK}
-					/>
-					<Board />
-					<PlayerInfo
-						name={player_color === COLORS.WHITE ? (username ? username : 'You') : opponent_name}
-						color={COLORS.WHITE}
-					/>
-				</View>
-				<ResultsModal />
-				<PromotionModal />
-			</GamePlayContext.Provider>
+			</View>
+			<View style={styles.content}>
+				<PlayerInfo
+					name={player_color === COLORS.BLACK ? (username ? username : 'You') : opponent_name}
+					color={COLORS.BLACK}
+				/>
+				<Board />
+				<PlayerInfo
+					name={player_color === COLORS.WHITE ? (username ? username : 'You') : opponent_name}
+					color={COLORS.WHITE}
+				/>
+			</View>
+			<ResultsModal />
+			<PromotionModal />
 		</View>
+	);
+};
+
+const GamePlay = () => {
+	const value = useGamePlay();
+
+	return (
+		<GamePlayContext.Provider value={value}>
+			<GamePlayComp />
+		</GamePlayContext.Provider>
 	);
 };
 
