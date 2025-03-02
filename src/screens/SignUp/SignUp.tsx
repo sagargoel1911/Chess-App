@@ -21,6 +21,7 @@ const SignUp = () => {
 			[FORM_ELEMENTS.email]: '',
 			[FORM_ELEMENTS.password]: '',
 			[FORM_ELEMENTS.username]: '',
+			[FORM_ELEMENTS.profile_picture]: null,
 		},
 	});
 

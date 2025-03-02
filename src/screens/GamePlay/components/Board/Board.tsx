@@ -1,6 +1,6 @@
 import { StyleSheet, View } from 'react-native';
 import _ from 'lodash';
-import { useContext, useState } from 'react';
+import { useContext } from 'react';
 
 import Tile from './components/Tile';
 import { files, ranks } from './constants';

@@ -79,20 +79,42 @@ const Username = () => {
 				<View style={styles.top_section}>
 					<Text style={styles.top_text}>Choose a username</Text>
 					<Text style={styles.message}>This is what your friends and other players will see when you play</Text>
-					<View>
-						<TextField
-							name={FORM_ELEMENTS.username}
-							rules={{
-								required: true,
-								maxLength: 25,
-								signup: true,
-							}}
-							leftIconText='b'
-							placeholder='Username'
-							lengthCheck={true}
-							maxLength={25}
-							label='Username'
-						/>
+					<View style={{ flex: 1, flexDirection: 'row', columnGap: 12 }}>
+						<View
+							style={{
+								width: 50,
+								height: 50,
+								backgroundColor: theme.colors.text_box_color,
+								borderRadius: 8,
+								alignItems: 'center',
+								justifyContent: 'center',
+							}}>
+							<Pressable>
+								<Text
+									style={{
+										fontFamily: theme.fonts.chess,
+										color: theme.colors.brand_color_text_light,
+										fontSize: 24,
+									}}>
+									ζ
+								</Text>
+							</Pressable>
+						</View>
+						<View style={{ flex: 1 }}>
+							<TextField
+								name={FORM_ELEMENTS.username}
+								rules={{
+									required: true,
+									maxLength: 25,
+									signup: true,
+								}}
+								leftIconText='b'
+								placeholder='Username'
+								lengthCheck={true}
+								maxLength={25}
+								label='Username'
+							/>
+						</View>
 					</View>
 				</View>
 				<View style={styles.continue_button_outer}>

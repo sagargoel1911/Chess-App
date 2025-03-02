@@ -1,12 +1,12 @@
 import { Modal } from 'native-base';
 import { useContext } from 'react';
-import { Pressable, Text, View } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import theme from 'src/utils/theme';
 import GamePlayContext from '../context';
 import { RESULTS } from '../constants';
 
-const styles = {
+const styles = StyleSheet.create({
 	container: {
 		padding: 25,
 		alignItems: 'center',
@@ -29,7 +29,7 @@ const styles = {
 		fontFamily: theme.fonts.chess,
 		color: theme.colors.white,
 	},
-};
+});
 
 const ResultsModal = () => {
 	const { is_open_results_modal, close_results_modal, result, result_description } = useContext(GamePlayContext);
