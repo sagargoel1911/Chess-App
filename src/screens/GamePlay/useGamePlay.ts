@@ -153,6 +153,7 @@ const useGamePlay = () => {
 	}, []);
 
 	useEffect(() => {
+		//start game
 		play_sound(SOUNDS.game_start.id);
 
 		if (time_control.label !== 'NULL') {
@@ -165,6 +166,7 @@ const useGamePlay = () => {
 	}, []);
 
 	useEffect(() => {
+		//check for time after every second
 		if (white_time_left === 0) {
 			clearInterval(clock_interval_id);
 			set_result(RESULTS.BLACK_WON);
@@ -219,10 +221,12 @@ const useGamePlay = () => {
 	}, [white_time_left, black_time_left]);
 
 	useEffect(() => {
+		//chec for result
 		const current_all_candidate_moves = get_all_candidate_moves();
 		const piece_situation = get_piece_situation();
 		if (_.isEqual(current_all_candidate_moves, {})) {
 			if (in_check) {
+				//checkmate check
 				set_result(turn === COLORS.WHITE ? RESULTS.BLACK_WON : RESULTS.WHITE_WON);
 				set_result_description(RESULT_DESCRIPTIONS.CHECKMATE);
 				set_all_candidate_moves({});
@@ -247,6 +251,7 @@ const useGamePlay = () => {
 				}
 				play_sound(SOUNDS.game_end.id);
 			} else {
+				//stalemate check
 				set_result(RESULTS.DRAW);
 				set_result_description(RESULT_DESCRIPTIONS.STALEMATE);
 				set_all_candidate_moves({});
@@ -277,6 +282,7 @@ const useGamePlay = () => {
 			}
 			play_sound(SOUNDS.game_end.id);
 		} else if (check_insufficient_material(piece_situation)) {
+			//insufficient material check
 			set_result(RESULTS.DRAW);
 			set_result_description(RESULT_DESCRIPTIONS.INSUFFICIENT_MATERIAL);
 			set_all_candidate_moves({});
@@ -291,6 +297,7 @@ const useGamePlay = () => {
 			}
 			play_sound(SOUNDS.game_end.id);
 		} else if (check_threefold_repitition()) {
+			//insufficient material check
 			set_result(RESULTS.DRAW);
 			set_result_description(RESULT_DESCRIPTIONS.THREEFOLD_REPETITION);
 			set_all_candidate_moves({});
@@ -874,6 +881,7 @@ const useGamePlay = () => {
 	};
 
 	const get_all_candidate_moves = () => {
+		//get all candidate moves for all pieces of current turn color
 		const current_all_candidate_moves = {};
 		for (let rank = 0; rank < 8; rank++) {
 			for (let file = 0; file < 8; file++) {

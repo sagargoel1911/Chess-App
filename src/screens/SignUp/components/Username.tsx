@@ -79,8 +79,8 @@ const Username = () => {
 				<View style={styles.top_section}>
 					<Text style={styles.top_text}>Choose a username</Text>
 					<Text style={styles.message}>This is what your friends and other players will see when you play</Text>
-					<View style={{ flex: 1, flexDirection: 'row', columnGap: 12 }}>
-						<View
+					<View style={{ flexDirection: 'row', columnGap: 12 }}>
+						{/* <View
 							style={{
 								width: 50,
 								height: 50,
@@ -99,8 +99,8 @@ const Username = () => {
 									ζ
 								</Text>
 							</Pressable>
-						</View>
-						<View style={{ flex: 1 }}>
+						</View> */}
+						<View style={{ flexGrow: 1 }}>
 							<TextField
 								name={FORM_ELEMENTS.username}
 								rules={{

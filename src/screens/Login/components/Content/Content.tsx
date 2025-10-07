@@ -105,9 +105,7 @@ const Content = () => {
 					eyeOption={true}
 				/>
 			</FormProvider>
-			<View>
-				<Text style={styles.reset_text}>Forgot / Reset Password?</Text>
-			</View>
+			<View>{/* <Text style={styles.reset_text}>Forgot / Reset Password?</Text> */}</View>
 			<View style={styles.login_button_outer}>
 				<Pressable style={styles.login_button} onPress={on_submit}>
 					<Text style={styles.login_text}>Log In</Text>
