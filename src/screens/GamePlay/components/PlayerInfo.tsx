@@ -2,6 +2,9 @@ import { StyleSheet, Text, View } from 'react-native';
 import { Image } from 'expo-image';
 import { useContext } from 'react';
 import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+
+dayjs.extend(utc);
 
 import ImageLinks from 'src/assets/images/ImageLinks';
 import theme from 'src/utils/theme';

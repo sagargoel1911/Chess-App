@@ -12,6 +12,93 @@ import { update_user_data } from 'src/actions/persistedAllUsersData';
 import { SOUNDS } from 'src/assets/sounds/Sounds';
 import RouteNames from 'src/navigation/RouteNames';
 
+export interface BoardPiece {
+	id: string;
+	type: string;
+	rank: number;
+	file: number;
+}
+
+interface MoveSquare {
+	rank: number;
+	file: number;
+}
+
+export interface LastMove {
+	from: MoveSquare;
+	to: MoveSquare;
+	piece: string;
+
+	captured_square?: MoveSquare;
+	rook_from?: MoveSquare;
+	rook_to?: MoveSquare;
+	is_promotion_pending: boolean;
+}
+
+const get_initial_board_pieces = (position: string[][]): BoardPiece[] => {
+	const pieces: BoardPiece[] = [];
+	for (let rank = 0; rank < 8; rank++) {
+		for (let file = 0; file < 8; file++) {
+			const type = position[rank][file];
+			if (type !== '') {
+				pieces.push({
+					id: `${type}-${rank}-${file}`,
+					type,
+					rank,
+					file,
+				});
+			}
+		}
+	}
+	return pieces;
+};
+
+const same_square = (piece: BoardPiece, square?: MoveSquare) => {
+	return square && piece.rank === square.rank && piece.file === square.file;
+};
+
+const apply_move_to_board_pieces = (pieces: BoardPiece[], move: LastMove, position: string[][]): BoardPiece[] => {
+	return pieces.reduce<BoardPiece[]>((updated_pieces, piece) => {
+		if (same_square(piece, move.captured_square)) {
+			return updated_pieces;
+		}
+
+		if (same_square(piece, move.from)) {
+			updated_pieces.push({
+				...piece,
+				type: position[move.to.rank][move.to.file],
+				rank: move.to.rank,
+				file: move.to.file,
+			});
+			return updated_pieces;
+		}
+
+		if (same_square(piece, move.rook_from) && move.rook_to) {
+			updated_pieces.push({
+				...piece,
+				rank: move.rook_to.rank,
+				file: move.rook_to.file,
+			});
+			return updated_pieces;
+		}
+
+		updated_pieces.push(piece);
+		return updated_pieces;
+	}, []);
+};
+
+const promote_board_piece = (pieces: BoardPiece[], promotionSquare: number[], promotedPiece: string): BoardPiece[] => {
+	return pieces.map((piece) => {
+		if (piece.rank === promotionSquare[0] && piece.file === promotionSquare[1]) {
+			return {
+				...piece,
+				type: promotedPiece,
+			};
+		}
+		return piece;
+	});
+};
+
 const useGamePlay = () => {
 	const {
 		params: { player_color, opponent_name, time_control },
@@ -38,6 +125,7 @@ const useGamePlay = () => {
 	const [black_time_left, set_black_time_left] = useState<number>(time_control.time);
 	const [clock_interval_id, set_clock_interval_id] = useState<any>(null);
 	const [position_count, set_position_count] = useState<any>({});
+	const [board_pieces, set_board_pieces] = useState<BoardPiece[]>(get_initial_board_pieces(initial_position));
 
 	const { username } = useAppSelector(
 		(state) => ({
@@ -153,6 +241,7 @@ const useGamePlay = () => {
 	}, []);
 
 	useEffect(() => {
+		//start game
 		play_sound(SOUNDS.game_start.id);
 
 		if (time_control.label !== 'NULL') {
@@ -165,6 +254,7 @@ const useGamePlay = () => {
 	}, []);
 
 	useEffect(() => {
+		//check for time after every second
 		if (white_time_left === 0) {
 			clearInterval(clock_interval_id);
 			set_result(RESULTS.BLACK_WON);
@@ -219,10 +309,12 @@ const useGamePlay = () => {
 	}, [white_time_left, black_time_left]);
 
 	useEffect(() => {
+		//check for result
 		const current_all_candidate_moves = get_all_candidate_moves();
 		const piece_situation = get_piece_situation();
 		if (_.isEqual(current_all_candidate_moves, {})) {
 			if (in_check) {
+				//checkmate check
 				set_result(turn === COLORS.WHITE ? RESULTS.BLACK_WON : RESULTS.WHITE_WON);
 				set_result_description(RESULT_DESCRIPTIONS.CHECKMATE);
 				set_all_candidate_moves({});
@@ -247,6 +339,7 @@ const useGamePlay = () => {
 				}
 				play_sound(SOUNDS.game_end.id);
 			} else {
+				//stalemate check
 				set_result(RESULTS.DRAW);
 				set_result_description(RESULT_DESCRIPTIONS.STALEMATE);
 				set_all_candidate_moves({});
@@ -277,6 +370,7 @@ const useGamePlay = () => {
 			}
 			play_sound(SOUNDS.game_end.id);
 		} else if (check_insufficient_material(piece_situation)) {
+			//insufficient material check
 			set_result(RESULTS.DRAW);
 			set_result_description(RESULT_DESCRIPTIONS.INSUFFICIENT_MATERIAL);
 			set_all_candidate_moves({});
@@ -291,6 +385,7 @@ const useGamePlay = () => {
 			}
 			play_sound(SOUNDS.game_end.id);
 		} else if (check_threefold_repitition()) {
+			//threefold repeatition check
 			set_result(RESULTS.DRAW);
 			set_result_description(RESULT_DESCRIPTIONS.THREEFOLD_REPETITION);
 			set_all_candidate_moves({});
@@ -472,6 +567,7 @@ const useGamePlay = () => {
 		const new_position = _.cloneDeep(current_position);
 		new_position[promotion_square[0]][promotion_square[1]] = piece;
 		set_current_position(new_position);
+		set_board_pieces((previous_pieces) => promote_board_piece(previous_pieces, promotion_square, piece));
 		const is_check_done: boolean = check_and_turn_change(piece, new_position);
 		//make sound
 		if (is_check_done) {
@@ -489,9 +585,17 @@ const useGamePlay = () => {
 		const new_position = _.cloneDeep(current_position);
 		new_position[rank][file] = '';
 		new_position[new_rank][new_file] = current_position[rank][file];
+		const is_promotion_pending = piece[1] === PIECES.PAWN && (new_rank === 0 || new_rank === 7);
+		const move: LastMove = {
+			from: { rank, file },
+			to: { rank: new_rank, file: new_file },
+			piece,
+			is_promotion_pending,
+		};
 
 		if (current_position[new_rank][new_file] !== '') {
 			is_capture = true;
+			move.captured_square = { rank: new_rank, file: new_file };
 		}
 
 		//increment half move for 50 move draw
@@ -505,8 +609,10 @@ const useGamePlay = () => {
 		if (piece[1] === PIECES.PAWN && en_passant_square && en_passant_square[0] === new_rank && en_passant_square[1] === new_file) {
 			if (piece[0] === COLORS.WHITE) {
 				new_position[new_rank + 1][new_file] = '';
+				move.captured_square = { rank: new_rank + 1, file: new_file };
 			} else {
 				new_position[new_rank - 1][new_file] = '';
+				move.captured_square = { rank: new_rank - 1, file: new_file };
 			}
 			is_capture = true;
 		}
@@ -544,10 +650,14 @@ const useGamePlay = () => {
 			if (file - new_file === 2) {
 				new_position[rank][3] = current_position[rank][0];
 				new_position[rank][0] = '';
+				move.rook_from = { rank, file: 0 };
+				move.rook_to = { rank, file: 3 };
 				is_castle = true;
 			} else if (new_file - file === 2) {
 				new_position[rank][5] = current_position[rank][7];
 				new_position[rank][7] = '';
+				move.rook_from = { rank, file: 7 };
+				move.rook_to = { rank, file: 5 };
 				is_castle = true;
 			}
 		}
@@ -562,9 +672,10 @@ const useGamePlay = () => {
 		}
 
 		set_current_position(new_position);
+		set_board_pieces((previous_pieces) => apply_move_to_board_pieces(previous_pieces, move, new_position));
 
 		//promotion logic
-		if (piece[1] === PIECES.PAWN && (new_rank === 0 || new_rank === 7)) {
+		if (is_promotion_pending) {
 			set_promotion_square([new_rank, new_file]);
 			open_promotion_modal();
 		} else {
@@ -874,6 +985,7 @@ const useGamePlay = () => {
 	};
 
 	const get_all_candidate_moves = () => {
+		//get all candidate moves for all pieces of current turn color
 		const current_all_candidate_moves = {};
 		for (let rank = 0; rank < 8; rank++) {
 			for (let file = 0; file < 8; file++) {
@@ -997,6 +1109,7 @@ const useGamePlay = () => {
 	return {
 		current_candidate_moves,
 		current_position,
+		board_pieces,
 		change_position,
 		get_candidate_moves,
 		reset_candidate_moves,

@@ -72,7 +72,7 @@ const UserInfo = ({ username }: Props) => {
 					</View>
 				</View>
 			</View>
-			<Text style={styles.join_date}>Joined Apr 10, 2024</Text>
+			<Text style={styles.join_date}> </Text>
 		</View>
 	);
 };
