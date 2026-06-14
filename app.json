@@ -21,13 +21,19 @@
       "adaptiveIcon": {
         "foregroundImage": "./src/assets/images/adaptive-icon.png",
         "backgroundColor": "#282421"
-      }
+      },
+      "package": "com.sagar_goel.ChessApp"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
       "expo-font"
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "64cbffc1-37d2-4396-87da-39ae089c8f56"
+      }
+    }
   }
 }
