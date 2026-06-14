@@ -6,6 +6,7 @@ import Tile from './components/Tile';
 import { files, ranks } from './constants';
 import Piece from './components/Piece';
 import GameContext from 'src/screens/GamePlay/context';
+import type { BoardPiece } from 'src/screens/GamePlay/useGamePlay';
 
 const styles = StyleSheet.create({
 	board: {
@@ -15,7 +16,7 @@ const styles = StyleSheet.create({
 });
 
 const Board = () => {
-	const { current_position, current_candidate_moves } = useContext(GameContext);
+	const { board_pieces, current_candidate_moves } = useContext(GameContext);
 
 	return (
 		<View style={styles.board}>
@@ -31,14 +32,8 @@ const Board = () => {
 					);
 				});
 			})}
-			{_.map(ranks, (rank: number) => {
-				return _.map(files, (file: number) => {
-					if (current_position[rank][file] === '') {
-						return null;
-					} else {
-						return <Piece key={`${file}${rank}_piece`} rank={rank} file={file} />;
-					}
-				});
+			{_.map(board_pieces, (piece: BoardPiece) => {
+				return <Piece key={piece.id} id={piece.id} rank={piece.rank} file={piece.file} pic={piece.type} />;
 			})}
 		</View>
 	);
